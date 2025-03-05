@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonLabel, IonCol, IonGrid, IonRow, IonInput } from '@ionic/angular/standalone';
 import { NavbarFormsComponent } from 'src/app/components/navbar-forms/navbar-forms.component';
 import { AuthService } from 'src/app/services/auth.service';  // Importa AuthService
+import { Router } from '@angular/router';  // Importa Router para redirección
 
 @Component({
   selector: 'app-register1',
@@ -22,8 +23,8 @@ export class Register1Page implements OnInit {
     password: ''
   };
 
-  // Inyectar AuthService
-  constructor(private authService: AuthService) { }
+  // Inyectar AuthService y Router
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() { }
 
@@ -33,6 +34,18 @@ export class Register1Page implements OnInit {
       next: (res) => {
         console.log('Usuario registrado:', res);
         alert('Registro exitoso');
+
+        // Limpiar los campos del formulario
+        this.user = {
+          fullName: '',
+          lastNameFather: '',
+          lastNameMother: '',
+          email: '',
+          password: ''
+        };
+
+        // Redirigir al login después del registro exitoso
+        this.router.navigate(['/login']);  // Asegúrate de que la ruta '/login' esté definida en tu enrutador
       },
       error: (err) => {
         console.error('Error al registrar usuario:', err);

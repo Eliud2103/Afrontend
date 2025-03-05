@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonInput, IonLabel, IonButton, IonCol, IonRow, IonGrid } from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';  // Importa el servicio AuthService
+import { FormsModule } from '@angular/forms'; // Importa FormsModule para usar ngModel
+import { IonGrid, IonRow, IonCol, IonButton, IonLabel, IonInput, IonContent } from '@ionic/angular/standalone'; // Ionic standalone imports
 import { NavbarFormsComponent } from 'src/app/components/navbar-forms/navbar-forms.component';
 
 @Component({
@@ -9,15 +10,49 @@ import { NavbarFormsComponent } from 'src/app/components/navbar-forms/navbar-for
   templateUrl: './login-form.page.html',
   styleUrls: ['./login-form.page.scss'],
   standalone: true,
-  imports: [IonGrid, IonRow, IonCol, IonButton, IonLabel, IonInput, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule,NavbarFormsComponent]
+  imports: [
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonButton,
+    IonLabel,
+    IonInput,
+    IonContent,
+    FormsModule,
+    NavbarFormsComponent
+  ]
 })
 export class LoginFormPage implements OnInit {
 
-  constructor() { }
+  email: string = '';  // Variable para almacenar el email
+  password: string = '';  // Variable para almacenar la contraseña
 
-  ngOnInit() {
-  }
-  login(){
+  constructor(private authService: AuthService, private router: Router) { }
 
+  ngOnInit() {}
+
+  // Método para iniciar sesión
+  login() {
+    if (!this.email || !this.password) {
+      alert('Por favor ingresa tus credenciales');
+      return;
+    }
+
+    // Llamar al servicio de autenticación
+    this.authService.login(this.email, this.password).subscribe({
+      next: (response) => {
+        console.log('Login exitoso:', response); // Para depurar, puedes ver la respuesta aquí
+
+        // Guardamos el token en localStorage
+        this.authService.setToken(response.accessToken);
+
+        // Redirigimos al Home
+        this.router.navigate(['/home']);
+      },
+      error: (err) => {
+        console.error('Error de login', err);
+        alert('Credenciales incorrectas o error al iniciar sesión.');
+      }
+    });
   }
 }
