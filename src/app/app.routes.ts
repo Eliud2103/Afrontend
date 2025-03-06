@@ -131,5 +131,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/cards/lab-cards/lab-cards.page').then( m => m.LabCardsPage)
   },
 
+  {
+    path: 'mi-perfil',
+    loadComponent: () => import('./auth/mi-perfil/mi-perfil.page').then( m => m.MiPerfilPage)
+  },
+
 
 ];

@@ -1,0 +1,23 @@
+<app-navbar></app-navbar>
+<ion-content [fullscreen]="true">
+  <ion-grid class="grid-center">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size-xs="12" size-sm="8" size-md="6" size-lg="6">
+        <div class="container">
+          <h3>Mi perfil</h3>
+
+          <form>
+            <ion-label>Nombres</ion-label> <br> <br>
+            <ion-input type="text" [(ngModel)]="user.name" name="name" required></ion-input> <br>
+
+            <ion-label>Email</ion-label> <br> <br>
+            <ion-input type="email" [(ngModel)]="user.email" name="email" required></ion-input> <br>
+
+            <ion-button expand="block" class="login-button" type="submit">Cambiar contraseña</ion-button> <br>
+            <ion-button expand="block" class="login-button2" type="submit">Cerrar sesión</ion-button> <br>
+          </form> <br>
+        </div> <br>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
