@@ -30,16 +30,19 @@ export class MiPerfilPage implements OnInit {
   // Método para obtener el perfil del usuario
   async getUserProfile() {
     try {
-
       const response = await firstValueFrom(this.authService.getUserProfile());
-      console.log('Perfil obtenido:', response);// Llamada al backend
+      console.log('Perfil obtenido:', response);
+      this.user = {
+        fullName: response.fullName  || 'Sin nombre',
+        email: response.email || 'Sin email'
+      };
+      // Guardar en localStorage para futuras cargas
+      localStorage.setItem('authName', this.user.fullName);
+      localStorage.setItem('authEmail', this.user.email);
 
-      this.user = response; // Guardamos los datos del usuario
-      console.log('Perfil obtenido:', this.user);
-    } catch (error: unknown) {  // Aquí especificamos el tipo como 'unknown'
+    } catch (error: unknown) {
       console.error('Error al obtener perfil', error);
 
-      // Usamos type assertion para decirle a TypeScript que el error es un HttpErrorResponse
       if (error instanceof HttpErrorResponse) {
         if (error.status === 401) {
           this.errorMessage = 'Token inválido o expirado. Por favor, inicie sesión nuevamente.';
@@ -52,15 +55,16 @@ export class MiPerfilPage implements OnInit {
         this.errorMessage = 'Error desconocido. Intente nuevamente más tarde.';
       }
 
-      // Si hay error, intentamos cargar desde localStorage
+      // Si hay error, cargar desde localStorage
       this.loadUserFromStorage();
     }
   }
 
+
   // Cargar el perfil desde localStorage en caso de error
   loadUserFromStorage() {
     this.user = {
-      name: localStorage.getItem('authName'),
+      fullName: localStorage.getItem('authName'),
       email: localStorage.getItem('authEmail')
     };
     console.log('Perfil cargado desde localStorage:', this.user);

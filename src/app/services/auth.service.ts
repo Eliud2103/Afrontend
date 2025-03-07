@@ -18,8 +18,8 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   // Método para hacer la solicitud de login
-  login(name:string, email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { name,email, password }).pipe(
+  login(fullName:string, email: string, password: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { fullName,email, password }).pipe(
       tap((response) => {
         // Asegúrate de que response.accessToken exista y sea válido
         if (response && response.accessToken) {
@@ -68,7 +68,8 @@ export class AuthService {
     if (!token) {
       return throwError('No se encontró el token de autenticación');
     }
-
+    console.log('Llamando a:', `${this.apiUrl}/profile`);
+    console.log('Token:', token);
     return this.http.get<any>(`${this.apiUrl}/profile`, {
       headers: { Authorization: `Bearer ${token}` }
     });
