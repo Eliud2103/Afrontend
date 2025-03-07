@@ -23,7 +23,7 @@ import { NavbarFormsComponent } from 'src/app/components/navbar-forms/navbar-for
   ]
 })
 export class LoginFormPage implements OnInit {
-
+  name: string=''
   email: string = '';  // Variable para almacenar el email
   password: string = '';  // Variable para almacenar la contraseña
 
@@ -39,12 +39,13 @@ export class LoginFormPage implements OnInit {
     }
 
     // Llamar al servicio de autenticación
-    this.authService.login(this.email, this.password).subscribe({
+    this.authService.login( this.name, this.email, this.password).subscribe({
       next: (response) => {
-        console.log('Login exitoso:', response); // Para depurar, puedes ver la respuesta aquí
+        console.log('Login exitoso:', response); // Para depuración
 
-        // Guardamos el token en localStorage
-        this.authService.setToken(response.accessToken);
+        // Guardamos el token, nombre y correo en localStorage
+        // Asegúrate de que response contiene los datos correctos
+        this.authService.setToken(response.accessToken);  // Guarda solo el accessToken
 
         // Redirigimos al Home
         this.router.navigate(['/home']);

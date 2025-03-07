@@ -1,12 +1,11 @@
-// mi-perfil.page.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonLabel, IonCol, IonGrid, IonRow, IonInput } from '@ionic/angular/standalone';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { AuthService } from 'src/app/services/auth.service';
-import { environment } from 'src/environments/environment';
+import { HttpErrorResponse } from '@angular/common/http'; // Importar HttpErrorResponse
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-mi-perfil',
@@ -22,39 +21,48 @@ export class MiPerfilPage implements OnInit {
   user: any = {}; // Variable para almacenar los datos del usuario
   errorMessage: string = ''; // Para mostrar errores al usuario
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private authService: AuthService) {}
 
   ngOnInit() {
     this.getUserProfile();
   }
 
-  getUserProfile() {
-    const token = this.authService.getToken(); // Método para obtener el token
-    console.log('Token obtenido:', token);
+  // Método para obtener el perfil del usuario
+  async getUserProfile() {
+    try {
 
-    if (!token) {
-      this.errorMessage = 'No se ha encontrado un token válido. Por favor, inicie sesión.';
-      return;
-    }
+      const response = await firstValueFrom(this.authService.getUserProfile());
+      console.log('Perfil obtenido:', response);// Llamada al backend
 
-    this.http
-      .get(`${environment.apiUrl}/auth/profile`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .subscribe(
-        (response: any) => {
-          this.user = response; // Guardamos los datos del usuario
-        },
-        (error) => {
-          console.error('Error al obtener perfil', error);
-          if (error.status === 401) {
-            this.errorMessage = 'Token inválido o expirado. Por favor, inicie sesión nuevamente.';
-          } else if (error.status === 404) {
-            this.errorMessage = 'La ruta no se encuentra. Verifique la configuración del backend.';
-          } else {
-            this.errorMessage = 'Ocurrió un error desconocido. Intente nuevamente más tarde.';
-          }
+      this.user = response; // Guardamos los datos del usuario
+      console.log('Perfil obtenido:', this.user);
+    } catch (error: unknown) {  // Aquí especificamos el tipo como 'unknown'
+      console.error('Error al obtener perfil', error);
+
+      // Usamos type assertion para decirle a TypeScript que el error es un HttpErrorResponse
+      if (error instanceof HttpErrorResponse) {
+        if (error.status === 401) {
+          this.errorMessage = 'Token inválido o expirado. Por favor, inicie sesión nuevamente.';
+        } else if (error.status === 404) {
+          this.errorMessage = 'La ruta no se encuentra. Verifique la configuración del backend.';
+        } else {
+          this.errorMessage = 'Ocurrió un error desconocido. Intente nuevamente más tarde.';
         }
-      );
+      } else {
+        this.errorMessage = 'Error desconocido. Intente nuevamente más tarde.';
+      }
+
+      // Si hay error, intentamos cargar desde localStorage
+      this.loadUserFromStorage();
+    }
+  }
+
+  // Cargar el perfil desde localStorage en caso de error
+  loadUserFromStorage() {
+    this.user = {
+      name: localStorage.getItem('authName'),
+      email: localStorage.getItem('authEmail')
+    };
+    console.log('Perfil cargado desde localStorage:', this.user);
   }
 }

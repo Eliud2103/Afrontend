@@ -6,6 +6,11 @@
         <div class="container">
           <h3>Mi perfil</h3>
 
+          <!-- Mostrar error si ocurre alguno -->
+          <div *ngIf="errorMessage" class="error-message">
+            <p>{{ errorMessage }}</p>
+          </div>
+
           <form>
             <ion-label>Nombres</ion-label> <br> <br>
             <ion-input type="text" [(ngModel)]="user.name" name="name" required></ion-input> <br>
