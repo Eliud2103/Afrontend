@@ -28,7 +28,10 @@
           <li class="nav-item">
             <a class="nav-link" href="sobre-nosotros">Quienes somos</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="!isAuthenticated">
+            <a class="nav-link" href="login">Login</a>
+          </li>
+          <li class="nav-item" *ngIf="isAuthenticated">
             <a class="nav-link" href="mi-perfil">Perfil</a>
           </li>
         </ul>

@@ -13,13 +13,13 @@
 
           <form>
             <ion-label>Nombres</ion-label> <br> <br>
-            <ion-input type="text" [(ngModel)]="user.fullName" name="fullName" required></ion-input> <br>
+            <ion-input type="text" [(ngModel)]="user.fullName" readonly name="fullName" required></ion-input> <br>
 
             <ion-label>Email</ion-label> <br> <br>
-            <ion-input type="email" [(ngModel)]="user.email" name="email" required></ion-input> <br>
+            <ion-input type="email" [(ngModel)]="user.email" readonly name="email" required></ion-input> <br>
 
             <ion-button expand="block" class="login-button" type="submit">Cambiar contraseña</ion-button> <br>
-            <ion-button expand="block" class="login-button2" type="submit">Cerrar sesión</ion-button> <br>
+            <ion-button (click)="logout()"  expand="block" class="login-button2" type="submit">Cerrar sesión</ion-button> <br>
           </form> <br>
         </div> <br>
       </ion-col>
