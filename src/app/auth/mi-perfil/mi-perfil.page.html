@@ -18,7 +18,7 @@
             <ion-label>Email</ion-label> <br> <br>
             <ion-input type="email" [(ngModel)]="user.email" readonly name="email" required></ion-input> <br>
 
-            <ion-button expand="block" class="login-button" type="submit">Cambiar contraseña</ion-button> <br>
+            <ion-button routerLink="/cambio-pass" expand="block" class="login-button" >Cambiar contraseña</ion-button> <br>
             <ion-button (click)="logout()"  expand="block" class="login-button2" type="submit">Cerrar sesión</ion-button> <br>
           </form> <br>
         </div> <br>

@@ -1,13 +1,38 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>cambio_pass</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-navbar></app-navbar>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">cambio_pass</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-grid class="grid-center">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size-xs="12" size-sm="8" size-md="6" size-lg="6">
+        <div class="container">
+          <h3>Cambiar contraseña</h3>
+
+          <form (submit)="changePassword(); $event.preventDefault()">
+            <ion-label>Email</ion-label> <br> <br>
+            <ion-input type="email" [(ngModel)]="user.email" readonly name="email"></ion-input> <br>
+
+            <ion-label>Contraseña Actual</ion-label> <br> <br>
+            <ion-input [type]="showPassword ? 'text' : 'password'" type="password" [(ngModel)]="passwords.currentPassword" name="currentPassword" required>
+              <ion-icon [name]="showPassword ? 'eye-off' : 'eye'" slot="end" (click)="togglePasswordVisibility()"></ion-icon>
+            </ion-input> <br>
+
+            <ion-label>Introduce tu nueva contraseña</ion-label> <br> <br>
+            <ion-input [type]="showPassword ? 'text' : 'password'" type="password" [(ngModel)]="passwords.newPassword" name="newPassword" required>
+              <ion-icon [name]="showPassword ? 'eye-off' : 'eye'" slot="end" (click)="togglePasswordVisibility()"></ion-icon>
+            </ion-input> <br>
+
+            <ion-label>Confirma tu nueva contraseña</ion-label> <br> <br>
+            <ion-input [type]="showPassword ? 'text' : 'password'" type="password" [(ngModel)]="passwords.confirmPassword" name="confirmPassword" required>
+              <ion-icon [name]="showPassword ? 'eye-off' : 'eye'" slot="end" (click)="togglePasswordVisibility()"></ion-icon>
+            </ion-input> <br>
+
+            <ion-button  expand="block" type="submit">Cambiar contraseña</ion-button> <br>
+
+            <p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
+            <p *ngIf="successMessage" style="color: green;">{{ successMessage }}</p>
+          </form> <br>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

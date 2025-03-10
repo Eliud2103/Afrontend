@@ -1,0 +1,72 @@
+:host {
+  --background: linear-gradient(to bottom, #101E2A, #163045, #163045);
+}
+ion-header {
+  width: 100%;
+  height: 15vh; /* Mantiene una altura adecuada */
+  max-height: 250px; /* Evita que el header sea demasiado grande */
+  overflow: hidden; /* Para que la imagen no se expanda demasiado */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.grid-center{
+height: 100%;
+margin-top: 10px;
+}
+
+.custom-content {
+  background-color: #0a1f35 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  text-align: start;
+  background: linear-gradient(to bottom, #101E2A, #163045, #163045);
+  padding: 20px;
+}
+
+
+
+ion-label {
+  color: white;
+  margin-bottom: 10px;
+}
+
+ion-input {
+  background-color: #073A6A;
+  color: white;
+  border-radius: 5px;
+}
+
+.login-button {
+  --background: linear-gradient(to right, #0D161F 57%, #1C3F60 100%);
+  --border-radius: 10px;
+  --color: white;
+  --box-shadow: none;
+  width: 100%;
+  font-weight: bold;
+}
+
+.register-text a {
+  color: #f1f3f5;
+  font-weight: bold;
+  text-decoration: none;
+}
+img {
+  width: 100%;
+  height: 100%;
+  opacity: .5;
+}
+ion-content {
+  //--overflow: hidden;
+  padding-top: 60px; /* Ajusta esto según la altura de tu navbar */
+}
+
+ion-input {
+  --padding-end: 20px;  /* Ajusta el valor para crear el espaciado deseado */
+}

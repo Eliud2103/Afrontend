@@ -20,7 +20,9 @@
             <ion-input type="email" [(ngModel)]="user.email" name="email" required></ion-input> <br>
 
             <ion-label>Contraseña</ion-label>
-            <ion-input type="password" [(ngModel)]="user.password" name="password" required></ion-input> <br>
+            <ion-input type="password" [(ngModel)]="user.password" name="password" required>
+              <ion-icon [name]="showPassword ? 'eye-off' : 'eye'" slot="end" (click)="togglePasswordVisibility()"></ion-icon>
+            </ion-input> <br>
 
             <ion-button class="login-button" expand="block" type="submit">Registrarse</ion-button>
           </form>

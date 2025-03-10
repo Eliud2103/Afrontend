@@ -5,7 +5,7 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonLabel, IonCo
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http'; // Importar HttpErrorResponse
-import { Router } from '@angular/router';  // Asegúrate de importar Router
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';  // Asegúrate de importar Router
 
 import { firstValueFrom } from 'rxjs';
 
@@ -16,7 +16,7 @@ import { firstValueFrom } from 'rxjs';
   standalone: true,
   imports: [
     IonInput, IonRow, IonGrid, IonCol, IonLabel, IonButton, IonContent,
-    IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, NavbarComponent
+    IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, NavbarComponent,RouterLink, RouterLinkActive
   ]
 })
 export class MiPerfilPage implements OnInit {

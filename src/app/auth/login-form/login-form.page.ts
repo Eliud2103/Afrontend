@@ -2,15 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';  // Importa el servicio AuthService
 import { FormsModule } from '@angular/forms'; // Importa FormsModule para usar ngModel
-import { IonGrid, IonRow, IonCol, IonButton, IonLabel, IonInput, IonContent } from '@ionic/angular/standalone'; // Ionic standalone imports
+import { IonGrid, IonRow, IonCol, IonButton, IonLabel, IonInput, IonContent, IonIcon } from '@ionic/angular/standalone'; // Ionic standalone imports
 import { NavbarFormsComponent } from 'src/app/components/navbar-forms/navbar-forms.component';
-
+import { addIcons } from 'ionicons';
+import { eye } from 'ionicons/icons';
 @Component({
   selector: 'app-login-form',
   templateUrl: './login-form.page.html',
   styleUrls: ['./login-form.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonIcon,
     IonGrid,
     IonRow,
     IonCol,
@@ -23,31 +24,37 @@ import { NavbarFormsComponent } from 'src/app/components/navbar-forms/navbar-for
   ]
 })
 export class LoginFormPage implements OnInit {
-  name: string=''
-  email: string = '';  // Variable para almacenar el email
-  password: string = '';  // Variable para almacenar la contraseña
+  name: string = '';
+  email: string = '';
+  password: string = '';
+  showPassword: boolean = false;
+
 
   constructor(private authService: AuthService, private router: Router) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    addIcons({eye})
+  }
 
-  // Método para iniciar sesión
+
+
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
   login() {
     if (!this.email || !this.password) {
       alert('Por favor ingresa tus credenciales');
       return;
     }
 
-    // Llamar al servicio de autenticación
-    this.authService.login( this.name, this.email, this.password).subscribe({
+    this.authService.login(this.name, this.email, this.password).subscribe({
       next: (response) => {
-        console.log('Login exitoso:', response); // Para depuración
+        console.log('Login exitoso:', response);
 
-        // Guardamos el token, nombre y correo en localStorage
-        // Asegúrate de que response contiene los datos correctos
         this.authService.setToken(response.accessToken);  // Guarda solo el accessToken
 
-        // Redirigimos al Home
         this.router.navigate(['/home']);
       },
       error: (err) => {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 
 interface AuthResponse {
   accessToken: string;
@@ -18,30 +18,22 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   // Método para hacer la solicitud de login
-  login(fullName:string, email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { fullName,email, password }).pipe(
-      tap((response) => {
-        // Asegúrate de que response.accessToken exista y sea válido
-        if (response && response.accessToken) {
-          // Almacenar el token y los demás datos necesarios en localStorage
-          this.setToken(response.accessToken);
-        } else {
-          console.error('No se recibió token de autenticación');
-        }
-      })
+  login(fullName: string, email: string, password: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { fullName, email, password }).pipe(
+      catchError(this.handleError)
     );
   }
 
   // Método para hacer la solicitud de registro
   register(userData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, userData);
+    return this.http.post(`${this.apiUrl}/register`, userData).pipe(
+      catchError(this.handleError)
+    );
   }
 
   // Método para guardar el token y datos en localStorage
   setToken(token: string): void {
     localStorage.setItem('authToken', token);
-    //localStorage.setItem('authName', name);
-   // localStorage.setItem('authEmail', email);
   }
 
   // Método para recuperar el token desde localStorage
@@ -52,8 +44,6 @@ export class AuthService {
   // Método para hacer logout y limpiar el token
   logout(): void {
     localStorage.removeItem('authToken');
-    localStorage.removeItem('authName');
-    localStorage.removeItem('authEmail');
   }
 
   // Método para verificar si hay un usuario autenticado
@@ -68,10 +58,30 @@ export class AuthService {
     if (!token) {
       return throwError('No se encontró el token de autenticación');
     }
-    console.log('Llamando a:', `${this.apiUrl}/profile`);
-    console.log('Token:', token);
+
     return this.http.get<any>(`${this.apiUrl}/profile`, {
       headers: { Authorization: `Bearer ${token}` }
-    });
+    }).pipe(catchError(this.handleError));
+  }
+
+  // Método para cambiar la contraseña
+  changePassword(email: string, currentPassword: string, newPassword: string): Observable<any> {
+    const token = localStorage.getItem('authToken');
+    return this.http.put(`${this.apiUrl}/change-password`, {
+      correo_electronico: email,
+      contrasena_actual: currentPassword,
+      nueva_contrasena: newPassword,
+      confirmar_nueva_contrasena: newPassword
+    }, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  // Manejo de errores
+  private handleError(error: any) {
+    console.error('Ocurrió un error', error);
+    return throwError(error);
   }
 }

@@ -51,6 +51,10 @@ ion-input {
 }
 
 ion-content {
-  --overflow: hidden;
+ // --overflow: hidden;
 }
+ion-input {
+  --padding-end: 20px;  /* Ajusta el valor para crear el espaciado deseado */
+}
+
 

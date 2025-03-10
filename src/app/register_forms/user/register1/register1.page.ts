@@ -1,20 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonLabel, IonCol, IonGrid, IonRow, IonInput } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonLabel, IonCol, IonGrid, IonRow, IonInput, IonIcon } from '@ionic/angular/standalone';
 import { NavbarFormsComponent } from 'src/app/components/navbar-forms/navbar-forms.component';
 import { AuthService } from 'src/app/services/auth.service';  // Importa AuthService
 import { Router } from '@angular/router';  // Importa Router para redirección
+import { addIcons } from 'ionicons';
+import { eye } from 'ionicons/icons';
 
 @Component({
   selector: 'app-register1',
   templateUrl: './register1.page.html',
   styleUrls: ['./register1.page.scss'],
   standalone: true,
-  imports: [IonInput, IonRow, IonGrid, IonCol, IonLabel, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, NavbarFormsComponent]
+  imports: [IonIcon, IonInput, IonRow, IonGrid, IonCol, IonLabel, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, NavbarFormsComponent]
 })
 export class Register1Page implements OnInit {
+  password: string = '';
+  showPassword: boolean = false;
   // Datos del formulario
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+
   user = {
     fullName: '',
     lastNameFather: '',
@@ -26,7 +35,9 @@ export class Register1Page implements OnInit {
   // Inyectar AuthService y Router
   constructor(private authService: AuthService, private router: Router) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    addIcons({eye})
+   }
 
   // Método para registrar al usuario
   register() {
