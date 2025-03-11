@@ -7,25 +7,25 @@
           <h3>Registrarse</h3>
           <h6>Datos del hospital</h6>
 
-          <form (ngSubmit)="finalizeRegistration()">
-            <!-- Correo -->
-            <ion-label>Correo</ion-label>
-            <ion-input type="email" [(ngModel)]="hos_register3.email" name="email" required></ion-input> <br>
+          <form [formGroup]="hos_register3" (ngSubmit)="finalizeRegistration()">
+            <!-- Correo electrónico -->
+            <ion-label>Correo electrónico</ion-label>
+            <ion-input formControlName="email_hospital" type="email" required></ion-input> <br>
 
             <!-- Misión -->
             <ion-label>Misión</ion-label>
-            <ion-input type="text" [(ngModel)]="hos_register3.mission" name="mission" required></ion-input> <br>
+            <ion-input formControlName="mision" type="text" required></ion-input> <br>
 
             <!-- Visión -->
             <ion-label>Visión</ion-label>
-            <ion-input type="text" [(ngModel)]="hos_register3.vision" name="vision" required></ion-input> <br>
+            <ion-input formControlName="vision" type="text" required></ion-input> <br>
 
             <!-- Descripción -->
             <ion-label>Descripción del hospital</ion-label>
-            <ion-input type="text" [(ngModel)]="hos_register3.description" name="description"></ion-input> <br>
+            <ion-input formControlName="descripcion" type="text"></ion-input> <br>
 
             <!-- Botón para finalizar el registro -->
-            <ion-button expand="block" type="submit">Finalizar Registro</ion-button>
+            <ion-button expand="block" type="submit" [disabled]="hos_register3.invalid">Finalizar Registro</ion-button>
           </form>
 
           <app-si-tienes-cuenta></app-si-tienes-cuenta>

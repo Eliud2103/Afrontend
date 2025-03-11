@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -91,6 +91,14 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/hos-register`, hospitalData).pipe(
       catchError(this.handleError)
     );
+  }
+  private handleHosRegisterError(error: HttpErrorResponse): Observable<never> {
+    let errorMessage = 'Ocurrió un error inesperado. Por favor, inténtelo de nuevo más tarde.';
+    if (error.status === 409) {
+      errorMessage = 'El correo electrónico ya está en uso. Por favor, use un correo diferente.';
+    }
+    console.error('Error al registrar hospital', error);
+    return throwError(errorMessage);
   }
 
 }

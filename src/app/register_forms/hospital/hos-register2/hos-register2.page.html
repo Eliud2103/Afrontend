@@ -7,30 +7,29 @@
           <h3>Registrarse</h3>
           <h6>Datos del hospital</h6>
 
-          <form >
-            <ion-label>Nombre</ion-label>
-            <ion-input placeholder="Nombre del hospital" type="text" [(ngModel)]="hos_register2.name" name="name" required></ion-input> <br>
+          <form [formGroup]="hos_register2" (ngSubmit)="goToNext()">
+            <ion-label>Nombre del hospital</ion-label>
+            <ion-input formControlName="nombre_hospital" placeholder="Nombre del hospital" type="text" required></ion-input> <br>
 
             <ion-label>Tipo</ion-label>
-            <ion-select [(ngModel)]="hos_register2.type"  name="type" required>
+            <ion-select formControlName="tipo_hospital" required>
               <ion-select-option value="urologico">Urológico</ion-select-option>
               <ion-select-option value="cardiologico">Cardiológico</ion-select-option>
               <ion-select-option value="pediatrico">Pediátrico</ion-select-option>
               <ion-select-option value="traumatologico">Traumatológico</ion-select-option>
               <ion-select-option value="general">General</ion-select-option>
-              <!-- Puedes agregar más opciones aquí -->
             </ion-select> <br>
 
             <ion-label>Número de licencia sanitaria</ion-label>
-            <ion-input type="text" [(ngModel)]="hos_register2.licenseNumber" name="licenseNumber" required></ion-input> <br>
+            <ion-input formControlName="numero_licencia_sanitaria" type="text" required></ion-input> <br>
 
             <ion-label>Dirección</ion-label>
-            <ion-input type="text" [(ngModel)]="hos_register2.address" name="address" required></ion-input> <br>
+            <ion-input formControlName="direccion" type="text" required></ion-input> <br>
 
             <ion-label>Teléfono</ion-label>
-            <ion-input type="text" [(ngModel)]="hos_register2.phone" name="phone" required></ion-input> <br>
+            <ion-input formControlName="telefono" type="text" required></ion-input> <br>
 
-            <ion-button class="login-button" expand="block" type="submit" (click)="goToNext()">Siguiente</ion-button>
+            <ion-button class="login-button" expand="block" type="submit" [disabled]="hos_register2.invalid">Siguiente</ion-button>
           </form>
 
           <app-si-tienes-cuenta></app-si-tienes-cuenta>
