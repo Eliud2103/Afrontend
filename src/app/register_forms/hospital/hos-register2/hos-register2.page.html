@@ -1,34 +1,42 @@
 <app-navbar-forms></app-navbar-forms>
-
 <ion-content [fullscreen]="true">
   <ion-grid class="grid-center">
     <ion-row class="ion-justify-content-center">
-      <ion-col  size-xs="12" size-sm="8" size-md="6" size-lg="6">
+      <ion-col size-xs="12" size-sm="8" size-md="6" size-lg="6">
         <div class="container">
           <h3>Registrarse</h3>
           <h6>Datos del hospital</h6>
 
-          <form>
+          <form >
             <ion-label>Nombre</ion-label>
-            <ion-input type="text" placeholder="Ingrese su nombre"></ion-input> <br>
+            <ion-input placeholder="Nombre del hospital" type="text" [(ngModel)]="hos_register2.name" name="name" required></ion-input> <br>
+
             <ion-label>Tipo</ion-label>
-            <ion-input type="text" placeholder="Ingrese su nombre"></ion-input> <br>
+            <ion-select [(ngModel)]="hos_register2.type"  name="type" required>
+              <ion-select-option value="urologico">Urológico</ion-select-option>
+              <ion-select-option value="cardiologico">Cardiológico</ion-select-option>
+              <ion-select-option value="pediatrico">Pediátrico</ion-select-option>
+              <ion-select-option value="traumatologico">Traumatológico</ion-select-option>
+              <ion-select-option value="general">General</ion-select-option>
+              <!-- Puedes agregar más opciones aquí -->
+            </ion-select> <br>
+
             <ion-label>Número de licencia sanitaria</ion-label>
-            <ion-input type="text" placeholder="Ingrese su nombre"></ion-input> <br>
+            <ion-input type="text" [(ngModel)]="hos_register2.licenseNumber" name="licenseNumber" required></ion-input> <br>
+
             <ion-label>Dirección</ion-label>
-            <ion-input type="email" placeholder="Ingrese su nombre"></ion-input> <br>
-            <ion-label>Telefono</ion-label>
-            <ion-input type="text" placeholder="Ingrese su número de telefono"></ion-input> <br>
+            <ion-input type="text" [(ngModel)]="hos_register2.address" name="address" required></ion-input> <br>
 
+            <ion-label>Teléfono</ion-label>
+            <ion-input type="text" [(ngModel)]="hos_register2.phone" name="phone" required></ion-input> <br>
 
-            <ion-button class="login-button" expand="block">Siguiente</ion-button>
-
+            <ion-button class="login-button" expand="block" type="submit" (click)="goToNext()">Siguiente</ion-button>
           </form>
-          <p class="register-text">
-            Si ya tienes una cuenta <a href="#">Inicia sesión</a>
-          </p>
+
+          <app-si-tienes-cuenta></app-si-tienes-cuenta>
+
         </div>
       </ion-col>
     </ion-row>
-   </ion-grid>
+  </ion-grid>
 </ion-content>

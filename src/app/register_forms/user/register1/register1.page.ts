@@ -7,13 +7,14 @@ import { AuthService } from 'src/app/services/auth.service';  // Importa AuthSer
 import { Router } from '@angular/router';  // Importa Router para redirección
 import { addIcons } from 'ionicons';
 import { eye } from 'ionicons/icons';
+import { SiTienesCuentaComponent } from 'src/app/components/si-tienes-cuenta/si-tienes-cuenta.component';
 
 @Component({
   selector: 'app-register1',
   templateUrl: './register1.page.html',
   styleUrls: ['./register1.page.scss'],
   standalone: true,
-  imports: [IonIcon, IonInput, IonRow, IonGrid, IonCol, IonLabel, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, NavbarFormsComponent]
+  imports: [SiTienesCuentaComponent, IonIcon, IonInput, IonRow, IonGrid, IonCol, IonLabel, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, NavbarFormsComponent]
 })
 export class Register1Page implements OnInit {
   password: string = '';

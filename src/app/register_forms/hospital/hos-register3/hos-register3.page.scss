@@ -29,7 +29,7 @@ ion-label {
   margin-bottom: 10px;
 }
 
-ion-input {
+ion-input,ion-item {
   background-color: #073A6A;
   color: white;
   border-radius: 5px;
@@ -51,6 +51,6 @@ ion-input {
 }
 
 ion-content {
-  --overflow: hidden;
+  //--overflow: hidden;
 }
 

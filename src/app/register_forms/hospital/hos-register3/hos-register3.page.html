@@ -1,34 +1,37 @@
 <app-navbar-forms></app-navbar-forms>
-
 <ion-content [fullscreen]="true">
   <ion-grid class="grid-center">
     <ion-row class="ion-justify-content-center">
-      <ion-col  size-xs="12" size-sm="8" size-md="6" size-lg="6">
+      <ion-col size-xs="12" size-sm="8" size-md="6" size-lg="6">
         <div class="container">
           <h3>Registrarse</h3>
           <h6>Datos del hospital</h6>
 
-          <form>
+          <form (ngSubmit)="finalizeRegistration()">
+            <!-- Correo -->
             <ion-label>Correo</ion-label>
-            <ion-input type="email" placeholder="Ingrese su nombre"></ion-input> <br>
-            <ion-label>Horario de atencion</ion-label>
-            <ion-input type="text" placeholder="Ingrese su horario de atención"></ion-input> <br>
+            <ion-input type="email" [(ngModel)]="hos_register3.email" name="email" required></ion-input> <br>
+
+            <!-- Misión -->
             <ion-label>Misión</ion-label>
-            <ion-input type="text" placeholder="Ingrese su misión"></ion-input> <br>
+            <ion-input type="text" [(ngModel)]="hos_register3.mission" name="mission" required></ion-input> <br>
+
+            <!-- Visión -->
             <ion-label>Visión</ion-label>
-            <ion-input type="email" placeholder="Ingrese su visión"></ion-input> <br>
-            <ion-label>Subir imagenes</ion-label>
-            <ion-input type="text" placeholder="Suba imagenes"></ion-input> <br>
+            <ion-input type="text" [(ngModel)]="hos_register3.vision" name="vision" required></ion-input> <br>
 
+            <!-- Descripción -->
+            <ion-label>Descripción del hospital</ion-label>
+            <ion-input type="text" [(ngModel)]="hos_register3.description" name="description"></ion-input> <br>
 
-            <ion-button class="login-button" expand="block">Siguiente</ion-button>
-
+            <!-- Botón para finalizar el registro -->
+            <ion-button expand="block" type="submit">Finalizar Registro</ion-button>
           </form>
-          <p class="register-text">
-            Si ya tienes una cuenta <a href="#">Inicia sesión</a>
-          </p>
+
+          <app-si-tienes-cuenta></app-si-tienes-cuenta>
+
         </div>
       </ion-col>
     </ion-row>
-   </ion-grid>
+  </ion-grid>
 </ion-content>

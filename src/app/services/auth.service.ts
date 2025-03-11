@@ -15,7 +15,9 @@ interface AuthResponse {
 export class AuthService {
   private apiUrl = 'http://localhost:3000/auth';  // URL base de tu API backend
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient
+
+  ) {}
 
   // Método para hacer la solicitud de login
   login(fullName: string, email: string, password: string): Observable<AuthResponse> {
@@ -84,4 +86,11 @@ export class AuthService {
     console.error('Ocurrió un error', error);
     return throwError(error);
   }
+  /////////////////////////////////////////////////////////////////Hospitales/////////////////////////////////////////////////////////////
+  hos_register(hospitalData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/hos-register`, hospitalData).pipe(
+      catchError(this.handleError)
+    );
+  }
+
 }
