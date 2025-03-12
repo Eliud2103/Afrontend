@@ -101,4 +101,23 @@ export class AuthService {
     return throwError(errorMessage);
   }
 
+
+  /////////////////////////////////////////////////////////////Farmacias///////////////////////////////////////////////////
+  far_register(farmaciaData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/far-register`, farmaciaData).pipe(
+      catchError(this.handleFarRegisterError)
+    );
+  }
+
+  // Manejo de errores para el registro de farmacias
+  private handleFarRegisterError(error: HttpErrorResponse): Observable<never> {
+    let errorMessage = 'Ocurrió un error inesperado. Por favor, inténtelo de nuevo más tarde.';
+    if (error.status === 409) {
+      errorMessage = 'El correo electrónico ya está en uso. Por favor, use un correo diferente.';
+    }
+    console.error('Error al registrar farmacia', error);
+    return throwError(errorMessage);
+  }
+
+
 }

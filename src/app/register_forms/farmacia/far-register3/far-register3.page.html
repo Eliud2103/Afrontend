@@ -3,29 +3,35 @@
 <ion-content [fullscreen]="true">
   <ion-grid class="grid-center">
     <ion-row class="ion-justify-content-center">
-      <ion-col  size-xs="12" size-sm="8" size-md="6" size-lg="6">
+      <ion-col size-xs="12" size-sm="8" size-md="6" size-lg="6">
         <div class="container">
           <h3>Registrarse</h3>
           <h6>Datos de la farmacia</h6>
 
-          <form>
-            <ion-label>Correo</ion-label>
-            <ion-input type="email" placeholder="Ingrese su nombre"></ion-input> <br>
-            <ion-label>Descripción</ion-label>
-            <ion-input type="text" placeholder="Agregue una breve descripción"></ion-input> <br>
+          <form [formGroup]="far_register3" (ngSubmit)="finalizeRegistration()">
+            <!-- Correo electrónico -->
+            <ion-label>Correo electrónico</ion-label>
+            <ion-input formControlName="email_farmacia" type="email" placeholder="Ingrese su correo electrónico" required></ion-input> <br>
+
+            <!-- Misión -->
             <ion-label>Misión</ion-label>
-            <ion-input type="text" placeholder="Ingrese su misión"></ion-input> <br>
+            <ion-input formControlName="mision" type="text" placeholder="Ingrese la misión de la farmacia" required></ion-input> <br>
+
+            <!-- Visión -->
             <ion-label>Visión</ion-label>
-            <ion-input type="email" placeholder="Ingrese su visión"></ion-input> <br>
+            <ion-input formControlName="vision" type="text" placeholder="Ingrese la visión de la farmacia" required></ion-input> <br>
 
+            <!-- Descripción -->
+            <ion-label>Descripción de la farmacia</ion-label>
+            <ion-input formControlName="descripcion" type="text" placeholder="Agregue una breve descripción de la farmacia"></ion-input> <br>
 
-
-            <ion-button class="login-button" expand="block">Siguiente</ion-button>
-
+            <!-- Botón para finalizar el registro -->
+            <ion-button expand="block" type="submit" [disabled]="far_register3.invalid">Finalizar Registro</ion-button>
           </form>
+
           <app-si-tienes-cuenta></app-si-tienes-cuenta>
         </div>
       </ion-col>
     </ion-row>
-   </ion-grid>
+  </ion-grid>
 </ion-content>

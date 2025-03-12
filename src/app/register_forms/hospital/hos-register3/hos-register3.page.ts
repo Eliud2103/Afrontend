@@ -89,7 +89,7 @@ export class HosRegister3Page implements OnInit {
   }
 
   // Función para finalizar el registro con validación
-  finalizeRegistration() {
+    finalizeRegistration() {
 
     if (this.hos_register3.invalid) {
       alert('Por favor, complete todos los campos correctamente.');
