@@ -49,7 +49,7 @@ export class LoginFormPage implements OnInit {
       return;
     }
 
-    this.authService.login(this.name, this.email, this.password).subscribe({
+    this.authService.login(this.email, this.password).subscribe({
       next: (response) => {
         console.log('Login exitoso:', response);
 
@@ -63,4 +63,5 @@ export class LoginFormPage implements OnInit {
       }
     });
   }
+
 }

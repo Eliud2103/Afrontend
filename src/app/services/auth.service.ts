@@ -20,11 +20,13 @@ export class AuthService {
   ) {}
 
   // Método para hacer la solicitud de login
-  login(fullName: string, email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { fullName, email, password }).pipe(
-      catchError(this.handleError)
+  login(email: string, password: string) {
+    return this.http.post<{ accessToken: string; role: string; fullName: string; email: string }>(
+      'http://localhost:3000/auth/login',
+      { email, password }
     );
   }
+
 
   // Método para hacer la solicitud de registro
   register(userData: any): Observable<any> {
