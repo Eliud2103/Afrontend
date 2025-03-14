@@ -135,6 +135,10 @@ export const routes: Routes = [
     path: 'mi-perfil',
     loadComponent: () => import('./auth/mi-perfil/mi-perfil.page').then( m => m.MiPerfilPage)
   },
+  {
+    path: 'hos-form',
+    loadComponent: () => import('./pages/publicaciones_forms/hospital/hos-form/hos-form.page').then( m => m.HosFormPage)
+  },
 
 
 ];

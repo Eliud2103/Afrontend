@@ -1,0 +1,29 @@
+<app-navbar></app-navbar>
+<ion-content [fullscreen]="true">
+  <ion-grid class="grid-center">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size-xs="12" size-sm="8" size-md="6" size-lg="6">
+        <div class="container">
+          <h3>Publicar noticia</h3>
+
+          <form>
+            <ion-label>Titulo</ion-label>
+            <ion-input type="text" name="titulo" placeholder="Ingrese el titulo de la noticia" required></ion-input> <br>
+
+            <ion-label>Descripción</ion-label>
+            <ion-input type="text"  name="descripcion" placeholder="Ingrese una breve descripción de la noticia" required></ion-input> <br>
+
+            <ion-label>Contenido</ion-label>
+            <ion-input type="text"  name="contenido" placeholder="Ingrese todo el contenido de la noticia" required></ion-input> <br>
+
+            <ion-label>Imagen</ion-label>
+            <ion-input type="text"  name="img" required></ion-input> <br>
+
+            <ion-button class="login-button" expand="block" type="submit">Publicar</ion-button>
+          </form>
+
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

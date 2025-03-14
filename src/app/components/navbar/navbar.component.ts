@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
-import { IonCard, IonCardHeader,IonSearchbar, IonCardTitle, IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonItem, IonLabel, IonList, IonMenu, IonCardContent } from '@ionic/angular/standalone';
+import { IonCard, IonCardHeader, IonSearchbar, IonCardTitle, IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonItem, IonLabel, IonList, IonMenu, IonCardContent } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -24,11 +24,12 @@ import { AuthService } from 'src/app/services/auth.service';
     IonCardContent,
     IonSearchbar,
     CommonModule
-
   ]
 })
 export class NavbarComponent implements OnInit {
   isScrolled = false;
+  isAuthenticated: boolean = false; // Verificar si el usuario está autenticado
+  role: string = ''; // Variable para almacenar el rol del usuario
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
@@ -36,24 +37,29 @@ export class NavbarComponent implements OnInit {
     this.isScrolled = scrollTop > 50; // Oculta si el scroll es mayor a 50px
   }
 
-  isAuthenticated: boolean = false; // Propiedad para verificar autenticación
-
   constructor(private authService: AuthService) {}
-
 
   ngOnInit() {
     this.checkAuthentication();
   }
 
+  // Verificar si el usuario está autenticado
   checkAuthentication() {
     const token = localStorage.getItem('authToken'); // Verifica si hay un token guardado
     this.isAuthenticated = !!token; // Convierte en booleano (true si hay token, false si no)
+
+    if (this.isAuthenticated) {
+      this.role = localStorage.getItem('role') || ''; // Obtén el rol del usuario desde localStorage
+    }
   }
 
+  // Función para cerrar sesión
   logout() {
     localStorage.removeItem('authToken');
     localStorage.removeItem('authName');
     localStorage.removeItem('authEmail');
-    this.isAuthenticated = false; // Actualiza el estado
+    localStorage.removeItem('role'); // Eliminar el rol del usuario
+    this.isAuthenticated = false; // Actualiza el estado de autenticación
+    this.role = ''; // Restablecer el rol
   }
 }

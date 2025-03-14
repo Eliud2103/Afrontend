@@ -1,15 +1,16 @@
-<ion-header >
-
+<ion-header>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-
-     <a class="navbar-brand" href="/home">   <img src="../../../assets/logo (1).png" alt=""></a>
-      <button data-bs-auto-close="true"  class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      <a class="navbar-brand" href="/home">
+        <img src="../../../assets/logo (1).png" alt="">
+      </a>
+      <button data-bs-auto-close="true" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent" data-bs-auto-close="true"  >
+      <div class="collapse navbar-collapse" id="navbarSupportedContent" data-bs-auto-close="true">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <!-- Navbar común para todos los usuarios autenticados -->
           <li class="nav-item">
             <a class="nav-link" href="hos-cards">Hospitales</a>
           </li>
@@ -25,12 +26,33 @@
           <li class="nav-item">
             <a class="nav-link" href="far-cards">Farmacias</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="sobre-nosotros">Quienes somos</a>
-          </li>
+
+          <!-- Navbar con opciones específicas para hospitales -->
+          <ng-container *ngIf="role === 'hospital'">
+            <li class="nav-item">
+              <a class="nav-link" href="hospital-dashboard">Publicar noticia</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="hospital-profile">Mis publicaciones</a>
+            </li>
+          </ng-container>
+
+          <!-- Navbar con opciones específicas para farmacias -->
+          <ng-container *ngIf="role === 'farmacia'">
+            <li class="nav-item">
+              <a class="nav-link" href="farmacia-dashboard">Publicar noticia</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="farmacia-profile">Mis publicaciones</a>
+            </li>
+          </ng-container>
+
+          <!-- Navbar para usuarios no autenticados -->
           <li class="nav-item" *ngIf="!isAuthenticated">
             <a class="nav-link" href="login">Login</a>
           </li>
+
+          <!-- Navbar para usuarios autenticados -->
           <li class="nav-item" *ngIf="isAuthenticated">
             <a class="nav-link" href="mi-perfil">Perfil</a>
           </li>
@@ -41,8 +63,6 @@
 
   <br>
   <div>
-    <ion-searchbar     class="search-white" debounce="350"  placeholder="¿Qué desea buscar?"></ion-searchbar>
-
+    <ion-searchbar class="search-white" debounce="350" placeholder="¿Qué desea buscar?"></ion-searchbar>
   </div>
 </ion-header>
-

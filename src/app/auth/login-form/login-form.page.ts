@@ -53,9 +53,18 @@ export class LoginFormPage implements OnInit {
       next: (response) => {
         console.log('Login exitoso:', response);
 
+        // Guarda el accessToken y el rol en localStorage
         this.authService.setToken(response.accessToken);  // Guarda solo el accessToken
+        localStorage.setItem('role', response.role); // Guarda el rol del usuario
 
-        this.router.navigate(['/home']);
+        // Redirigir a la página correcta según el rol
+        if (response.role === 'hospital') {
+          this.router.navigate(['/home']); // Página para hospitales
+        } else if (response.role === 'farmacia') {
+          this.router.navigate(['/home']); // Página para farmacias
+        } else {
+          this.router.navigate(['/home']); // Página para usuarios generales
+        }
       },
       error: (err) => {
         console.error('Error de login', err);
