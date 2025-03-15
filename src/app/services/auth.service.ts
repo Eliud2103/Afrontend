@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 interface AuthResponse {
   accessToken: string;
@@ -15,9 +15,7 @@ interface AuthResponse {
 export class AuthService {
   private apiUrl = 'http://localhost:3000/auth';  // URL base de tu API backend
 
-  constructor(private http: HttpClient
-
-  ) {}
+  constructor(private http: HttpClient) {}
 
   // Método para hacer la solicitud de login
   login(email: string, password: string) {
@@ -26,7 +24,6 @@ export class AuthService {
       { email, password }
     );
   }
-
 
   // Método para hacer la solicitud de registro
   register(userData: any): Observable<any> {
@@ -88,6 +85,7 @@ export class AuthService {
     console.error('Ocurrió un error', error);
     return throwError(error);
   }
+
   /////////////////////////////////////////////////////////////////Hospitales/////////////////////////////////////////////////////////////
   hos_register(hospitalData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/hos-register`, hospitalData).pipe(
@@ -102,7 +100,6 @@ export class AuthService {
     console.error('Error al registrar hospital', error);
     return throwError(errorMessage);
   }
-
 
   /////////////////////////////////////////////////////////////Farmacias///////////////////////////////////////////////////
   far_register(farmaciaData: any): Observable<any> {
@@ -121,5 +118,28 @@ export class AuthService {
     return throwError(errorMessage);
   }
 
+  /////////////////////////////////////////////////////////////Imágenes///////////////////////////////////////////////////
+  // Método para subir una imagen (utilizando GridFS en el backend)
+// En el AuthService
+uploadImage(image: File): Observable<string> {
+  const formData = new FormData();
+  formData.append('image', image);
 
+  return this.http.post<{ imageUrl: string }>('http://localhost:3000/auth/images/upload', formData)
+    .pipe(
+      map(response => response.imageUrl)  // Extraemos solo la URL
+    );
+}
+
+  // Método para obtener una imagen por su nombre
+  getImage(filename: string): Observable<Blob> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+    });
+
+    return this.http.get(`${this.apiUrl}/images/${filename}`, { headers, responseType: 'blob' }).pipe(
+      catchError(this.handleError)
+    );
+  }
 }

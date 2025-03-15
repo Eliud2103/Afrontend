@@ -139,6 +139,10 @@ export const routes: Routes = [
     path: 'hos-form',
     loadComponent: () => import('./pages/publicaciones_forms/hospital/hos-form/hos-form.page').then( m => m.HosFormPage)
   },
+  {
+    path: 'hos-publicacion',
+    loadComponent: () => import('./pages/show_publicaciones/hospital/hos-publicacion/hos-publicacion.page').then( m => m.HosPublicacionPage)
+  },
 
 
 ];
