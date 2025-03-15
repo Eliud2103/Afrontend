@@ -25,6 +25,10 @@
             <ion-label>Descripción de la farmacia</ion-label>
             <ion-input formControlName="descripcion" type="text" placeholder="Agregue una breve descripción de la farmacia"></ion-input> <br>
 
+                <!-- Imagen del hospital -->
+                <ion-label>Imagen del hospital</ion-label>
+                <input type="file" (change)="onImageSelected($event)" accept="image/*" /><br>
+
             <!-- Botón para finalizar el registro -->
             <ion-button expand="block" type="submit" [disabled]="far_register3.invalid">Finalizar Registro</ion-button>
           </form>
