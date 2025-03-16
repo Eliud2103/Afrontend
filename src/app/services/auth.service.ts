@@ -142,4 +142,5 @@ uploadImage(image: File): Observable<string> {
       catchError(this.handleError)
     );
   }
+  //////////////////////////Mostrar hospitales/////////////////777
 }

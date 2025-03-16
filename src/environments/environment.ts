@@ -17,4 +17,3 @@ export const environment = {
 };
 
 // Inicializar Firebase
-initializeApp(environment.firebaseConfig);
