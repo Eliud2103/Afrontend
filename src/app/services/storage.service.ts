@@ -7,18 +7,17 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class StorageService {
-
-  private apiUrl = 'http://localhost:3000/auth/images/upload'; // La URL de tu endpoint de backend
+  private apiUrl = 'http://localhost:3000/images/upload'; // URL de tu endpoint de backend para subir imágenes
 
   constructor(private http: HttpClient) {}
 
-  uploadImage(file: File): Observable<string> {
+  // Método para subir una imagen
+  uploadImage(file: File): Observable<{ fileUrl: string }> {
     const formData = new FormData();
-    formData.append('image', file, file.name);
+    formData.append('file', file, file.name);
 
-    return this.http.post<{ imageUrl: string }>(this.apiUrl, formData)
-      .pipe(
-        map(response => response.imageUrl) // Extrae solo la URL de la respuesta
-      );
+    return this.http.post<{ fileUrl: string }>(this.apiUrl, formData).pipe(
+      map((response) => response) // Devuelve la URL del archivo subido
+    );
   }
 }

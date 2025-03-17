@@ -3,15 +3,16 @@
   <h3>Hospitales</h3>
   <ion-grid>
     <ion-row>
-      <ion-col size="12" size-md="6" *ngFor="let hospital of hospitales">
-        <ion-card>
-          <img [src]="hospital.img" alt="Imagen del hospital"/>
+      <ion-col size="6" size-md="3" size-lg="2" *ngFor="let hospital of hospitales">
+        <ion-card (click)="verDetalle(hospital._id)">
+
+          <img [src]="'http://localhost:3000/images/file/' + hospital.img" alt="Imagen del hospital" />
           <ion-card-header>
             <ion-card-title>{{ hospital.nombre_hospital }}</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-           <h5> {{ hospital.descripcion }}</h5>
-           <p>{{hospital.tipo_hospital}}</p>
+            <h5> {{ hospital.descripcion }}</h5>
+            <p>{{hospital.tipo_hospital}}</p>
 
           </ion-card-content>
 

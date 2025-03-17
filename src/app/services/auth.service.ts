@@ -138,9 +138,16 @@ uploadImage(image: File): Observable<string> {
       'Authorization': `Bearer ${token}`,
     });
 
-    return this.http.get(`${this.apiUrl}/images/${filename}`, { headers, responseType: 'blob' }).pipe(
+
+    return this.http.get(`http://localhost:3000/images/${filename}`, { headers, responseType: 'blob' }).pipe(
       catchError(this.handleError)
     );
   }
   //////////////////////////Mostrar hospitales/////////////////777
+  getHospitalById(id: string): Observable<any> {
+    return this.http.get(`http://localhost:3000/auth/hospitales/${id}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
 }

@@ -143,6 +143,10 @@ export const routes: Routes = [
     path: 'hos-publicacion',
     loadComponent: () => import('./pages/show_publicaciones/hospital/hos-publicacion/hos-publicacion.page').then( m => m.HosPublicacionPage)
   },
+  {
+    path: 'detail-card/:id',
+    loadComponent: () => import('./pages/cards/detail-card/detail-card.page').then( m => m.DetailCardPage)
+  },
 
 
 ];
