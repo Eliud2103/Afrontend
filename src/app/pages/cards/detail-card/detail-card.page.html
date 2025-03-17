@@ -1,33 +1,58 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>{{ hospital.nombre_hospital || 'Cargando...' }}</ion-title>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-navbar></app-navbar>
 
 <ion-content>
   <ion-card *ngIf="hospital.nombre_hospital; else loading">
-    <img [src]="'http://localhost:3000/auth/images/file/' + hospital.img" alt="Imagen del hospital" />
     <ion-card-header>
-      <ion-card-title>{{ hospital.nombre_hospital }}</ion-card-title>
+      <h1 class="hospital-title">{{ hospital.nombre_hospital || 'Cargando...' }}</h1>
     </ion-card-header>
     <ion-card-content>
       <p><strong>Tipo:</strong> {{ hospital.tipo_hospital }}</p>
       <p><strong>Descripción:</strong> {{ hospital.descripcion }}</p>
       <p><strong>Dirección:</strong> {{ hospital.direccion }}</p>
       <p><strong>Teléfono:</strong> {{ hospital.telefono }}</p>
+      <p><strong>Misión:</strong> {{ hospital.vision }}</p>
+      <p><strong>Visión:</strong> {{ hospital.mision }}</p>
       <p><strong>Email:</strong> {{ hospital.email_hospital }}</p>
 
-      <h3>Responsable</h3>
-      <p><strong>Nombre:</strong> {{ hospital.responsable?.nombre_responsable }} {{ hospital.responsable?.apellido_paterno_responsable }} {{ hospital.responsable?.apellido_materno_responsable }}</p>
-      <p><strong>Email:</strong> {{ hospital.responsable?.email_responsable }}</p>
-      <p><strong>Teléfono:</strong> {{ hospital.responsable?.telefono_responsable }}</p>
+      <!-- Sección de Estrellas -->
+      <div class="star-rating">
+        <ion-icon
+          *ngFor="let star of [0,1,2,3,4]; let i = index"
+          (click)="setRating(i)"
+          [icon]="i < rating ? starIcon : starOutlineIcon"
+          color="warning"
+          class="star-icon">
+        </ion-icon>
+      </div>
+
+      <!-- Sección de comentarios -->
+      <div class="comments-section">
+        <h3>Comentarios</h3>
+        <ion-list>
+          <ion-item *ngFor="let comment of comentarios">
+            <ion-label>
+              <p><strong>{{ comment.usuario }}:</strong> {{ comment.texto }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+
+        <!-- Input para agregar nuevo comentario -->
+        <form [formGroup]="comentarioForm">
+          <ion-item>
+            <ion-textarea
+              formControlName="comentario"
+              placeholder="Escribe tu comentario..."
+            ></ion-textarea>
+            <ion-button color="warning" (click)="publicarComentario()">Publicar</ion-button>
+          </ion-item>
+        </form>
+      </div>
     </ion-card-content>
   </ion-card>
 
   <ng-template #loading>
-    <p class="loading-text">Cargando información...</p>
+    <div class="loading-container">
+      <p class="loading-text">Cargando información...</p>
+    </div>
   </ng-template>
 </ion-content>

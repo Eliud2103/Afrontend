@@ -1,0 +1,44 @@
+ion-content{
+  --background: linear-gradient(to bottom, #101E2A, #163045, #163045);
+}
+h3{
+  text-align: start;
+  margin-top: 15px;
+}
+.tipo{
+  text-align: start;
+  color: yellow;
+}
+.ion-card{
+  margin-top: 20px;
+}
+.star-rating {
+  display: flex;
+  gap: 5px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.star-rating {
+  display: flex;
+  gap: 5px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.star {
+  color: #ccc; /* Color de estrella vacía */
+  transition: color 0.3s;
+}
+
+.star.checked {
+  color: gold; /* Color de estrella seleccionada */
+}
+ion-input{
+  background-color: white;
+  color: black;
+  border-radius: 10px;
+  width: 600px;
+  height: 10px;
+}
+

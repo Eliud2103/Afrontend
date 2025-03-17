@@ -1,5 +1,21 @@
 <app-navbar></app-navbar>
 
 <ion-content [fullscreen]="true">
- <h3>Farmacias</h3>
+  <h3>Farmacias</h3>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" size-md="3" size-lg="2" *ngFor="let farmacia of farmacias">
+        <ion-card (click)="verDetalle(farmacia._id)">
+          <img [src]="'http://localhost:3000/images/file/' + farmacia.img" alt="Imagen de la farmacia" />
+          <ion-card-header>
+            <ion-card-title>{{ farmacia.nombre_farmacia }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <h5>{{ farmacia.descripcion }}</h5>
+            <p class="tipo">{{ farmacia.tipo_farmacia }}</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

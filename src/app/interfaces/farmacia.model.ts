@@ -1,5 +1,3 @@
-// src/app/models/hospital.model.ts
-
 export interface Responsable {
   nombre_responsable: string;
   apellido_paterno_responsable: string;
@@ -9,20 +7,18 @@ export interface Responsable {
   password: string;
 }
 
-export interface Hospital {
+export interface Farmacia {
   _id: string;
-  nombre_hospital: string;
-  tipo_hospital: string;
+  nombre_farmacia: string;
+  tipo_farmacia: string;
   numero_licencia_sanitaria: string;
   direccion: string;
   telefono?: string;
-  email_hospital: string;
+  email_farmacia: string;
   password: string;
   descripcion?: string;
   img: string;
   responsable: Responsable;
-  mision:string,
-  vision:string,
-  rating: number
-
+  mision: string;
+  vision: string;
 }

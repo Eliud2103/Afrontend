@@ -1,21 +1,30 @@
 <app-navbar></app-navbar>
+
 <ion-content [fullscreen]="true">
   <h3>Hospitales</h3>
   <ion-grid>
     <ion-row>
       <ion-col size="6" size-md="3" size-lg="2" *ngFor="let hospital of hospitales">
         <ion-card (click)="verDetalle(hospital._id)">
-
           <img [src]="'http://localhost:3000/images/file/' + hospital.img" alt="Imagen del hospital" />
           <ion-card-header>
             <ion-card-title>{{ hospital.nombre_hospital }}</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <h5> {{ hospital.descripcion }}</h5>
-            <p>{{hospital.tipo_hospital}}</p>
+            <h5>{{ hospital.descripcion }}</h5>
+            <p class="tipo">{{ hospital.tipo_hospital }}</p>
+
+            <!-- Sección de Estrellas -->
+            <div class="star-rating">
+              <ion-icon
+                *ngFor="let star of [0,1,2,3,4]; let i = index"
+                [icon]="i < hospital.rating ? 'star' : 'star-outline'"
+                color="warning"
+                class="star-icon">
+              </ion-icon>
+            </div>
 
           </ion-card-content>
-
         </ion-card>
       </ion-col>
     </ion-row>

@@ -1,9 +1,17 @@
 <ion-header>
+
+
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="/home">
         <img src="../../../assets/logo (1).png" alt="">
+
       </a>
+    <!--- @if(title==='Detalles'){
+        <ion-buttons  slot="start">
+          <ion-back-button color="danger" defaultHref="/"></ion-back-button>
+        </ion-buttons>
+      }-->
       <button data-bs-auto-close="true" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -15,6 +23,14 @@
             <a class="nav-link" href="hos-cards">Hospitales</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="far-cards">Farmacias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="sobre-nosotros">Sobre nosotros</a>
+          </li>
+
+<!--
+          <li class="nav-item">
             <a class="nav-link" href="cli-cards">Clinicas</a>
           </li>
           <li class="nav-item">
@@ -23,9 +39,8 @@
           <li class="nav-item">
             <a class="nav-link" href="lab-cards">Laboratorios</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="far-cards">Farmacias</a>
-          </li>
+-->
+
 
           <!-- Navbar con opciones específicas para hospitales -->
           <ng-container *ngIf="role === 'hospital'">

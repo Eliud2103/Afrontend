@@ -15,8 +15,19 @@ export class HospitalService {
   getHospitales(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/mostrar`);
   }
+
+  // Método para obtener detalles de un hospital específico
   getHospitalDetails(id: string): Observable<Hospital> {
     return this.http.get<Hospital>(`${this.apiUrl}/${id}`);
   }
 
+  // Enviar nueva calificación
+  updateRating(id: string, rating: number): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${id}/rating`, { rating });
+  }
+
+  // Método para publicar un comentario en el backend
+  publicarComentario(hospitalId: string, comentario: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${hospitalId}/comentarios`, { comentario });
+  }
 }

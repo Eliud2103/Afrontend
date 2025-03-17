@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnInit } from '@angular/core';
-import { IonCard, IonCardHeader, IonSearchbar, IonCardTitle, IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonItem, IonLabel, IonList, IonMenu, IonCardContent } from '@ionic/angular/standalone';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { IonCard, IonCardHeader,IonBackButton, IonSearchbar, IonCardTitle, IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonItem, IonLabel, IonList, IonMenu, IonCardContent } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { arrowBack, exit } from 'ionicons/icons';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -23,10 +25,14 @@ import { AuthService } from 'src/app/services/auth.service';
     IonMenu,
     IonCardContent,
     IonSearchbar,
-    CommonModule
+    CommonModule,
+    IonBackButton
+
+
   ]
 })
 export class NavbarComponent implements OnInit {
+  @Input() title!: string;
   isScrolled = false;
   isAuthenticated: boolean = false; // Verificar si el usuario está autenticado
   role: string = ''; // Variable para almacenar el rol del usuario
@@ -40,6 +46,7 @@ export class NavbarComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
+    addIcons({arrowBack,exit})
     this.checkAuthentication();
   }
 
