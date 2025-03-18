@@ -21,8 +21,15 @@ export class FarmaciaService {
     return this.http.get<Farmacia>(`${this.apiUrl}/${id}`);
   }
 
+
   // Método para actualizar la calificación de una farmacia
   updateRating(id: string, rating: number): Observable<any> {
     return this.http.patch(`${this.apiUrl}/${id}/rating`, { rating });
+  }
+
+
+  // Método para publicar un comentario en el backend
+  publicarComentario(hospitalId: string, comentario: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${hospitalId}/comentarios`, { comentario });
   }
 }

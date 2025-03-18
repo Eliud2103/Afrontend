@@ -28,17 +28,12 @@ export class FarCardsPage implements OnInit {
   ngOnInit() {
     this.farmaciaService.getFarmacias().subscribe(
       (data) => {
-        this.farmacias = data;
-        console.log('Farmacias recibidas:', data);
-
-        // Ajusta la URL de la imagen si es necesario
-        this.farmacias.forEach(farmacia => {
-          if (farmacia.img) {
-            if (!farmacia.img.startsWith('http')) {
-              farmacia.img = `http://localhost:3000/file/${farmacia.img}`;
-            }
-          }
-        });
+        this.farmacias = data.map(farmacia => ({
+          ...farmacia,
+          // Asegúrate de que la imagen sea válida
+          img: farmacia.img?.startsWith('http') ? farmacia.img : `http://localhost:3000/file/${farmacia.img}`
+        }));
+        console.log('Farmacias recibidas:', this.farmacias);
       },
       (error) => {
         console.error('Error al obtener farmacias', error);
@@ -46,28 +41,8 @@ export class FarCardsPage implements OnInit {
     );
   }
 
-  onFileSelected(event: any): void {
-    this.selectedFile = event.target.files[0];
-  }
-
-  uploadImage(): void {
-    if (this.selectedFile) {
-      this.storageService.uploadImage(this.selectedFile).subscribe(
-        (response) => {
-          console.log('Imagen subida con éxito:', response);
-          alert('Imagen subida con éxito');
-        },
-        (error) => {
-          console.error('Error al subir la imagen:', error);
-          alert('Error al subir la imagen');
-        }
-      );
-    } else {
-      alert('Por favor, seleccione una imagen primero');
-    }
-  }
-
+  // Método para redirigir a la página de detalles de la farmacia
   verDetalle(id: string) {
-    this.router.navigate(['/far-detalle', id]);
+    this.router.navigate(['/detail-card', id], { state: { type: 'farmacia' } });  // Usando 'state' como en HosCardsPage
   }
 }

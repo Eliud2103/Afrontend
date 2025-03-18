@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 
 interface AuthResponse {
   accessToken: string;
@@ -22,6 +22,12 @@ export class AuthService {
     return this.http.post<{ accessToken: string; role: string; fullName: string; email: string }>(
       'http://localhost:3000/auth/login',
       { email, password }
+    ).pipe(
+      tap((response) => {
+        localStorage.setItem('token', response.accessToken);
+        localStorage.setItem('role', response.role);
+        localStorage.setItem('userName', response.fullName); // Guardar el nombre real del usuario
+      })
     );
   }
 
@@ -149,5 +155,10 @@ uploadImage(image: File): Observable<string> {
       catchError(this.handleError)
     );
   }
+  getUserName(): string {
+    return localStorage.getItem('userName') || 'Anónimo';
+  }
+
+
 
 }

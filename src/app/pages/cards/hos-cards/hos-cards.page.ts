@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonCardHeader, IonCardTitle, IonCol, IonRow, IonGrid, IonCardContent, IonCard, IonIcon } from '@ionic/angular/standalone';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { HospitalService } from '../../../services/hospital.service';
-import { StorageService } from '../../../services/storage.service'; // Importa el servicio de Storage
 import { Router } from '@angular/router';
 import { Hospital } from 'src/app/interfaces/hospital.model';
 import { star, starOutline } from 'ionicons/icons'; // Importar iconos de estrellas
@@ -26,8 +25,7 @@ export class HosCardsPage implements OnInit {
 
   constructor(
     private router: Router,
-    private hospitalService: HospitalService,
-    private storageService: StorageService // Inyecta StorageService
+    private hospitalService: HospitalService
   ) {}
 
   ngOnInit() {
@@ -48,6 +46,6 @@ export class HosCardsPage implements OnInit {
 
   // Método para redirigir a la página de detalles del hospital
   verDetalle(id: string) {
-    this.router.navigate(['/detail-card', id]);
+    this.router.navigate(['/detail-card', id], { state: { type: 'hospital' } });
   }
 }

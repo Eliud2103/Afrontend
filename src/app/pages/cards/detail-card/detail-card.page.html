@@ -1,18 +1,18 @@
 <app-navbar></app-navbar>
 
 <ion-content>
-  <ion-card *ngIf="hospital.nombre_hospital; else loading">
+  <ion-card *ngIf="item.nombre_hospital || item.nombre_farmacia; else loading">
     <ion-card-header>
-      <h1 class="hospital-title">{{ hospital.nombre_hospital || 'Cargando...' }}</h1>
+      <h1 class="hospital-title">{{ item.nombre_hospital || item.nombre_farmacia || 'Cargando...' }}</h1>
     </ion-card-header>
     <ion-card-content>
-      <p><strong>Tipo:</strong> {{ hospital.tipo_hospital }}</p>
-      <p><strong>Descripción:</strong> {{ hospital.descripcion }}</p>
-      <p><strong>Dirección:</strong> {{ hospital.direccion }}</p>
-      <p><strong>Teléfono:</strong> {{ hospital.telefono }}</p>
-      <p><strong>Misión:</strong> {{ hospital.vision }}</p>
-      <p><strong>Visión:</strong> {{ hospital.mision }}</p>
-      <p><strong>Email:</strong> {{ hospital.email_hospital }}</p>
+      <p><strong>Tipo:</strong> {{ item.tipo_hospital || item.tipo_farmacia }}</p>
+      <p><strong>Descripción:</strong> {{ item.descripcion || item.descripcion_farmacia }}</p>
+      <p><strong>Dirección:</strong> {{ item.direccion || item.direccion_farmacia }}</p>
+      <p><strong>Teléfono:</strong> {{ item.telefono || item.telefono_farmacia }}</p>
+      <p><strong>Misión:</strong> {{ item.vision || 'No disponible' }}</p>
+      <p><strong>Visión:</strong> {{ item.mision || 'No disponible' }}</p>
+      <p><strong>Email:</strong> {{ item.email_hospital || item.email_farmacia }}</p>
 
       <!-- Sección de Estrellas -->
       <div class="star-rating">
@@ -38,11 +38,13 @@
 
         <!-- Input para agregar nuevo comentario -->
         <form [formGroup]="comentarioForm">
+          <h3>{{ userFullName }}</h3>
+
           <ion-item>
             <ion-textarea
               formControlName="comentario"
-              placeholder="Escribe tu comentario..."
-            ></ion-textarea>
+              placeholder="Escribe tu comentario...">
+            </ion-textarea>
             <ion-button color="warning" (click)="publicarComentario()">Publicar</ion-button>
           </ion-item>
         </form>
