@@ -158,5 +158,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/show_publicaciones/farmacia/far-publicacion/far-publicacion.page').then( m => m.FarPublicacionPage)
   },
 
+  {
+    path: 'detail-publicacion/:id',
+    loadComponent: () => import('./pages/show_publicaciones/detail-publicacion/detail-publicacion.page').then( m => m.DetailPublicacionPage)
+  },
+
 
 ];

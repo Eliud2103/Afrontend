@@ -1,0 +1,45 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 16px;
+}
+
+ion-card {
+  max-width: 450px;  // Tamaño máximo para pantallas grandes
+  width: 100%;  // Ocupa todo el ancho en móviles
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px; // Espacio extra en la parte inferior
+}
+
+.titulo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.imagen {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 20px;  // Agrega espacio entre la imagen y el texto
+  display: block;  // Asegura que no se encime con otros elementos
+}
+
+.texto {
+  text-align: left;
+  padding: 10px;
+}
+
+.texto h3 {
+  font-size: 18px;
+  margin-top: 20px;  // Mayor separación entre secciones
+}
+
+.texto p {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+}

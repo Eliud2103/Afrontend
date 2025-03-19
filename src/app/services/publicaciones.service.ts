@@ -60,4 +60,15 @@ export class PublicacionesService {
     return this.http.post<any>('http://localhost:3000/publicaciones/subir-imagen', formData);
   }
 
+  obtenerPublicacionPorId(publicacionId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${publicacionId}`);
+  }
+  obtenerDetallePublicacion(id: string): Observable<any> {
+    const url = `http://localhost:3000/publicaciones/detalle/${id}`; // Verifica que esta URL sea correcta
+    return this.http.get<any>(url).pipe(
+      catchError(this.manejarError)
+    );
+  }
+
+
 }

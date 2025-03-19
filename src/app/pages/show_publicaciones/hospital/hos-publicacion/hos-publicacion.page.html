@@ -1,22 +1,22 @@
 <app-navbar></app-navbar>
-<ion-content>
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>Publicaciones</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <ion-list>
-    <ion-item *ngFor="let publicacion of publicaciones">
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>{{ publicacion.titulo }}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <ion-label>{{ publicacion.descripcion }}</ion-label>
-          <ion-img [src]="publicacion.img" alt="Imagen de la publicación"></ion-img>
-        </ion-card-content>
-      </ion-card>
-    </ion-item>
-  </ion-list>
+<ion-content [fullscreen]="true">
+  <h3>Publicaciones</h3>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" size-md="3" size-lg="2" *ngFor="let publicacion of publicaciones">
+        <ion-card (click)="verDetalle(publicacion._id)">
+          <ion-card-header>
+            <ion-card-title>{{ publicacion.titulo }}</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <ion-img [src]="publicacion.img" alt="Imagen de la publicación"></ion-img>
+            <ion-label>{{ publicacion.descripcion }}</ion-label>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
