@@ -53,6 +53,12 @@ export class DetailCardPage implements OnInit {
     const navigationState = this.router.getCurrentNavigation()?.extras.state;
     this.itemType = navigationState?.['type'] || 'hospital'; // Obtener el tipo, si no está disponible, asigna 'hospital'
 
+    // Recuperar la calificación guardada en localStorage
+    const storedRating = localStorage.getItem(`${this.itemType}Rating`);
+    if (storedRating) {
+      this.rating = parseInt(storedRating, 10);
+    }
+
     if (id) {
       if (this.itemType === 'hospital') {
         this.hospitalService.getHospitalDetails(id).subscribe(

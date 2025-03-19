@@ -1,5 +1,22 @@
 <app-navbar></app-navbar>
+<ion-content>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Publicaciones</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-<ion-content [fullscreen]="true" class="custom-content">
-<h3>Publicaciones Hospital</h3>
+  <ion-list>
+    <ion-item *ngFor="let publicacion of publicaciones">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{ publicacion.titulo }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-label>{{ publicacion.descripcion }}</ion-label>
+          <ion-img [src]="publicacion.img" alt="Imagen de la publicación"></ion-img>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </ion-list>
 </ion-content>

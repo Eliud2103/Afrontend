@@ -148,5 +148,15 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/cards/detail-card/detail-card.page').then( m => m.DetailCardPage)
   },
 
+  {
+    path: 'far-form',
+    loadComponent: () => import('./pages/publicaciones_forms/farmacia/far-form/far-form.page').then( m => m.FarFormPage)
+  },
+
+  {
+    path: 'far-publicacion',
+    loadComponent: () => import('./pages/show_publicaciones/farmacia/far-publicacion/far-publicacion.page').then( m => m.FarPublicacionPage)
+  },
+
 
 ];
