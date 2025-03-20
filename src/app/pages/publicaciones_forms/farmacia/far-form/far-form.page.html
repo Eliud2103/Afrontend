@@ -1,5 +1,5 @@
-
 <app-navbar></app-navbar>
+
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
@@ -13,20 +13,25 @@
         <div class="container">
           <h3>Publicar Noticia</h3>
 
-          <form>
-              <ion-label >Título</ion-label>
-              <ion-input type="text" name="titulo" placeholder="Ingrese el título de la noticia" required></ion-input>
+          <form (submit)="publicar(); $event.preventDefault();">
+            <!-- Título -->
+            <ion-label>Título</ion-label>
+            <ion-input type="text" [(ngModel)]="titulo" name="titulo" placeholder="Ingrese el título de la noticia" required></ion-input> <br>
 
-              <ion-label >Descripción</ion-label>
-              <ion-input type="text" name="descripcion" placeholder="Ingrese una breve descripción" required></ion-input>
+            <!-- Descripción -->
+            <ion-label>Descripción</ion-label>
+            <ion-input type="text" [(ngModel)]="descripcion" name="descripcion" placeholder="Breve descripción" required></ion-input> <br>
 
-              <ion-label >Contenido</ion-label>
-              <ion-textarea type="text" name="contenido" placeholder="Ingrese todo el contenido" required></ion-textarea>
+            <!-- Contenido -->
+            <ion-label>Contenido</ion-label>
+            <ion-textarea [(ngModel)]="contenido" name="contenido" placeholder="Ingrese el contenido completo" required></ion-textarea> <br>
 
-              <ion-label>Imagen</ion-label>
-              <ion-input type="text" name="img" placeholder="Ingrese la URL de la imagen" required></ion-input>
+            <!-- Imagen -->
+            <ion-label>Imagen</ion-label>
+            <input type="file" (change)="onFileSelected($event)" required> <br>
 
-            <ion-button expand="block" type="submit">Publicar</ion-button>
+            <!-- Botón para publicar -->
+            <ion-button class="login-button" expand="block" type="submit">Publicar</ion-button>
           </form>
         </div>
       </ion-col>
