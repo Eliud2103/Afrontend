@@ -1,11 +1,12 @@
-<app-navbar></app-navbar>
 
+<app-navbar></app-navbar>
 <ion-content>
   <ion-card *ngIf="item.nombre_hospital || item.nombre_farmacia; else loading">
     <ion-card-header>
       <h1 class="hospital-title">{{ item.nombre_hospital || item.nombre_farmacia || 'Cargando...' }}</h1>
     </ion-card-header>
     <ion-card-content>
+      <!-- Otros contenidos de información del hospital o farmacia -->
       <p><strong>Tipo:</strong> {{ item.tipo_hospital || item.tipo_farmacia }}</p>
       <p><strong>Descripción:</strong> {{ item.descripcion || item.descripcion_farmacia }}</p>
       <p><strong>Dirección:</strong> {{ item.direccion || item.direccion_farmacia }}</p>
@@ -36,22 +37,30 @@
           </ion-item>
         </ion-list>
 
-        <!-- Input para agregar nuevo comentario -->
-        <form [formGroup]="comentarioForm">
-          <h3>{{ userFullName }}</h3>
+        <!-- Formulario para agregar comentario -->
+        <div *ngIf="isAuthenticated; else notLoggedIn">
+          <form [formGroup]="comentarioForm">
+            <h3>{{ fullName }}</h3>
+            <ion-item>
+              <ion-textarea
+                formControlName="comentario"
+                placeholder="Escribe tu comentario...">
+              </ion-textarea>
+              <ion-button color="warning" (click)="publicarComentario()">Publicar</ion-button>
+            </ion-item>
+          </form>
+        </div>
 
-          <ion-item>
-            <ion-textarea
-              formControlName="comentario"
-              placeholder="Escribe tu comentario...">
-            </ion-textarea>
-            <ion-button color="warning" (click)="publicarComentario()">Publicar</ion-button>
-          </ion-item>
-        </form>
+        <!-- Mensaje para usuarios no autenticados -->
+        <ng-template #notLoggedIn>
+          <p>Debes iniciar sesión para comentar.</p>
+          <ion-button color="primary" (click)="router.navigate(['/login'])">Iniciar sesión</ion-button>
+        </ng-template>
       </div>
     </ion-card-content>
   </ion-card>
 
+  <!-- Mensaje de carga mientras se obtiene la información -->
   <ng-template #loading>
     <div class="loading-container">
       <p class="loading-text">Cargando información...</p>

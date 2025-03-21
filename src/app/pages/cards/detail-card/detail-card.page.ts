@@ -7,6 +7,7 @@ import { HospitalService } from 'src/app/services/hospital.service';
 import { FarmaciaService } from 'src/app/services/farmacia.service'; // Importa el servicio de farmacia
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { star, starOutline } from 'ionicons/icons';
+
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -23,7 +24,7 @@ import { AuthService } from 'src/app/services/auth.service';
   ]
 })
 export class DetailCardPage implements OnInit {
-  userFullName: string;
+  fullName: string = 'Invitado';  // Inicializar con 'Invitado'
   item: any = {};  // Puede ser tanto un hospital como una farmacia
   rating: number = 0;
   starIcon = star;
@@ -31,11 +32,12 @@ export class DetailCardPage implements OnInit {
   comentarios: { usuario: string, texto: string }[] = [];
   comentarioForm: FormGroup;
   itemType: string = '';  // Determinar si es 'hospital' o 'farmacia'
+  isAuthenticated: boolean = false;  // Verificación de autenticación
 
   constructor(
-    private authService: AuthService,
-    private route: ActivatedRoute,
-    private router: Router,
+    public authService: AuthService,
+    public route: ActivatedRoute,
+    public router: Router,
     private hospitalService: HospitalService,
     private farmaciaService: FarmaciaService,  // Servicio de farmacia
     private fb: FormBuilder
@@ -43,10 +45,19 @@ export class DetailCardPage implements OnInit {
     this.comentarioForm = this.fb.group({
       comentario: ['', Validators.required]
     });
-    this.userFullName = localStorage.getItem('fullName') || 'Invitado';
   }
 
   ngOnInit() {
+    // Verificar si el usuario está autenticado
+    this.isAuthenticated = this.authService.isAuthenticated();
+
+    // Actualizar el nombre completo del usuario si está autenticado
+    if (this.isAuthenticated) {
+      // Asegúrate de que el nombre completo se obtiene correctamente desde localStorage
+      this.fullName = localStorage.getItem('fullName') || 'Invitado';
+      console.log('Nombre completo desde localStorage:', this.fullName);    // Usamos 'fullName'
+    }
+
     const id = this.route.snapshot.paramMap.get('id');
 
     // Obtener 'type' desde el state de la navegación
@@ -96,16 +107,24 @@ export class DetailCardPage implements OnInit {
   }
 
   publicarComentario() {
+    if (!this.isAuthenticated) {
+      alert('Debes iniciar sesión para publicar un comentario');
+      this.router.navigate(['/login']); // Redirigir a login si no está autenticado
+      return;
+    }
+
     if (this.comentarioForm.valid) {
       const nuevoComentario = this.comentarioForm.get('comentario')?.value;
 
+      // Agregar el comentario al arreglo con el nombre del usuario (o 'Invitado')
       this.comentarios.push({
-        usuario: this.userFullName,  // Mostrar el nombre del usuario o 'Anónimo' si no está logueado
+        usuario: this.fullName,  // Mostrar el nombre del usuario o 'Invitado' si no está logueado
         texto: nuevoComentario
       });
 
       this.comentarioForm.reset();
 
+      // Publicar el comentario en el backend
       if (this.itemType === 'hospital') {
         this.hospitalService.publicarComentario(this.item._id, nuevoComentario).subscribe({
           next: (response) => console.log('Comentario guardado en el backend', response),

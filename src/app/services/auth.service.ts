@@ -27,6 +27,7 @@ export class AuthService {
         localStorage.setItem('token', response.accessToken);
         localStorage.setItem('role', response.role);
         localStorage.setItem('userName', response.fullName); // Guardar el nombre real del usuario
+        localStorage.setItem('fullName', response.fullName); // Guardar el nombre real del usuario
       })
     );
   }
