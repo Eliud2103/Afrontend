@@ -12,20 +12,27 @@ export class PublicacionesFarmaciaService {
 
   constructor(private http: HttpClient) {}
 
-  // Subir imagen y luego agregar la publicación de farmacia
-  agregarPublicacionFarmacia(titulo: string, descripcion: string, contenido: string, imgFile: File): Observable<any> {
-    const formData = new FormData();
-    formData.append('file', imgFile, imgFile.name);
+ // Subir imagen y luego agregar la publicación de farmacia
+agregarPublicacionFarmacia(
+  titulo: string,
+  descripcion: string,
+  contenido: string,
+  imgFile: File,
+): Observable<any> {
+  const formData = new FormData();
+  formData.append('file', imgFile, imgFile.name);
 
-    return this.http.post<{ url: string }>(this.uploadUrl, formData).pipe(
-      switchMap(response => {
-        const imgUrl = response.url;
-        const publicacionData = { titulo, descripcion, contenido, img: imgUrl };
-        return this.http.post<any>(this.apiUrl, publicacionData);
-      }),
-      catchError(this.manejarError)
-    );
-  }
+  return this.http.post<{ url: string }>(this.uploadUrl, formData).pipe(
+    switchMap(response => {
+      const imgUrl = response.url;
+      const publicacionData = { titulo, descripcion, contenido, img: imgUrl }; // 👈 Usa la categoría dinámica
+      return this.http.post<any>(this.apiUrl, publicacionData);
+    }),
+    catchError(this.manejarError)
+  );
+}
+
+
 
   obtenerPublicacionesFarmacia(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl).pipe(catchError(this.manejarError));

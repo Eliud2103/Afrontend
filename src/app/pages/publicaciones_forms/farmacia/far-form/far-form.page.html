@@ -15,23 +15,29 @@
 
           <form (submit)="publicar(); $event.preventDefault();">
             <!-- Título -->
-            <ion-label>Título</ion-label>
+            <ion-label>Título</ion-label> <br>
             <ion-input type="text" [(ngModel)]="titulo" name="titulo" placeholder="Ingrese el título de la noticia" required></ion-input> <br>
 
             <!-- Descripción -->
-            <ion-label>Descripción</ion-label>
+            <ion-label>Descripción</ion-label> <br>
             <ion-input type="text" [(ngModel)]="descripcion" name="descripcion" placeholder="Breve descripción" required></ion-input> <br>
 
             <!-- Contenido -->
-            <ion-label>Contenido</ion-label>
+            <ion-label>Contenido</ion-label> <br>
             <ion-textarea [(ngModel)]="contenido" name="contenido" placeholder="Ingrese el contenido completo" required></ion-textarea> <br>
 
             <!-- Imagen -->
             <ion-label>Imagen</ion-label>
             <input type="file" (change)="onFileSelected($event)" required> <br>
 
-            <!-- Botón para publicar -->
-            <ion-button class="login-button" expand="block" type="submit">Publicar</ion-button>
+             <!-- Checkbox de aceptación -->
+             <ion-item lines="none">
+              <ion-checkbox [(ngModel)]="aceptarCondiciones" name="aceptarCondiciones"></ion-checkbox>
+              <ion-label> Acepto los <a href="#">Términos y Condiciones</a></ion-label>
+            </ion-item>
+
+            <!-- Botón para publicar (deshabilitado si no acepta términos) -->
+            <ion-button class="login-button" expand="block" type="submit" [disabled]="!aceptarCondiciones">Publicar</ion-button>
           </form>
         </div>
       </ion-col>

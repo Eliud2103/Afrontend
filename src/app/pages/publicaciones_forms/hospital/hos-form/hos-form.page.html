@@ -1,4 +1,5 @@
 <app-navbar></app-navbar>
+
 <ion-content [fullscreen]="true">
   <ion-grid class="grid-center">
     <ion-row class="ion-justify-content-center">
@@ -7,19 +8,38 @@
           <h3>Publicar noticia</h3>
 
           <form (submit)="publicar(); $event.preventDefault();">
-            <ion-label>Título</ion-label>
-            <ion-input type="text" [(ngModel)]="titulo" name="titulo" placeholder="Ingrese el título" required></ion-input> <br>
+            <!-- Título -->
+            <ion-item>
+              <ion-label position="floating">Título</ion-label> <br>
+              <ion-input type="text" placeholder="Ingrese el titulo de la noticia" [(ngModel)]="titulo" name="titulo" required></ion-input>
+            </ion-item>
 
-            <ion-label>Descripción</ion-label>
-            <ion-input type="text" [(ngModel)]="descripcion" name="descripcion" placeholder="Breve descripción" required></ion-input> <br>
+            <!-- Descripción -->
+            <ion-item>
+              <ion-label position="floating">Descripción</ion-label> <br>
+              <ion-input type="text" placeholder="Ingrese una breve descripcion" [(ngModel)]="descripcion" name="descripcion" required></ion-input>
+            </ion-item>
 
-            <ion-label>Contenido</ion-label>
-            <ion-input type="text" [(ngModel)]="contenido" name="contenido" placeholder="Ingrese el contenido" required></ion-input> <br>
+            <!-- Contenido -->
+            <ion-item>
+              <ion-label position="floating">Contenido</ion-label> <br>
+              <ion-input type="text" placeholder="Ingrese todo el contenido de la noticia" [(ngModel)]="contenido" name="contenido" required></ion-input>
+            </ion-item>
 
-            <ion-label>Imagen</ion-label>
-            <input type="file" (change)="onFileSelected($event)" required> <br>
+            <!-- Imagen -->
+            <ion-item>
+              <ion-label>Imagen</ion-label>
+              <input type="file" (change)="onFileSelected($event)" required>
+            </ion-item>
 
-            <ion-button class="login-button" expand="block" type="submit">Publicar</ion-button>
+            <!-- Checkbox de aceptación -->
+            <ion-item lines="none">
+              <ion-checkbox [(ngModel)]="aceptarCondiciones" name="aceptarCondiciones"></ion-checkbox>
+              <ion-label> Acepto los <a href="#">Términos y Condiciones</a></ion-label>
+            </ion-item>
+
+            <!-- Botón de publicar habilitado solo si se aceptan términos -->
+            <ion-button class="login-button" expand="block" type="submit" [disabled]="!aceptarCondiciones">Publicar</ion-button>
           </form>
         </div>
       </ion-col>

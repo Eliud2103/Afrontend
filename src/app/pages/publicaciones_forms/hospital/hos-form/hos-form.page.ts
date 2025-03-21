@@ -12,11 +12,13 @@ import {
   IonLabel,
   IonInput,
   IonButton,
-  IonIcon
+  IonIcon,
+  IonItem,
+  IonCheckbox
 } from '@ionic/angular/standalone';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { PublicacionesService } from 'src/app/services/publicaciones.service';
-import { Router } from '@angular/router'; // Importar Router para redirección
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-hos-form',
@@ -25,7 +27,8 @@ import { Router } from '@angular/router'; // Importar Router para redirección
   standalone: true,
   imports: [
     IonButton, IonInput, IonLabel, IonGrid, IonRow, IonCol, IonContent,
-    NavbarComponent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonIcon
+    NavbarComponent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule,
+    IonIcon, IonItem, IonCheckbox
   ]
 })
 export class HosFormPage implements OnInit {
@@ -34,15 +37,11 @@ export class HosFormPage implements OnInit {
   descripcion: string = '';
   contenido: string = '';
   img: File | null = null;
-  showPassword: boolean = false;
+  aceptarCondiciones: boolean = false; // ✅ Corregida la variable
 
   constructor(private publicacionesService: PublicacionesService, private router: Router) {}
 
   ngOnInit() {}
-
-  togglePasswordVisibility() {
-    this.showPassword = !this.showPassword;
-  }
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
@@ -55,13 +54,17 @@ export class HosFormPage implements OnInit {
   }
 
   publicar() {
-    // Verificar que todos los campos sean válidos
-    if (!this.titulo.trim() || !this.descripcion.trim() || !this.contenido.trim() || !this.img) {
-      alert('Todos los campos son obligatorios y la imagen debe ser válida');
+    console.log('Título:', this.titulo);
+    console.log('Descripción:', this.descripcion);
+    console.log('Contenido:', this.contenido);
+    console.log('Imagen seleccionada:', this.img);
+    console.log('Acepta términos:', this.aceptarCondiciones);
+
+    if (!this.titulo.trim() || !this.descripcion.trim() || !this.contenido.trim() || !this.img || !this.aceptarCondiciones) {
+      alert('Todos los campos son obligatorios y debes aceptar los términos y condiciones.');
       return;
     }
 
-    // 1️⃣ Llamar a agregarPublicacion para subir la imagen y publicar
     this.publicacionesService.agregarPublicacion(this.titulo, this.descripcion, this.contenido, this.img).subscribe({
       next: () => {
         alert('Publicación agregada exitosamente');
@@ -80,5 +83,6 @@ export class HosFormPage implements OnInit {
     this.descripcion = '';
     this.contenido = '';
     this.img = null;
+    this.aceptarCondiciones = false; // ✅ Se reinicia el checkbox al limpiar el formulario
   }
 }

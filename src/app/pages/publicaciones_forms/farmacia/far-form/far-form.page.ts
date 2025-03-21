@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PublicacionesFarmaciaService } from 'src/app/services/publicaciones-farmacia.service';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';  // 🔹 Agregamos FormsModule
+import { FormsModule } from '@angular/forms';
 
 // Importaciones de Ionic Standalone
 import {
@@ -16,6 +16,8 @@ import {
   IonInput,
   IonTextarea,
   IonButton,
+  IonCheckbox,
+  IonItem// ✅ Importamos IonCheckbox
 } from "@ionic/angular/standalone";
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 
@@ -26,7 +28,8 @@ import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
   standalone: true,
   imports: [
     IonGrid, IonRow, IonCol, IonToolbar, IonHeader, IonContent,
-    IonTitle, IonLabel, IonInput, IonTextarea, IonButton,NavbarComponent,FormsModule
+    IonTitle, IonLabel, IonInput, IonTextarea, IonButton, IonCheckbox, // ✅ Agregamos IonCheckbox
+    NavbarComponent, FormsModule,IonItem
   ]
 })
 export class FarFormPage implements OnInit {
@@ -34,6 +37,7 @@ export class FarFormPage implements OnInit {
   descripcion = '';
   contenido = '';
   img: File | null = null;
+  aceptarCondiciones: boolean = false; // ✅ Corregida la variable
 
   constructor(
     private publicacionesFarmaciaService: PublicacionesFarmaciaService,
@@ -53,21 +57,26 @@ export class FarFormPage implements OnInit {
   }
 
   publicar() {
-    if (!this.titulo.trim() || !this.descripcion.trim() || !this.contenido.trim() || !this.img) {
-      alert('Todos los campos son obligatorios.');
+    if (!this.titulo.trim() || !this.descripcion.trim() || !this.contenido.trim() || !this.img || !this.aceptarCondiciones) {
+      alert('Todos los campos y la aceptación de términos son obligatorios.');
       return;
     }
 
-    this.publicacionesFarmaciaService.agregarPublicacionFarmacia(this.titulo, this.descripcion, this.contenido, this.img)
-      .subscribe({
-        next: () => {
-          alert('Publicación agregada correctamente');
-          this.router.navigate(['/home']);
-        },
-        error: (err) => {
-          console.error('Error al agregar publicación:', err);
-          alert('Error al agregar la publicación.');
-        }
-      });
+    this.publicacionesFarmaciaService.agregarPublicacionFarmacia(
+      this.titulo,
+      this.descripcion,
+      this.contenido,
+      this.img
+    )
+    .subscribe({
+      next: () => {
+        alert('Publicación agregada correctamente');
+        this.router.navigate(['/home']);
+      },
+      error: (err) => {
+        console.error('Error al agregar publicación:', err);
+        alert('Error al agregar la publicación.');
+      }
+    });
   }
 }

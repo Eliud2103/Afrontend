@@ -15,6 +15,7 @@ import {
   IonCardContent,
   IonImg
 } from '@ionic/angular/standalone';
+import { NavbarComponent } from "../../../components/navbar/navbar.component";
 
 @Component({
   selector: 'app-detail-publicacion',
@@ -33,8 +34,9 @@ import {
     IonCardContent,
     IonImg,
     CommonModule,
-    FormsModule
-  ]
+    FormsModule,
+    NavbarComponent
+]
 })
 export class DetailPublicacionPage implements OnInit {
   publicacion: any = {}; // Objeto para almacenar los detalles de la publicación
