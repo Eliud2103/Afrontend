@@ -30,15 +30,29 @@ export class PublicacionesService {
   }
 
   // 🔹 Método para obtener todas las publicaciones
-  /*obtenerPublicaciones(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl).pipe(
+  obtenerPublicaciones(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl);
+  }
+
+  // 🔹 Método para obtener una publicación por ID
+  obtenerPublicacionPorId(publicacionId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${publicacionId}`);
+  }
+
+  // 🔹 Método para obtener el detalle de una publicación
+  obtenerDetallePublicacion(id: string): Observable<any> {
+    const url = `http://localhost:3000/publicaciones/detalle/${id}`; // Verifica que esta URL sea correcta
+    return this.http.get<any>(url).pipe(
       catchError(this.manejarError)
     );
-  }*/
-    // Método para obtener todas las publicaciones
-    obtenerPublicaciones(): Observable<any[]> {
-      return this.http.get<any[]>(this.apiUrl);
-    }
+  }
+
+  // 🔹 Método para eliminar una publicación
+  eliminarPublicacion(publicacionId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${publicacionId}`).pipe(
+      catchError(this.manejarError)
+    );
+  }
 
   // 🔹 Manejo centralizado de errores
   private manejarError(error: HttpErrorResponse) {
@@ -56,19 +70,8 @@ export class PublicacionesService {
     return throwError(() => new Error(mensajeError));
   }
 
+  // 🔹 Método para subir imagen
   subirImagen(formData: FormData): Observable<any> {
     return this.http.post<any>('http://localhost:3000/publicaciones/subir-imagen', formData);
   }
-
-  obtenerPublicacionPorId(publicacionId: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${publicacionId}`);
-  }
-  obtenerDetallePublicacion(id: string): Observable<any> {
-    const url = `http://localhost:3000/publicaciones/detalle/${id}`; // Verifica que esta URL sea correcta
-    return this.http.get<any>(url).pipe(
-      catchError(this.manejarError)
-    );
-  }
-
-
 }

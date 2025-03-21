@@ -14,7 +14,7 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
-  IonImg, IonRow, IonGrid, IonCol
+  IonImg, IonRow, IonGrid, IonCol, IonButton
 } from '@ionic/angular/standalone';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { PublicacionesService } from 'src/app/services/publicaciones.service';
@@ -40,10 +40,13 @@ import { PublicacionesService } from 'src/app/services/publicaciones.service';
     IonCardTitle,
     IonCardContent,
     IonImg,
+    IonButton
   ],
 })
 export class HosPublicacionPage implements OnInit {
   publicaciones: any[] = []; // Array para almacenar las publicaciones
+  esHospital: boolean = false; // Variable que indica si el usuario es un hospital
+  mostrarEliminar: boolean = true;
 
   constructor(private publicacionesService: PublicacionesService, private router: Router) {}
 
@@ -57,10 +60,31 @@ export class HosPublicacionPage implements OnInit {
         console.error('Error al obtener publicaciones:', err);
       },
     });
+
+    // Verificamos si el usuario tiene el rol de hospital
+    const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+    this.esHospital = usuario.rol === 'hospital';
   }
 
   // Método para navegar a la página de detalles
   verDetalle(publicacionId: string) {
     this.router.navigate(['/detail-publicacion', publicacionId]);
+  }
+
+  // Método para eliminar una publicación
+  eliminarPublicacion(publicacionId: string, event: Event) {
+    event.stopPropagation(); // Evita que se navegue al detalle al hacer click en el botón eliminar
+    if (confirm('¿Estás seguro de que deseas eliminar esta publicación?')) {
+      this.publicacionesService.eliminarPublicacion(publicacionId).subscribe({
+        next: () => {
+          alert('Publicación eliminada correctamente');
+          this.publicaciones = this.publicaciones.filter(p => p._id !== publicacionId); // Eliminar de la lista local
+        },
+        error: (err) => {
+          console.error('Error al eliminar publicación:', err);
+          alert('Error al eliminar la publicación');
+        }
+      });
+    }
   }
 }

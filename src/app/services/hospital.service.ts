@@ -30,4 +30,9 @@ export class HospitalService {
   publicarComentario(hospitalId: string, comentario: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/${hospitalId}/comentarios`, { comentario });
   }
+
+  // ✅ Método para eliminar un hospital
+  eliminarHospital(hospitalId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${hospitalId}`);
+  }
 }
