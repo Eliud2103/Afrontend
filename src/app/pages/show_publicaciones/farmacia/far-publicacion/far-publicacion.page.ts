@@ -15,8 +15,7 @@ import {
   IonCardTitle,
   IonCardContent,
   IonImg,
-  IonLabel
-} from '@ionic/angular/standalone';
+  IonLabel, IonButton } from '@ionic/angular/standalone';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { PublicacionesFarmaciaService } from 'src/app/services/publicaciones-farmacia.service';
 
@@ -25,7 +24,7 @@ import { PublicacionesFarmaciaService } from 'src/app/services/publicaciones-far
   templateUrl: './far-publicacion.page.html',
   styleUrls: ['./far-publicacion.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonButton,
     IonContent,
     IonHeader,
     IonTitle,
@@ -46,6 +45,8 @@ import { PublicacionesFarmaciaService } from 'src/app/services/publicaciones-far
 })
 export class FarPublicacionPage implements OnInit {
   publicaciones: any[] = []; // Array para almacenar las publicaciones
+  mostrarEliminar: boolean = true;
+
 
   constructor(
     private publicacionesService: PublicacionesFarmaciaService,
@@ -67,5 +68,21 @@ export class FarPublicacionPage implements OnInit {
   // Método para navegar a la página de detalles
   verDetalle(publicacionId: string) {
     this.router.navigate(['/detail-publicacion', publicacionId]);
+  }
+
+  eliminarPublicacion(publicacionId: string, event: Event) {
+    event.stopPropagation(); // Evita que se navegue al detalle al hacer click en el botón eliminar
+    if (confirm('¿Estás seguro de que deseas eliminar esta publicación?')) {
+      this.publicacionesService.eliminarPublicacion(publicacionId).subscribe({
+        next: () => {
+          alert('Publicación eliminada correctamente');
+          this.publicaciones = this.publicaciones.filter(p => p._id !== publicacionId); // Eliminar de la lista local
+        },
+        error: (err) => {
+          console.error('Error al eliminar publicación:', err);
+          alert('Error al eliminar la publicación');
+        }
+      });
+    }
   }
 }

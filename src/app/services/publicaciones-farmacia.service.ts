@@ -31,6 +31,13 @@ agregarPublicacionFarmacia(
     catchError(this.manejarError)
   );
 }
+  // 🔹 Método para eliminar una publicación
+  eliminarPublicacion(publicacionId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${publicacionId}`).pipe(
+      catchError(this.manejarError)
+    );
+  }
+
 
 
 

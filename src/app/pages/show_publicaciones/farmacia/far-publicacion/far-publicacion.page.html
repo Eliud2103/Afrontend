@@ -14,6 +14,10 @@
           <ion-card-content>
             <ion-img [src]="publicacion.img" alt="Imagen de la publicación"></ion-img>
             <ion-label>{{ publicacion.descripcion }}</ion-label>
+
+            <ion-button *ngIf="mostrarEliminar" color="danger" expand="block" (click)="eliminarPublicacion(publicacion._id, $event)">
+              Eliminar
+            </ion-button>
           </ion-card-content>
         </ion-card>
       </ion-col>
