@@ -55,7 +55,8 @@ export class LoginFormPage implements OnInit {
 
         // Guarda el accessToken y el rol en localStorage
         this.authService.setToken(response.accessToken);  // Guarda solo el accessToken
-        localStorage.setItem('role', response.role); // Guarda el rol del usuario
+        localStorage.setItem('role', response.role);
+        localStorage.setItem('fullName', response.fullName); // Guarda el rol del usuario
 
         // Redirigir a la página correcta según el rol
         if (response.role === 'hospital') {
