@@ -21,6 +21,8 @@ import {
 } from '@ionic/angular/standalone';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { PublicacionesService } from '../services/publicaciones.service';
+import { PublicacionesFarmaciaService } from '../services/publicaciones-farmacia.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -37,19 +39,24 @@ import { PublicacionesService } from '../services/publicaciones.service';
 export class HomePage implements OnInit {
   publicaciones: any[] = []; // Lista de publicaciones
 
-  constructor(private publicacionesService: PublicacionesService, private router: Router) {}
+  constructor(private publicacionesService: PublicacionesService, private router: Router, private publicacionesFarmaciaService: PublicacionesFarmaciaService,) {}
 
   ngOnInit() {
-    // Cargar las publicaciones al iniciar
-    this.publicacionesService.obtenerPublicaciones().subscribe({
+    // Usamos forkJoin para realizar ambas peticiones en paralelo y esperar a que ambas terminen
+    forkJoin({
+      hospitales: this.publicacionesService.obtenerPublicaciones(),
+      farmacias: this.publicacionesFarmaciaService.obtenerPublicacionesFarmacia()
+    }).subscribe({
       next: (data) => {
-        this.publicaciones = data;
+        // Aquí ya tenemos ambas respuestas, así que las combinamos
+        this.publicaciones = [...data.hospitales, ...data.farmacias];
       },
       error: (err) => {
         console.error('Error al obtener publicaciones:', err);
-      },
+      }
     });
   }
+
 
   // Método para navegar a la página de detalles
   verDetalle(publicacionId: string) {
