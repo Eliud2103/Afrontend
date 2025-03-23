@@ -1,12 +1,16 @@
-
 <app-navbar></app-navbar>
+
 <ion-content>
+  <!-- Tarjeta con la información del hospital o farmacia -->
   <ion-card *ngIf="item.nombre_hospital || item.nombre_farmacia; else loading">
     <ion-card-header>
-      <h1 class="hospital-title">{{ item.nombre_hospital || item.nombre_farmacia || 'Cargando...' }}</h1>
+      <h1 class="hospital-title">
+        {{ item.nombre_hospital || item.nombre_farmacia || 'Cargando...' }}
+      </h1>
     </ion-card-header>
+
     <ion-card-content>
-      <!-- Otros contenidos de información del hospital o farmacia -->
+      <!-- Información del hospital o farmacia -->
       <p><strong>Tipo:</strong> {{ item.tipo_hospital || item.tipo_farmacia }}</p>
       <p><strong>Descripción:</strong> {{ item.descripcion || item.descripcion_farmacia }}</p>
       <p><strong>Dirección:</strong> {{ item.direccion || item.direccion_farmacia }}</p>
@@ -37,7 +41,7 @@
           </ion-item>
         </ion-list>
 
-        <!-- Formulario para agregar comentario -->
+        <!-- Si el usuario está autenticado, mostrar el formulario -->
         <div *ngIf="isAuthenticated; else notLoggedIn">
           <form [formGroup]="comentarioForm">
             <h3>{{ fullName }}</h3>

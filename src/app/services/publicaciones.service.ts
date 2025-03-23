@@ -74,4 +74,5 @@ export class PublicacionesService {
   subirImagen(formData: FormData): Observable<any> {
     return this.http.post<any>('http://localhost:3000/publicaciones/subir-imagen', formData);
   }
+
 }

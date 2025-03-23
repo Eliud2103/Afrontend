@@ -26,7 +26,6 @@ export class AuthService {
       tap((response) => {
         localStorage.setItem('token', response.accessToken);
         localStorage.setItem('role', response.role);
-        localStorage.setItem('userName', response.fullName); // Guardar el nombre real del usuario
         localStorage.setItem('fullName', response.fullName); // Guardar el nombre real del usuario
       })
     );
@@ -52,11 +51,21 @@ export class AuthService {
   // Método para hacer logout y limpiar el token
   logout(): void {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('fullName');
+    console.log('Usuario ha cerrado sesión');
+
   }
 
   // Método para verificar si hay un usuario autenticado
   isAuthenticated(): boolean {
-    return !!this.getToken();  // Si hay un token, consideramos al usuario como autenticado
+    const token = localStorage.getItem('token');
+    const fullName = localStorage.getItem('fullName');
+    console.log(localStorage.getItem('token'));
+console.log(localStorage.getItem('fullName'));
+
+    return !!token && !!fullName;
   }
 
   // Método para obtener el perfil del usuario

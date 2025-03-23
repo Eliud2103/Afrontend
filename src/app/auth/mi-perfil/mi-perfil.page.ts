@@ -37,11 +37,9 @@ export class MiPerfilPage implements OnInit {
 
   // Verificar si el usuario está autenticado
   checkAuthStatus() {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      this.isAuthenticated = true; // El token está presente, el usuario está autenticado
-    } else {
-      this.isAuthenticated = false; // El token no está presente, no autenticado
+    this.isAuthenticated = this.authService.isAuthenticated(); // Usar el método isAuthenticated del AuthService
+    if (!this.isAuthenticated) {
+      this.router.navigate(['/login']); // Redirige si no está autenticado
     }
   }
 
@@ -90,7 +88,10 @@ export class MiPerfilPage implements OnInit {
   logout() {
     localStorage.removeItem('authToken');  // Elimina el token de localStorage
     localStorage.removeItem('authName');   // Elimina el nombre del usuario
-    localStorage.removeItem('authEmail');  // Elimina el email del usuario
+    localStorage.removeItem('authEmail');
+    this.checkAuthStatus();  // Elimina el email del usuario
+    this.authService.logout();
+    this.isAuthenticated = false;
     this.router.navigate(['/home']); // Redirige al usuario a la página de login
   }
 }

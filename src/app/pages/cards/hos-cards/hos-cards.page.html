@@ -2,6 +2,10 @@
 
 <ion-content [fullscreen]="true">
   <h3>Hospitales</h3>
+    <!-- Agregar ion-searchbar para búsqueda -->
+   <!-- Ion Searchbar con debounce -->
+  <ion-searchbar class="search-white" debounce="350" (ionInput)="buscarHospital($event)" placeholder="Buscar hospital por especialidad"></ion-searchbar>
+
   <ion-grid>
     <ion-row>
       <ion-col size="6" size-md="3" size-lg="2" *ngFor="let hospital of hospitales">

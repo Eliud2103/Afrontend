@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Hospital } from '../interfaces/hospital.model';
@@ -7,6 +7,7 @@ import { Hospital } from '../interfaces/hospital.model';
   providedIn: 'root',
 })
 export class HospitalService {
+  private _http=inject(HttpClient)
   private apiUrl = 'http://localhost:3000/hospital'; // Asegúrate de ajustar esta URL a tu configuración del backend
 
   constructor(private http: HttpClient) {}
@@ -35,4 +36,9 @@ export class HospitalService {
   eliminarHospital(hospitalId: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${hospitalId}`);
   }
+  searchHospital(tipo: string) {
+    return this._http.get<Hospital[]>(`http://localhost:3000/hospital/buscar?tipo=${tipo}`);
+  }
+
+
 }
