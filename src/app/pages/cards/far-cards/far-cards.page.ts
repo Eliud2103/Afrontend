@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol, IonSearchbar } from '@ionic/angular/standalone';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { StorageService } from 'src/app/services/storage.service';
 import { Router } from '@angular/router';
@@ -13,11 +13,13 @@ import { FarmaciaService } from 'src/app/services/farmacia.service';
   templateUrl: './far-cards.page.html',
   styleUrls: ['./far-cards.page.scss'],
   standalone: true,
-  imports: [IonCard, IonCardContent, IonGrid, IonRow, IonCol, IonCardTitle, IonCardHeader, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, NavbarComponent]
+  imports: [IonSearchbar, IonCard, IonCardContent, IonGrid, IonRow, IonCol, IonCardTitle, IonCardHeader, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, NavbarComponent]
 })
 export class FarCardsPage implements OnInit {
+   private _farmacias = inject(FarmaciaService );
   farmacias: Farmacia[] = [];
   selectedFile: File | null = null;
+  isSearching: boolean = false;
 
   constructor(
     private router: Router,
@@ -37,6 +39,27 @@ export class FarCardsPage implements OnInit {
       },
       (error) => {
         console.error('Error al obtener farmacias', error);
+      }
+    );
+  }
+  buscarFarmacia(event: any) {
+    const query = event.detail.value.trim();
+    this.isSearching = query.length > 0;
+
+    // Si el campo está vacío, no realizamos la búsqueda
+    if (!query) {
+      this.farmacias = [];
+      return;
+    }
+
+    // Llamamos al método searchHospital del servicio para buscar por tipo_hospital
+    this._farmacias.searchFarmacia(query).subscribe(
+      (farmacias) => {
+        this.farmacias = farmacias;  // Actualizamos la lista con los hospitales encontrados
+      },
+      (error) => {
+        console.error('Error al buscar hospitales:', error);  // Si hay error, mostramos en consola
+        this.farmacias = [];  // Limpiamos la lista en caso de error
       }
     );
   }

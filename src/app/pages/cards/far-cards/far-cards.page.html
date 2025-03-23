@@ -2,6 +2,7 @@
 
 <ion-content [fullscreen]="true">
   <h3>Farmacias</h3>
+  <ion-searchbar class="search-white" debounce="350" (ionInput)="buscarFarmacia($event)" placeholder="Buscar hospital por especialidad"></ion-searchbar>
   <ion-grid>
     <ion-row>
       <ion-col size="6" size-md="3" size-lg="2" *ngFor="let farmacia of farmacias">

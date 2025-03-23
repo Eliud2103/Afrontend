@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Farmacia } from '../interfaces/farmacia.model';
@@ -7,6 +7,7 @@ import { Farmacia } from '../interfaces/farmacia.model';
   providedIn: 'root',
 })
 export class FarmaciaService {
+  private _http=inject(HttpClient)
   private apiUrl = 'http://localhost:3000/farmacia'; // Ajusta esta URL según tu backend
 
   constructor(private http: HttpClient) {}
@@ -32,4 +33,10 @@ export class FarmaciaService {
   publicarComentario(hospitalId: string, comentario: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/${hospitalId}/comentarios`, { comentario });
   }
+
+
+   searchFarmacia(tipo: string) {
+      return this._http.get<Farmacia[]>(`http://localhost:3000/farmacia/buscar?tipo=${tipo}`);
+    }
+
 }
