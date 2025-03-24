@@ -46,20 +46,31 @@ export class FarCardsPage implements OnInit {
     const query = event.detail.value.trim();
     this.isSearching = query.length > 0;
 
-    // Si el campo está vacío, no realizamos la búsqueda
     if (!query) {
-      this.farmacias = [];
+      // Si el campo está vacío, volvemos a cargar todas las farmacias
+      this._farmacias.getFarmacias().subscribe(
+        (data) => {
+          this.farmacias = [...data.map(farmacia => ({
+            ...farmacia,
+            rating: farmacia.rating ?? 0,
+            img: farmacia.img?.startsWith('http') ? farmacia.img : `http://localhost:3000/file/${farmacia.img}`
+          }))];
+        },
+        (error) => {
+          console.error('Error al obtener farmacias', error);
+        }
+      );
       return;
     }
 
-    // Llamamos al método searchHospital del servicio para buscar por tipo_hospital
+    // Realizamos la búsqueda cuando hay un término ingresado
     this._farmacias.searchFarmacia(query).subscribe(
       (farmacias) => {
-        this.farmacias = farmacias;  // Actualizamos la lista con los hospitales encontrados
+        this.farmacias = [...farmacias]; // Forzamos la actualización de la lista
       },
       (error) => {
-        console.error('Error al buscar hospitales:', error);  // Si hay error, mostramos en consola
-        this.farmacias = [];  // Limpiamos la lista en caso de error
+        console.error('Error al buscar farmacias:', error);
+        this.farmacias = [];
       }
     );
   }

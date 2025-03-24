@@ -54,20 +54,32 @@ export class HosCardsPage implements OnInit {
     const query = event.detail.value.trim();
     this.isSearching = query.length > 0;
 
-    // Si el campo está vacío, no realizamos la búsqueda
     if (!query) {
-      this.hospitales = [];
+      // Si el campo está vacío, volvemos a cargar todos los hospitales
+      this.hospitalService.getHospitales().subscribe(
+        (data) => {
+          this.hospitales = [...data.map(hospital => ({
+            ...hospital,
+            rating: hospital.rating ?? 0,
+            img: hospital.img?.startsWith('http') ? hospital.img : `http://localhost:3000/file/${hospital.img}`
+          }))];
+        },
+        (error) => {
+          console.error('Error al obtener hospitales', error);
+        }
+      );
       return;
     }
 
     // Llamamos al método searchHospital del servicio para buscar por tipo_hospital
     this._hospitales.searchHospital(query).subscribe(
       (hospitales) => {
-        this.hospitales = hospitales;  // Actualizamos la lista con los hospitales encontrados
+        // Si no encuentra resultados, aseguramos que se actualice correctamente
+        this.hospitales = [...hospitales];
       },
       (error) => {
-        console.error('Error al buscar hospitales:', error);  // Si hay error, mostramos en consola
-        this.hospitales = [];  // Limpiamos la lista en caso de error
+        console.error('Error al buscar hospitales:', error);
+        this.hospitales = [];
       }
     );
   }

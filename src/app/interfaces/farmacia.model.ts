@@ -21,4 +21,5 @@ export interface Farmacia {
   responsable: Responsable;
   mision: string;
   vision: string;
+  rating: number
 }
