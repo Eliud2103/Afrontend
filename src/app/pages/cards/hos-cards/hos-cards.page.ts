@@ -1,19 +1,20 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonCardHeader, IonCardTitle, IonCol, IonRow, IonGrid, IonCardContent, IonCard, IonIcon, IonSearchbar } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonCardHeader, IonCardTitle, IonCol, IonRow, IonGrid, IonCardContent, IonCard, IonIcon, IonSearchbar, IonImg } from '@ionic/angular/standalone';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { HospitalService } from '../../../services/hospital.service';
 import { Router } from '@angular/router';
 import { Hospital } from 'src/app/interfaces/hospital.model';
 import { star, starOutline } from 'ionicons/icons'; // Importar iconos de estrellas
+import { addIcons } from 'ionicons';
 
 @Component({
   selector: 'app-hos-cards',
   templateUrl: './hos-cards.page.html',
   styleUrls: ['./hos-cards.page.scss'],
   standalone: true,
-  imports: [IonSearchbar,
+  imports: [IonImg, IonSearchbar,
     IonIcon, IonCard, IonCardContent, IonGrid, IonRow, IonCol, IonCardTitle, IonCardHeader,
     IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, NavbarComponent
   ]
@@ -31,19 +32,21 @@ export class HosCardsPage implements OnInit {
   ) {}
 
   ngOnInit() {
+   addIcons({star,starOutline})
+
     this.hospitalService.getHospitales().subscribe(
       (data) => {
         this.hospitales = data.map(hospital => ({
           ...hospital,
-          rating: hospital.rating ?? 0,  // Si no tiene rating, asigna 0 (uso de ?? para valores null o undefined)
-          img: hospital.img?.startsWith('http') ? hospital.img : `http://localhost:3000/file/${hospital.img}`
+          rating: hospital.rating ?? 0,
+          img: hospital.img
         }));
-        console.log('Hospitales recibidos:', this.hospitales);
       },
       (error) => {
         console.error('Error al obtener hospitales', error);
       }
     );
+
   }
 
   // Método para redirigir a la página de detalles del hospital

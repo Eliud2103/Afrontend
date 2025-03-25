@@ -8,7 +8,8 @@ import { Hospital } from '../interfaces/hospital.model';
 })
 export class HospitalService {
   private _http=inject(HttpClient)
-  private apiUrl = 'http://localhost:3000/hospital'; // Asegúrate de ajustar esta URL a tu configuración del backend
+  private apiUrl = 'http://localhost:3000/hospital';
+  private uploadUrl = 'http://localhost:3000/hospital/subir-imagen'; // Asegúrate de ajustar esta URL a tu configuración del backend
 
   constructor(private http: HttpClient) {}
 
@@ -38,6 +39,9 @@ export class HospitalService {
   }
   searchHospital(tipo: string) {
     return this._http.get<Hospital[]>(`http://localhost:3000/hospital/buscar?tipo=${tipo}`);
+  }
+  subirImagen(formData: FormData): Observable<any> {
+    return this.http.post<any>('http://localhost:3000/hospital/subir-imagen', formData);
   }
 
 

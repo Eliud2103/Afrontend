@@ -1,30 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonContent, IonGrid, IonCol, IonRow, IonLabel, IonInput, IonButton } from '@ionic/angular/standalone';
+import { IonContent, IonGrid, IonCol, IonRow, IonLabel, IonInput, IonButton, IonItem, IonList } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavbarFormsComponent } from 'src/app/components/navbar-forms/navbar-forms.component';
 import { SiTienesCuentaComponent } from 'src/app/components/si-tienes-cuenta/si-tienes-cuenta.component';
 import { AuthService } from 'src/app/services/auth.service';
-import { StorageService } from 'src/app/services/storage.service';  // Asegúrate de importar el servicio de Storage
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-hos-register3',
   templateUrl: './hos-register3.page.html',
   styleUrls: ['./hos-register3.page.scss'],
   standalone: true,
-  imports: [SiTienesCuentaComponent, IonGrid, IonCol, IonRow, IonLabel, IonInput, IonButton, IonContent, CommonModule, FormsModule, ReactiveFormsModule, NavbarFormsComponent]
+  imports: [IonList, IonItem, SiTienesCuentaComponent, IonGrid, IonCol, IonRow, IonLabel, IonInput, IonButton, IonContent, CommonModule, FormsModule, ReactiveFormsModule, NavbarFormsComponent]
 })
 export class HosRegister3Page implements OnInit {
 
   hos_register3: FormGroup = new FormGroup({});
   selectedImage: File | null = null; // Variable para almacenar la imagen seleccionada
+  @ViewChild('direccionInput', { static: false }) direccionInput!: ElementRef;
+
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private authService: AuthService,
-    private storageService: StorageService  // Inyectamos el servicio de almacenamiento
+    private storageService: StorageService , // Inyectamos el servicio de almacenamiento
+
   ) {}
 
   ngOnInit() {
@@ -51,6 +54,9 @@ export class HosRegister3Page implements OnInit {
       console.log('Datos cargados en hos-register3:', this.hos_register3.value);
     }
   }
+
+
+
 
   // Función para manejar la selección de la imagen
   onImageSelected(event: any) {
@@ -164,4 +170,10 @@ imageUrl = (await this.authService.uploadImage(this.selectedImage).toPromise()) 
       }
     });
   }
+
+
+
+
+
+
 }

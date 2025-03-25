@@ -141,24 +141,23 @@ uploadImage(image: File): Observable<string> {
   const formData = new FormData();
   formData.append('image', image);
 
-  return this.http.post<{ imageUrl: string }>('http://localhost:3000/auth/images/upload', formData)
+  return this.http.post<{ fileId: string }>('http://localhost:3000/auth/images/upload', formData)
     .pipe(
-      map(response => response.imageUrl)  // Extraemos solo la URL
+      map(response => response.fileId)  // Devuelve el ObjectId de la imagen en lugar de una URL
     );
 }
 
-  // Método para obtener una imagen por su nombre
-  getImage(filename: string): Observable<Blob> {
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-    });
+getImage(fileId: string): Observable<Blob> {
+  const token = localStorage.getItem('authToken');
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+  });
 
+  return this.http.get(`http://localhost:3000/images/${fileId}`, { headers, responseType: 'blob' }).pipe(
+    catchError(this.handleError)
+  );
+}
 
-    return this.http.get(`http://localhost:3000/images/${filename}`, { headers, responseType: 'blob' }).pipe(
-      catchError(this.handleError)
-    );
-  }
   //////////////////////////Mostrar hospitales/////////////////777
   getHospitalById(id: string): Observable<any> {
     return this.http.get(`http://localhost:3000/auth/hospitales/${id}`).pipe(

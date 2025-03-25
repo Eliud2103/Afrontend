@@ -10,7 +10,9 @@
     <ion-row>
       <ion-col size="6" size-md="3" size-lg="2" *ngFor="let hospital of hospitales">
         <ion-card (click)="verDetalle(hospital._id)">
-          <img [src]="'http://localhost:3000/images/file/' + hospital.img" alt="Imagen del hospital" />
+          <ion-img [src]="'http://localhost:3000/hospital/imagen/' + hospital.img" alt="Imagen del hospital"></ion-img>
+
+
           <ion-card-header>
             <ion-card-title>{{ hospital.nombre_hospital }}</ion-card-title>
           </ion-card-header>
