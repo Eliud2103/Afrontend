@@ -49,4 +49,17 @@ agregarPublicacionFarmacia(
     console.error('Error en la petición:', error);
     return throwError(() => new Error('Error al procesar la solicitud'));
   }
+  obtenerPublicacionPorId(publicacionId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${publicacionId}`).pipe(
+      catchError(this.manejarError)
+    );
+  }
+
+  obtenerDetallePublicacion(id: string): Observable<any> {
+    const url = `http://localhost:3000/publicaciones/detalle/${id}`; // Verifica que esta URL sea correcta
+    return this.http.get<any>(url).pipe(
+      catchError(this.manejarError)
+    );
+  }
+
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'; // Importamos Router para la navegación
+import { Router } from '@angular/router';  // Importamos Router
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -7,15 +7,15 @@ import {
   IonHeader,
   IonTitle,
   IonToolbar,
-  IonRow,
-  IonGrid,
-  IonCol,
+  IonList,
+  IonItem,
+  IonLabel,
   IonCard,
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
-  IonImg,
-  IonLabel, IonButton } from '@ionic/angular/standalone';
+  IonImg, IonRow, IonGrid, IonCol, IonButton
+} from '@ionic/angular/standalone';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { PublicacionesFarmaciaService } from 'src/app/services/publicaciones-farmacia.service';
 
@@ -24,29 +24,30 @@ import { PublicacionesFarmaciaService } from 'src/app/services/publicaciones-far
   templateUrl: './far-publicacion.page.html',
   styleUrls: ['./far-publicacion.page.scss'],
   standalone: true,
-  imports: [IonButton,
+  imports: [
+    IonCol, IonGrid, IonRow,
     IonContent,
     IonHeader,
     IonTitle,
     IonToolbar,
-    IonGrid,
-    IonRow,
-    IonCol,
+    IonList,
+    IonItem,
+    IonLabel,
     IonCard,
     IonCardHeader,
     IonCardTitle,
     IonCardContent,
     IonImg,
-    IonLabel,
-    NavbarComponent, // Importamos el Navbar
+    IonButton,
+    NavbarComponent,
     CommonModule,
     FormsModule
-  ]
+  ],
 })
 export class FarPublicacionPage implements OnInit {
   publicaciones: any[] = []; // Array para almacenar las publicaciones
   mostrarEliminar: boolean = true;
-
+  esFarmacia: boolean = false; // Verificamos si el usuario es una farmacia
 
   constructor(
     private publicacionesService: PublicacionesFarmaciaService,
@@ -54,7 +55,7 @@ export class FarPublicacionPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Al iniciar el componente, obtenemos las publicaciones del backend
+    // Obtenemos las publicaciones del servicio de farmacia
     this.publicacionesService.obtenerPublicacionesFarmacia().subscribe({
       next: (data) => {
         this.publicaciones = data; // Asignamos las publicaciones al array
@@ -63,6 +64,10 @@ export class FarPublicacionPage implements OnInit {
         console.error('Error al obtener publicaciones:', err); // En caso de error
       },
     });
+
+    // Verificamos si el usuario tiene el rol de farmacia
+    const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+    this.esFarmacia = usuario.rol === 'farmacia';
   }
 
   // Método para navegar a la página de detalles
@@ -70,8 +75,9 @@ export class FarPublicacionPage implements OnInit {
     this.router.navigate(['/detail-publicacion', publicacionId]);
   }
 
+  // Método para eliminar una publicación
   eliminarPublicacion(publicacionId: string, event: Event) {
-    event.stopPropagation(); // Evita que se navegue al detalle al hacer click en el botón eliminar
+    event.stopPropagation(); // Evita que se navegue al detalle al hacer clic en el botón eliminar
     if (confirm('¿Estás seguro de que deseas eliminar esta publicación?')) {
       this.publicacionesService.eliminarPublicacion(publicacionId).subscribe({
         next: () => {
