@@ -41,7 +41,6 @@ import { NavbarComponent } from "../../../components/navbar/navbar.component";
 })
 export class DetailPublicacionPage implements OnInit {
   publicacion: any = {}; // Objeto para almacenar los detalles de la publicación
-  esFarmacia: boolean = false; // Variable para identificar si es publicación de farmacia
 
   constructor(
     private route: ActivatedRoute,
@@ -50,35 +49,41 @@ export class DetailPublicacionPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Obtener los parámetros de la URL
+    // Obtener el parámetro 'id' de la URL
     const publicacionId = this.route.snapshot.paramMap.get('id');
-    const tipo = this.route.snapshot.queryParamMap.get('tipo'); // Obtiene el parámetro 'tipo'
 
-    // Si se ha proporcionado un ID de publicación
+    // Verificamos si el 'publicacionId' está presente
     if (publicacionId) {
-      if (publicacionId) {
-
-        // Marca como farmacia
-        // Obtener la publicación de farmacia
-        this.publicacionesFarmaciaService.obtenerPublicacionPorId(publicacionId).subscribe({
-          next: (data) => {
-            this.publicacion = data || {}; // Evita que sea null
-          },
-          error: (err) => {
-            console.error('Error al obtener detalles de la publicación de farmacia:', err);
+      // Intentamos primero obtener la publicación de la farmacia
+      this.publicacionesFarmaciaService.obtenerPublicacionPorId(publicacionId).subscribe({
+        next: (data) => {
+          if (data) {
+            this.publicacion = data; // Si se obtiene una publicación de farmacia, la asignamos
+          } else {
+            // Si no existe la publicación de farmacia, intentamos obtener la publicación de hospital
+            this.publicacionesService.obtenerPublicacionPorId(publicacionId).subscribe({
+              next: (data) => {
+                this.publicacion = data || {}; // Si no hay datos, asignamos un objeto vacío
+              },
+              error: (err) => {
+                console.error('Error al obtener detalles de la publicación de hospital:', err);
+              }
+            });
           }
-        });
-      } else {
-        // Obtener la publicación de hospital (por defecto, si no es farmacia)
-        this.publicacionesService.obtenerPublicacionPorId(publicacionId).subscribe({
-          next: (data) => {
-            this.publicacion = data || {}; // Evita que sea null
-          },
-          error: (err) => {
-            console.error('Error al obtener detalles de la publicación:', err);
-          }
-        });
-      }
+        },
+        error: (err) => {
+          console.error('Error al obtener detalles de la publicación de farmacia:', err);
+          // Si hay un error al obtener la publicación de farmacia, intentamos la de hospital
+          this.publicacionesService.obtenerPublicacionPorId(publicacionId).subscribe({
+            next: (data) => {
+              this.publicacion = data || {}; // Si no hay datos, asignamos un objeto vacío
+            },
+            error: (err) => {
+              console.error('Error al obtener detalles de la publicación de hospital:', err);
+            }
+          });
+        }
+      });
     }
   }
 }
