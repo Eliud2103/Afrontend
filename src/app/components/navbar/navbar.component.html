@@ -35,6 +35,20 @@
               <a class="nav-link" href="far-publicacion">Mis publicaciones</a>
             </li>
           </ng-container>
+          <ng-container *ngIf="role === 'admin'">
+            <li class="nav-item">
+              <a class="nav-link" href="far-form">Publicar noticia</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="far-publicacion">Mis publicaciones</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="far-publicacion">Administrar hospitales</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="far-publicacion">Administrar farmacias</a>
+            </li>
+          </ng-container>
           <li class="nav-item" *ngIf="!isAuthenticated">
             <a class="nav-link" href="login">Login</a>
           </li>

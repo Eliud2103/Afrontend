@@ -63,8 +63,11 @@ export class LoginFormPage implements OnInit {
           this.router.navigate(['/home']); // Página para hospitales
         } else if (response.role === 'farmacia') {
           this.router.navigate(['/home']); // Página para farmacias
+        } else if (response.role==='admin') {
+          this.router.navigate(['/home']);
         } else {
           this.router.navigate(['/home']); // Página para usuarios generales
+
         }
       },
       error: (err) => {

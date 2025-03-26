@@ -21,6 +21,8 @@ import { ChangeDetectorRef } from '@angular/core';
   ]
 })
 export class HosCardsPage implements OnInit {
+  rating: number = 0;
+
   private _hospitales = inject(HospitalService);
   hospitales: Hospital[] = [];  // Lista de hospitales
   starIcon = star;
@@ -50,6 +52,7 @@ export class HosCardsPage implements OnInit {
     );
 
   }
+
 
   // Método para redirigir a la página de detalles del hospital
   verDetalle(id: string) {

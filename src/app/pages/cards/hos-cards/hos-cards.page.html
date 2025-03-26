@@ -23,8 +23,8 @@
             <!-- Sección de Estrellas -->
             <div class="star-rating">
               <ion-icon
-                *ngFor="let star of [0,1,2,3,4]; let i = index"
-                [icon]="i < hospital.rating ? 'star' : 'star-outline'"
+                *ngFor="let star of [1,2,3,4,5]; let i = index"
+                [icon]="i < (hospital.rating || 0) ? starIcon : starOutlineIcon"
                 color="warning"
                 class="star-icon">
               </ion-icon>
