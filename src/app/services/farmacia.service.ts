@@ -38,5 +38,9 @@ export class FarmaciaService {
    searchFarmacia(tipo: string) {
       return this._http.get<Farmacia[]>(`http://localhost:3000/farmacia/buscar?tipo=${tipo}`);
     }
+    subirImagen(formData: FormData): Observable<any> {
+      return this.http.post<any>('http://localhost:3000/farmacia/subir-imagen', formData);
+    }
+
 
 }

@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { Hospital } from 'src/app/interfaces/hospital.model';
 import { star, starOutline } from 'ionicons/icons'; // Importar iconos de estrellas
 import { addIcons } from 'ionicons';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-hos-cards',
@@ -28,7 +29,8 @@ export class HosCardsPage implements OnInit {
 
   constructor(
     private router: Router,
-    private hospitalService: HospitalService
+    private hospitalService: HospitalService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -53,19 +55,23 @@ export class HosCardsPage implements OnInit {
   verDetalle(id: string) {
     this.router.navigate(['/detail-card', id], { state: { type: 'hospital' } });
   }
+
+
   buscarHospital(event: any) {
     const query = event.detail.value.trim();
     this.isSearching = query.length > 0;
 
     if (!query) {
-      // Si el campo está vacío, volvemos a cargar todos los hospitales
       this.hospitalService.getHospitales().subscribe(
         (data) => {
-          this.hospitales = [...data.map(hospital => ({
+          this.hospitales = data.map(hospital => ({
             ...hospital,
             rating: hospital.rating ?? 0,
             img: hospital.img?.startsWith('http') ? hospital.img : `http://localhost:3000/file/${hospital.img}`
-          }))];
+          }));
+
+          // Forzar la actualización del componente
+          this.cdr.detectChanges();
         },
         (error) => {
           console.error('Error al obtener hospitales', error);
@@ -74,10 +80,8 @@ export class HosCardsPage implements OnInit {
       return;
     }
 
-    // Llamamos al método searchHospital del servicio para buscar por tipo_hospital
     this._hospitales.searchHospital(query).subscribe(
       (hospitales) => {
-        // Si no encuentra resultados, aseguramos que se actualice correctamente
         this.hospitales = [...hospitales];
       },
       (error) => {
@@ -86,6 +90,7 @@ export class HosCardsPage implements OnInit {
       }
     );
   }
+
 
 
 }

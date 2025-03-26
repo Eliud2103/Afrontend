@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol, IonSearchbar } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol, IonSearchbar, IonImg } from '@ionic/angular/standalone';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { StorageService } from 'src/app/services/storage.service';
 import { Router } from '@angular/router';
@@ -13,7 +13,7 @@ import { FarmaciaService } from 'src/app/services/farmacia.service';
   templateUrl: './far-cards.page.html',
   styleUrls: ['./far-cards.page.scss'],
   standalone: true,
-  imports: [IonSearchbar, IonCard, IonCardContent, IonGrid, IonRow, IonCol, IonCardTitle, IonCardHeader, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, NavbarComponent]
+  imports: [IonImg, IonSearchbar, IonCard, IonCardContent, IonGrid, IonRow, IonCol, IonCardTitle, IonCardHeader, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, NavbarComponent]
 })
 export class FarCardsPage implements OnInit {
    private _farmacias = inject(FarmaciaService );
@@ -30,18 +30,24 @@ export class FarCardsPage implements OnInit {
   ngOnInit() {
     this.farmaciaService.getFarmacias().subscribe(
       (data) => {
+        // Mapear las farmacias y asegurarse de que las imágenes sean válidas
         this.farmacias = data.map(farmacia => ({
           ...farmacia,
-          // Asegúrate de que la imagen sea válida
-          img: farmacia.img?.startsWith('http') ? farmacia.img : `http://localhost:3000/file/${farmacia.img}`
+          // Asegurarse de que la imagen sea válida
+          img: farmacia.img
         }));
-        console.log('Farmacias recibidas:', this.farmacias);
+        console.log('Farmacias recibidas:', this.farmacias); // Para depurar y verificar que los datos sean correctos
       },
       (error) => {
         console.error('Error al obtener farmacias', error);
       }
     );
   }
+
+
+
+
+
   buscarFarmacia(event: any) {
     const query = event.detail.value.trim();
     this.isSearching = query.length > 0;
