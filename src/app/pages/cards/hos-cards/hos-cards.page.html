@@ -8,7 +8,7 @@
 
   <ion-grid>
     <ion-row>
-      <ion-col size="6" size-md="3" size-lg="2" *ngFor="let hospital of hospitales">
+      <ion-col  size="12" size-sm="6" size-md="4" size-lg="3" size-xl="2" *ngFor="let hospital of hospitales">
         <ion-card (click)="verDetalle(hospital._id)">
           <ion-img [src]="'http://localhost:3000/hospital/imagen/' + hospital.img" alt="Imagen del hospital"></ion-img>
 

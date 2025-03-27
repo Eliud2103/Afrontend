@@ -86,6 +86,14 @@ export class DetailCardPage implements OnInit {
     }
   }
 
+  getWhatsAppLink(): string {
+    const phone = this.item.telefono || this.item.telefono_farmacia;
+    if (!phone) return '#'; // Si no hay número, evita el enlace roto
+
+    const formattedPhone = phone.replace(/\D/g, ''); // Limpia el número (sin espacios ni símbolos)
+    return `https://wa.me/${formattedPhone}`; // Enlace de WhatsApp con el número
+  }
+
   setRating(index: number) {
     if (this.rating === index + 1) {
       this.rating = 0;

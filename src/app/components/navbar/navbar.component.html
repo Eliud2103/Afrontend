@@ -19,6 +19,11 @@
           <li class="nav-item">
             <a class="nav-link" href="sobre-nosotros">Sobre nosotros</a>
           </li>
+
+        <!-- Botón de emergencia (oculto para hospitales, farmacias y admin) -->
+  <li class="nav-item" *ngIf="isEmergencyButtonVisible()">
+    <a class="nav-link btn-emergency" href="tel:911">🚨 Emergencia</a>
+  </li>
           <ng-container *ngIf="role === 'hospital'">
             <li class="nav-item">
               <a class="nav-link" href="hos-form">Publicar noticia</a>

@@ -50,6 +50,10 @@ export class NavbarComponent implements OnInit {
     this.checkAuthentication();
   }
 
+  isEmergencyButtonVisible(): boolean {
+    return this.role !== 'hospital' && this.role !== 'farmacia' && this.role !== 'admin';
+  }
+
   // Verificar si el usuario está autenticado
   checkAuthentication() {
     const token = localStorage.getItem('authToken'); // Verifica si hay un token guardado
