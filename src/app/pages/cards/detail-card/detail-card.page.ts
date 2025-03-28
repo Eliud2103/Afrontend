@@ -47,23 +47,12 @@ export class DetailCardPage implements OnInit {
   }
 
   ngOnInit() {
-
-    this.fullName = localStorage.getItem(this.fullName) || 'Invitado';
+    this.fullName = localStorage.getItem('fullName') || 'Invitado';
     this.isAuthenticated = this.authService.isAuthenticated();
-    console.log("¿Usuario autenticado?:", this.isAuthenticated);
-
-    if (this.isAuthenticated) {
-      this.fullName = localStorage.getItem('fullName') || 'Invitado';
-    }
 
     const id = this.route.snapshot.paramMap.get('id');
     const navigationState = this.router.getCurrentNavigation()?.extras.state;
     this.itemType = navigationState?.['type'] || 'hospital';
-
-    const storedRating = localStorage.getItem(`${this.itemType}Rating`);
-    if (storedRating) {
-      this.rating = parseInt(storedRating, 10);
-    }
 
     if (id) {
       if (this.itemType === 'hospital') {
@@ -71,6 +60,10 @@ export class DetailCardPage implements OnInit {
           (data) => {
             this.item = data;
             this.comentarios = this.item.comentarios || [];
+
+            // Recuperar calificación desde localStorage
+            const storedRating = localStorage.getItem(`${this.itemType}Rating-${this.item._id}`);
+            this.rating = storedRating ? parseInt(storedRating, 10) : 0;
           },
           (error) => console.error('Error al obtener detalles del hospital', error)
         );
@@ -79,6 +72,10 @@ export class DetailCardPage implements OnInit {
           (data) => {
             this.item = data;
             this.comentarios = this.item.comentarios || [];
+
+            // Recuperar calificación desde localStorage
+            const storedRating = localStorage.getItem(`${this.itemType}Rating-${this.item._id}`);
+            this.rating = storedRating ? parseInt(storedRating, 10) : 0;
           },
           (error) => console.error('Error al obtener detalles de la farmacia', error)
         );
@@ -93,16 +90,11 @@ export class DetailCardPage implements OnInit {
     const formattedPhone = phone.replace(/\D/g, ''); // Limpia el número (sin espacios ni símbolos)
     return `https://wa.me/${formattedPhone}`; // Enlace de WhatsApp con el número
   }
-
   setRating(index: number) {
-    if (this.rating === index + 1) {
-      this.rating = 0;
-      localStorage.removeItem(`${this.itemType}Rating`);
-    } else {
-      this.rating = index + 1;
-      localStorage.setItem(`${this.itemType}Rating`, this.rating.toString());
-    }
+    this.rating = index + 1;
+    localStorage.setItem(`${this.itemType}Rating-${this.item._id}`, this.rating.toString());
   }
+
 
   publicarComentario() {
     if (!this.isAuthenticated) {

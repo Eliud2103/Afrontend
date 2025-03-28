@@ -1,25 +1,29 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol, IonSearchbar, IonImg } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol, IonSearchbar, IonImg, IonIcon } from '@ionic/angular/standalone';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { StorageService } from 'src/app/services/storage.service';
 import { Router } from '@angular/router';
 import { Farmacia } from 'src/app/interfaces/farmacia.model';
 import { FarmaciaService } from 'src/app/services/farmacia.service';
+import { star, starOutline } from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 
 @Component({
   selector: 'app-far-cards',
   templateUrl: './far-cards.page.html',
   styleUrls: ['./far-cards.page.scss'],
   standalone: true,
-  imports: [IonImg, IonSearchbar, IonCard, IonCardContent, IonGrid, IonRow, IonCol, IonCardTitle, IonCardHeader, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, NavbarComponent]
+  imports: [IonIcon, IonImg, IonSearchbar, IonCard, IonCardContent, IonGrid, IonRow, IonCol, IonCardTitle, IonCardHeader, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, NavbarComponent]
 })
 export class FarCardsPage implements OnInit {
    private _farmacias = inject(FarmaciaService );
   farmacias: Farmacia[] = [];
   selectedFile: File | null = null;
   isSearching: boolean = false;
+    starIcon = star;
+    starOutlineIcon = starOutline;
 
   constructor(
     private router: Router,
@@ -28,24 +32,21 @@ export class FarCardsPage implements OnInit {
   ) {}
 
   ngOnInit() {
+    addIcons({star,starOutline})
     this.farmaciaService.getFarmacias().subscribe(
       (data) => {
-        // Mapear las farmacias y asegurarse de que las imágenes sean válidas
         this.farmacias = data.map(farmacia => ({
           ...farmacia,
-          // Asegurarse de que la imagen sea válida
+          rating: localStorage.getItem(`farmaciaRating-${farmacia._id}`)
+            ? parseInt(localStorage.getItem(`farmaciaRating-${farmacia._id}`)!, 10)
+            : farmacia.rating ?? 0,
           img: farmacia.img
         }));
-        console.log('Farmacias recibidas:', this.farmacias); // Para depurar y verificar que los datos sean correctos
+        console.log('Farmacias con calificación:', this.farmacias);
       },
-      (error) => {
-        console.error('Error al obtener farmacias', error);
-      }
+      (error) => console.error('Error al obtener farmacias', error)
     );
   }
-
-
-
 
 
   buscarFarmacia(event: any) {
@@ -53,26 +54,29 @@ export class FarCardsPage implements OnInit {
     this.isSearching = query.length > 0;
 
     if (!query) {
-      // Si el campo está vacío, volvemos a cargar todas las farmacias
       this._farmacias.getFarmacias().subscribe(
         (data) => {
-          this.farmacias = [...data.map(farmacia => ({
+          this.farmacias = data.map(farmacia => ({
             ...farmacia,
-            rating: farmacia.rating ?? 0,
+            rating: localStorage.getItem(`farmaciaRating-${farmacia._id}`)
+              ? parseInt(localStorage.getItem(`farmaciaRating-${farmacia._id}`)!, 10)
+              : farmacia.rating ?? 0,
             img: farmacia.img?.startsWith('http') ? farmacia.img : `http://localhost:3000/file/${farmacia.img}`
-          }))];
+          }));
         },
-        (error) => {
-          console.error('Error al obtener farmacias', error);
-        }
+        (error) => console.error('Error al obtener farmacias', error)
       );
       return;
     }
 
-    // Realizamos la búsqueda cuando hay un término ingresado
     this._farmacias.searchFarmacia(query).subscribe(
       (farmacias) => {
-        this.farmacias = [...farmacias]; // Forzamos la actualización de la lista
+        this.farmacias = farmacias.map(farmacia => ({
+          ...farmacia,
+          rating: localStorage.getItem(`farmaciaRating-${farmacia._id}`)
+            ? parseInt(localStorage.getItem(`farmaciaRating-${farmacia._id}`)!, 10)
+            : farmacia.rating ?? 0
+        }));
       },
       (error) => {
         console.error('Error al buscar farmacias:', error);
@@ -80,6 +84,12 @@ export class FarCardsPage implements OnInit {
       }
     );
   }
+
+
+
+
+
+
 
   // Método para redirigir a la página de detalles de la farmacia
   verDetalle(id: string) {

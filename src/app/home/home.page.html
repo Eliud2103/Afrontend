@@ -4,17 +4,34 @@
 
   <ion-grid>
     <ion-row>
-      <ion-col size="6" size-md="4" size-lg="3" *ngFor="let publicacion of publicaciones">
-        <ion-card  (click)="verDetalle(publicacion._id)" class="card-publicacion">
-          <ion-card-header>
-            <ion-card-title>{{ publicacion.titulo }}</ion-card-title>
-          </ion-card-header>
+      <ion-col size="12" size-sm="6" size-md="4" size-lg="3" size-xl="2" *ngFor="let publicacion of publicaciones">
 
-          <ion-card-content>
-            <ion-img [src]="publicacion.img" alt="Imagen de la publicación" class="imagen-publicacion"></ion-img>
-            <ion-label class="descripcion-publicacion">{{ publicacion.descripcion }}</ion-label>
-          </ion-card-content>
-        </ion-card>
+          <ion-card  (click)="verDetalle(publicacion._id)" class="card-publicacion">
+            <ion-card-header>
+              <ion-card-title>{{ publicacion.titulo }}</ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content>
+              <ion-img [src]="publicacion.img" alt="Imagen de la publicación" class="imagen-publicacion"></ion-img>
+              <ion-label class="descripcion-publicacion">{{ publicacion.descripcion }}</ion-label>
+            </ion-card-content>
+
+
+       <ion-button fill="clear" (click)="toggleLike(publicacion, $event)">
+  <ion-icon
+    [name]="publicacion.liked ? 'heart' : 'heart-outline'"
+    [color]="publicacion.liked ? 'danger' : 'medium'">
+  </ion-icon>
+  <span>{{ publicacion.likesCount }}</span>
+</ion-button>
+
+
+          </ion-card>
+
+
+
+
+
       </ion-col>
     </ion-row>
   </ion-grid>

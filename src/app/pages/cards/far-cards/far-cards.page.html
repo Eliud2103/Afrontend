@@ -14,6 +14,15 @@
           <ion-card-content>
             <h5>{{ farmacia.descripcion }}</h5>
             <p class="tipo">{{ farmacia.tipo_farmacia }}</p>
+
+            <div class="star-rating">
+              <ion-icon
+                *ngFor="let star of [1,2,3,4,5]; let i = index"
+                [icon]="i < (farmacia.rating || 0) ? starIcon : starOutlineIcon"
+                color="warning"
+                class="star-icon">
+              </ion-icon>
+            </div>
           </ion-card-content>
         </ion-card>
       </ion-col>

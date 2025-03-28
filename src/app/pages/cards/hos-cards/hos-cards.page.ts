@@ -23,6 +23,7 @@ import { ChangeDetectorRef } from '@angular/core';
 export class HosCardsPage implements OnInit {
   rating: number = 0;
 
+
   private _hospitales = inject(HospitalService);
   hospitales: Hospital[] = [];  // Lista de hospitales
   starIcon = star;
@@ -38,18 +39,22 @@ export class HosCardsPage implements OnInit {
   ngOnInit() {
    addIcons({star,starOutline})
 
-    this.hospitalService.getHospitales().subscribe(
-      (data) => {
-        this.hospitales = data.map(hospital => ({
-          ...hospital,
-          rating: hospital.rating ?? 0,
-          img: hospital.img
-        }));
-      },
-      (error) => {
-        console.error('Error al obtener hospitales', error);
-      }
-    );
+   this.hospitalService.getHospitales().subscribe(
+    (data) => {
+      this.hospitales = data.map(hospital => ({
+        ...hospital,
+        rating: localStorage.getItem(`hospitalRating-${hospital._id}`)
+          ? parseInt(localStorage.getItem(`hospitalRating-${hospital._id}`)!, 10)
+          : hospital.rating ?? 0, // Usar la calificación almacenada o la del backend
+        img: hospital.img
+      }));
+      this.cdr.detectChanges();
+    },
+    (error) => {
+      console.error('Error al obtener hospitales', error);
+    }
+  );
+
 
   }
 

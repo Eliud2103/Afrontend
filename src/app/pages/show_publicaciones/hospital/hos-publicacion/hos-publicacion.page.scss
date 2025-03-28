@@ -15,3 +15,56 @@ h3{
 p{
   text-align: center;
 }
+.card-publicacion {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Todas las cards tendrán la misma altura */
+}
+
+ion-card-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+ion-img {
+  width: 100%;
+  height: 150px; /* Tamaño fijo para las imágenes */
+  object-fit: cover; /* Ajusta la imagen sin deformarla */
+  border-radius: 8px;
+}
+
+ion-label {
+  flex-grow: 1;
+  max-height: 50px; /* Limita la altura de la descripción */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Agrega "..." si el texto es muy largo */
+  white-space: nowrap;
+}
+
+.eliminar-btn {
+  margin-top: auto; /* Empuja el botón hacia abajo */
+  width: 100%;
+}
+
+ion-card {
+  margin-bottom: 15px; // Espaciado entre tarjetas
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+ion-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); // Sombra suave por defecto
+}
+
+ion-card:hover {
+  transform: scale(1.05); // Agranda la tarjeta un 5%
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2); // Aumenta la sombra para resaltar
+}
