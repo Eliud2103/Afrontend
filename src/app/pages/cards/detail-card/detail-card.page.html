@@ -1,87 +1,102 @@
 <app-navbar></app-navbar>
 
 <ion-content>
-  <!-- Tarjeta con la información del hospital o farmacia -->
-  <ion-card *ngIf="item.nombre_hospital || item.nombre_farmacia; else loading">
-    <ion-card-header>
-      <h1 class="hospital-title">
-        {{ item.nombre_hospital || item.nombre_farmacia || 'Cargando...' }}
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="8" offset-md="2">
+        <ion-card *ngIf="item.nombre_hospital || item.nombre_farmacia; else loading">
 
-      </h1>
-      <li class="whats" class="nav-item">
-        <a class="nav-link btn-emergency" [attr.href]="'tel:' + (item.telefono || item.telefono_farmacia)">
-          <ion-img src="../../../../assets/whatss.png"></ion-img>
-        </a>
-      </li>
+          <ion-card-header class="header-container">
+            <div class="image-container">
+              <ion-img
+                class="hospital-img"
+                [src]="'http://localhost:3000/' + (itemType === 'hospital' ? 'hospital' : 'farmacia') + '/imagen/' + item.img"
+                alt="Imagen de {{ item.nombre_hospital || item.nombre_farmacia }}">
+              </ion-img>
+            </div>
 
+            <div class="title-container">
+              <h1 class="hospital-title">
+                {{ item.nombre_hospital || item.nombre_farmacia || 'Cargando...' }}
+              </h1>
+              <a class="btn-emergency" [attr.href]="'tel:' + (item.telefono || item.telefono_farmacia)">
+                <ion-img class="whatsapp-icon" src="../../../../assets/whatss.png"></ion-img>
+              </a>
+            </div>
+          </ion-card-header>
 
+          <ion-card-content>
+            <ion-list lines="none">
+              <ion-item>
+                <ion-label><strong>Tipo:</strong> {{ item.tipo_hospital || item.tipo_farmacia }}</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label><strong>Descripción:</strong> {{ item.descripcion || item.descripcion_farmacia }}</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label><strong>Dirección:</strong> {{ item.direccion || item.direccion_farmacia }}</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label><strong>Teléfono:</strong> {{ item.telefono || item.telefono_farmacia }}</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label><strong>Misión:</strong> {{ item.mision || 'No disponible' }}</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label><strong>Visión:</strong> {{ item.vision || 'No disponible' }}</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label><strong>Email:</strong> {{ item.email_hospital || item.email_farmacia }}</ion-label>
+              </ion-item>
+            </ion-list>
 
+            <!-- Sección de Estrellas -->
+            <div class="star-rating">
+              <ion-icon
+                *ngFor="let star of [0,1,2,3,4]; let i = index"
+                (click)="setRating(i)"
+                [icon]="i < rating ? starIcon : starOutlineIcon"
+                color="warning"
+                class="star-icon">
+              </ion-icon>
+            </div>
 
-    </ion-card-header>
+            <!-- Sección de comentarios -->
+            <div class="comments-section">
+              <h3>Comentarios</h3>
+              <ion-list>
+                <ion-item *ngFor="let comment of comentarios" class="comentario-item">
+                  <ion-label>
+                    <p><strong>{{ comment.usuario }}:</strong> {{ comment.texto }}</p>
+                  </ion-label>
+                </ion-item>
+              </ion-list>
 
-    <ion-card-content>
-      <!-- Información del hospital o farmacia -->
-      <p><strong>Tipo:</strong> {{ item.tipo_hospital || item.tipo_farmacia }}</p>
-      <p><strong>Descripción:</strong> {{ item.descripcion || item.descripcion_farmacia }}</p>
-      <p><strong>Dirección:</strong> {{ item.direccion || item.direccion_farmacia }}</p>
-      <p><strong>Teléfono:</strong> {{ item.telefono || item.telefono_farmacia }}</p>
-      <p><strong>Misión:</strong> {{ item.vision || 'No disponible' }}</p>
-      <p><strong>Visión:</strong> {{ item.mision || 'No disponible' }}</p>
-      <p><strong>Email:</strong> {{ item.email_hospital || item.email_farmacia }}</p>
-      <!-- Icono de WhatsApp para contactar -->
+              <div *ngIf="isAuthenticated; else notLoggedIn">
+                <form [formGroup]="comentarioForm">
+                  <h3>{{ fullName }}</h3>
+                  <ion-item>
+                    <ion-textarea formControlName="comentario" placeholder="Escribe tu comentario..."></ion-textarea>
+                  </ion-item>
+                  <ion-button expand="full" color="warning" (click)="publicarComentario()">Publicar</ion-button>
+                </form>
+              </div>
 
+              <ng-template #notLoggedIn>
+                <p>Debes iniciar sesión para comentar.</p>
+                <ion-button expand="full" color="primary" (click)="router.navigate(['/login'])">Iniciar sesión</ion-button>
+              </ng-template>
+            </div>
+          </ion-card-content>
+        </ion-card>
 
-
-
-      <!-- Sección de Estrellas -->
-      <div class="star-rating">
-        <ion-icon
-          *ngFor="let star of [0,1,2,3,4]; let i = index"
-          (click)="setRating(i)"
-          [icon]="i < rating ? starIcon : starOutlineIcon"
-          color="warning"
-          class="star-icon">
-        </ion-icon>
-      </div>
-
-      <!-- Sección de comentarios -->
-      <div class="comments-section">
-        <h3>Comentarios</h3>
-        <ion-list>
-          <ion-item *ngFor="let comment of comentarios" class="comentario-item">
-            <ion-label>
-              <p><strong>{{ comment.usuario }}:</strong> {{ comment.texto }}</p>
-            </ion-label>
-          </ion-item>
-        </ion-list>
-
-        <!-- Si el usuario está autenticado, mostrar el formulario -->
-        <div *ngIf="isAuthenticated; else notLoggedIn">
-          <form [formGroup]="comentarioForm">
-            <h3>{{ fullName }}</h3>
-            <ion-item>
-              <ion-textarea
-                formControlName="comentario"
-                placeholder="Escribe tu comentario...">
-              </ion-textarea>
-              <ion-button color="warning" (click)="publicarComentario()">Publicar</ion-button>
-            </ion-item>
-          </form>
-        </div>
-
-        <!-- Mensaje para usuarios no autenticados -->
-        <ng-template #notLoggedIn>
-          <p>Debes iniciar sesión para comentar.</p>
-          <ion-button color="primary" (click)="router.navigate(['/login'])">Iniciar sesión</ion-button>
+        <!-- Mensaje de carga mientras se obtiene la información -->
+        <ng-template #loading>
+          <div class="loading-container">
+            <p class="loading-text">Cargando información...</p>
+          </div>
         </ng-template>
-      </div>
-    </ion-card-content>
-  </ion-card>
-
-  <!-- Mensaje de carga mientras se obtiene la información -->
-  <ng-template #loading>
-    <div class="loading-container">
-      <p class="loading-text">Cargando información...</p>
-    </div>
-  </ng-template>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

@@ -110,5 +110,44 @@ ion-card-content {
   font-size: 1.1rem;
   color: #D1D1D1; // Gris claro para buena legibilidad
   line-height: 1.6;
-  padding: 15px;
+  padding: 5px;
+}
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  text-align: center;
+  max-width: 2000px;
+}
+
+.card-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  width: 30%;
+  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.card-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+}
+
+.card:hover {
+  width: 50%;
+  transform: scale(1.1);
+}
+
+.card:hover .card-content {
+  max-height: 200px;
 }
