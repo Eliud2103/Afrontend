@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 
+
 export const routes: Routes = [
   {
     path: 'home',
@@ -161,7 +162,8 @@ export const routes: Routes = [
   {
     path: 'detail-publicacion/:id',
     loadComponent: () => import('./pages/show_publicaciones/detail-publicacion/detail-publicacion.page').then( m => m.DetailPublicacionPage)
-  },  {
+  },
+  {
     path: 'mapa',
     loadComponent: () => import('./pages/mapa/mapa.page').then( m => m.MapaPage)
   },
