@@ -66,6 +66,16 @@ export class AuthService {
     console.log('Usuario ha cerrado sesión');
 
   }
+  getCurrentUser() {
+    const userData = {
+      token: localStorage.getItem('token'),
+      role: localStorage.getItem('role'),
+      fullName: localStorage.getItem('fullName'),
+      email: localStorage.getItem('emailchido'), // Usar el valor del email, si lo tienes
+    };
+
+    return userData; // Devuelve los datos del usuario almacenados
+  }
 
   // Método para verificar si hay un usuario autenticado
   isAuthenticated(): boolean {
@@ -177,6 +187,11 @@ getImage(fileId: string): Observable<Blob> {
   getUserName(): string {
     return localStorage.getItem('userName') || 'Anónimo';
   }
+
+  // Método para obtener el rol del usuario desde localStorage
+getUserRole(): string | null {
+  return localStorage.getItem('role');
+}
 
 
 

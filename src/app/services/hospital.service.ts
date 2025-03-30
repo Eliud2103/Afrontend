@@ -33,10 +33,15 @@ export class HospitalService {
     return this.http.post(`${this.apiUrl}/${hospitalId}/comentarios`, { comentario });
   }
 
-  // ✅ Método para eliminar un hospital
-  eliminarHospital(hospitalId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${hospitalId}`);
-  }
+
+
+// Método para eliminar un hospital
+eliminarHospital(hospitalId: string): Observable<any> {
+  return this.http.delete(`${this.apiUrl}/${hospitalId}`);
+}
+
+
+
   searchHospital(tipo: string) {
     return this._http.get<Hospital[]>(`http://localhost:3000/hospital/buscar?tipo=${tipo}`);
   }

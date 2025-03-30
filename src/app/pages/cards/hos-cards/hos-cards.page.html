@@ -2,9 +2,15 @@
 
 <ion-content [fullscreen]="true">
   <h3>Hospitales</h3>
+
     <!-- Agregar ion-searchbar para búsqueda -->
    <!-- Ion Searchbar con debounce -->
   <ion-searchbar class="search-white" debounce="350" (ionInput)="buscarHospital($event)" placeholder="Buscar hospital por especialidad"></ion-searchbar>
+  <div *ngIf="isAdmin()">
+  <ion-button color="primary" (click)="agregarHospital()">Agregar Hospital</ion-button>
+
+  </div>
+
 
   <ion-grid>
     <ion-row>
@@ -28,6 +34,10 @@
                 color="warning"
                 class="star-icon">
               </ion-icon>
+            </div>
+            <!-- Botones de administración solo visibles si el usuario es admin -->
+            <div *ngIf="isAdmin()">
+              <ion-button color="danger" (click)="eliminarHospital(hospital._id); $event.stopPropagation()">Eliminar</ion-button>
             </div>
 
           </ion-card-content>
