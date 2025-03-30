@@ -1,0 +1,36 @@
+<app-navbar-forms></app-navbar-forms>
+
+<ion-content [fullscreen]="true">
+  <ion-grid class="grid-center">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size-xs="12" size-sm="8" size-md="6" size-lg="6">
+        <div class="container">
+          <h3>Registro de Administrador</h3>
+
+          <form (ngSubmit)="register()">
+            <ion-label>Nombre completo</ion-label>
+            <ion-input type="text" [(ngModel)]="user.fullName" name="fullName" required></ion-input> <br>
+
+            <ion-label>Apellido Paterno</ion-label>
+            <ion-input type="text" [(ngModel)]="user.lastNameFather" name="lastNameFather" required></ion-input> <br>
+
+            <ion-label>Apellido Materno</ion-label>
+            <ion-input type="text" [(ngModel)]="user.lastNameMother" name="lastNameMother" required></ion-input> <br>
+
+            <ion-label>Correo electrónico</ion-label>
+            <ion-input type="email" [(ngModel)]="user.email" name="email" required></ion-input> <br>
+
+            <ion-label>Contraseña</ion-label>
+            <ion-input type="password" [(ngModel)]="user.password" name="password" required>
+              <ion-icon [name]="showPassword ? 'eye-off' : 'eye'" slot="end" (click)="togglePasswordVisibility()"></ion-icon>
+            </ion-input> <br>
+
+            <ion-button class="login-button" expand="block" type="submit">Registrar Administrador</ion-button>
+          </form>
+
+          <app-si-tienes-cuenta></app-si-tienes-cuenta>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

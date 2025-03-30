@@ -168,6 +168,12 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/mapa/mapa.page').then( m => m.MapaPage)
   },
 
+  {
+    path: 'admin-register',
+    loadComponent: () => import('./register_forms/admin/admin-register/admin-register.page').then( m => m.AdminRegisterPage)
+  },
+
+
 
 
 ];

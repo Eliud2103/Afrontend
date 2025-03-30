@@ -38,6 +38,15 @@ export class AuthService {
     );
   }
 
+  /////////////////////   Admin   //////////////////////
+
+  adminRegister(userData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/adminRegister`, userData).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+
   // Método para guardar el token y datos en localStorage
   setToken(token: string): void {
     localStorage.setItem('authToken', token);
@@ -116,6 +125,7 @@ console.log(localStorage.getItem('fullName'));
     console.error('Error al registrar hospital', error);
     return throwError(errorMessage);
   }
+
 
   /////////////////////////////////////////////////////////////Farmacias///////////////////////////////////////////////////
   far_register(farmaciaData: any): Observable<any> {
