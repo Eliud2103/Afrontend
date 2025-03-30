@@ -35,6 +35,12 @@ export class FarmaciaService {
   }
 
 
+// Método para eliminar un hospital
+eliminarFarmacia(farmaciaId: string): Observable<any> {
+  return this.http.delete(`${this.apiUrl}/${farmaciaId}`);
+}
+
+
    searchFarmacia(tipo: string) {
       return this._http.get<Farmacia[]>(`http://localhost:3000/farmacia/buscar?tipo=${tipo}`);
     }
