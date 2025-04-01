@@ -37,3 +37,27 @@
 @import '@ionic/angular/css/palettes/dark.system.css';
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
+/* Aplica Roboto a los títulos */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Aplica Poppins al resto del contenido */
+/* Aplica Roboto a los títulos */
+/* Aplica Roboto a los títulos */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto', sans-serif;
+}
+ion-card-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700; /* Hace los títulos más destacados */
+}
+
+/* Aplica Poppins al resto del contenido */
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+
+
+

@@ -171,7 +171,11 @@ export const routes: Routes = [
   {
     path: 'admin-register',
     loadComponent: () => import('./register_forms/admin/admin-register/admin-register.page').then( m => m.AdminRegisterPage)
+  },  {
+    path: 'mis-datos',
+    loadComponent: () => import('./auth/mis-datos/mis-datos.page').then( m => m.MisDatosPage)
   },
+
 
 
 

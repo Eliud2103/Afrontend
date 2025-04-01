@@ -19,17 +19,36 @@ export class AuthService {
 
   // Método para hacer la solicitud de login
   login(email: string, password: string) {
-    return this.http.post<{ accessToken: string; role: string; fullName: string; email: string }>(
-      'http://localhost:3000/auth/login',
+    return this.http.post<{ accessToken: string; role: string; fullName: string; email: string; lastNameFather: string; lastNameMother:string; userId: string }>(
+      `${this.apiUrl}/login`,
       { email, password }
     ).pipe(
       tap((response) => {
+        console.log('📌 Respuesta del backend:', response);
         localStorage.setItem('token', response.accessToken);
         localStorage.setItem('role', response.role);
-        localStorage.setItem('fullName', response.fullName); // Guardar el nombre real del usuario
+        localStorage.setItem('fullName', response.fullName);
+        localStorage.setItem('lastNameFather', response.lastNameFather);
+        localStorage.setItem('lastNameMother', response.lastNameMother);
+        localStorage.setItem('userId', response.userId);  // 🔹 Guardar el userId correctamente
       })
     );
   }
+  getDecodedToken(): any {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+
+    try {
+      const decoded = JSON.parse(atob(token.split('.')[1]));
+      console.log('🔍 Token decodificado:', decoded);
+      return decoded;
+    } catch (error) {
+      console.error('❌ Error al decodificar el token:', error);
+      return null;
+    }
+  }
+
+
 
   // Método para hacer la solicitud de registro
   register(userData: any): Observable<any> {
@@ -66,12 +85,39 @@ export class AuthService {
     console.log('Usuario ha cerrado sesión');
 
   }
+
+  getUserData(): Observable<any> {
+    const token = localStorage.getItem('authToken');
+
+    if (!token) {
+      return throwError('No se encontró el token de autenticación');
+    }
+
+    return this.http.get<any>(`${this.apiUrl}/profile`, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).pipe(
+      tap(user => {
+        console.log('Datos del usuario recibidos:', user);
+        localStorage.setItem('userData', JSON.stringify({
+          fullName: user.fullName,
+          lastNameFather: user.lastNameFather, // Guardar apellido paterno
+          lastNameMother: user.lastNameMother, // Guardar apellido materno
+          email: user.email
+        }));
+      }),
+      catchError(this.handleError)
+    );
+}
+
+
   getCurrentUser() {
     const userData = {
       token: localStorage.getItem('token'),
       role: localStorage.getItem('role'),
       fullName: localStorage.getItem('fullName'),
-      email: localStorage.getItem('emailchido'), // Usar el valor del email, si lo tienes
+      lastNameFather: localStorage.getItem('lastNameFather'),
+      lastNameMother: localStorage.getItem('lastNameMother'),
+      email: localStorage.getItem('email  '), // Usar el valor del email, si lo tienes
     };
 
     return userData; // Devuelve los datos del usuario almacenados

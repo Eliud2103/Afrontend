@@ -10,6 +10,9 @@ interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
+  getUserData() {
+    throw new Error('Method not implemented.');
+  }
   /*private apiUrl = 'http://localhost:3000/auth/login';  // URL de tu API backend
 
   constructor(private http: HttpClient) {}
