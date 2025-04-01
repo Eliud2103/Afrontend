@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonLabel, IonText, IonItem, IonList, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonCol, IonGrid, IonRow } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonLabel, IonText, IonItem, IonList, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonCol, IonGrid, IonRow, IonButton } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { Router } from '@angular/router'; // Importar Router
@@ -13,7 +13,7 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: './mis-datos.page.html',
   styleUrls: ['./mis-datos.page.scss'],
   standalone: true,
-  imports: [IonRow, IonGrid, IonCol, IonCardContent, NavbarComponent, IonCardTitle, IonCardHeader, IonCard, IonList, IonItem, IonText, IonLabel, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonButton, IonRow, IonGrid, IonCol, IonCardContent, NavbarComponent, IonCardTitle, IonCardHeader, IonCard, IonList, IonItem, IonText, IonLabel, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
 export class MisDatosPage implements OnInit {
   user: any = {}; // Variable para almacenar los datos del usuario
@@ -31,6 +31,22 @@ export class MisDatosPage implements OnInit {
     }
   }
 
+  // Variable para controlar el estado de edición
+  isEditing: boolean = false;
+
+  // Función para alternar el modo de edición
+  toggleEdit() {
+    this.isEditing = !this.isEditing;
+    if (!this.isEditing) {
+      this.saveChanges(); // Guardar los cambios cuando se termine de editar
+    }
+  }
+
+  // Función para guardar los cambios (aquí puedes agregar lógica para enviar los datos a un backend)
+  saveChanges() {
+    console.log('Cambios guardados:', this.user);
+    // Aquí puedes hacer una llamada HTTP para guardar los datos
+  }
   // Verificar si el usuario está autenticado
   checkAuthStatus() {
     this.isAuthenticated = this.authService.isAuthenticated(); // Usar el método isAuthenticated del AuthService

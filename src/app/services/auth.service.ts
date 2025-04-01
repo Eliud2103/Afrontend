@@ -17,6 +17,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
+
   // Método para hacer la solicitud de login
   login(email: string, password: string) {
     return this.http.post<{ accessToken: string; role: string; fullName: string; email: string; lastNameFather: string; lastNameMother:string; userId: string }>(

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonLabel, IonCol, IonRow, IonGrid, IonInput, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonLabel, IonCol, IonRow, IonGrid, IonInput, IonIcon, IonItem } from '@ionic/angular/standalone';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -14,7 +14,7 @@ import { eye } from 'ionicons/icons';
   templateUrl: './cambio-pass.page.html',
   styleUrls: ['./cambio-pass.page.scss'],
   standalone: true,
-  imports: [IonIcon,
+  imports: [IonItem, IonIcon,
     IonInput, IonGrid, IonRow, IonCol, IonLabel, IonButton, IonContent,
     IonHeader, IonTitle, IonToolbar, RouterLink, RouterLinkActive,
     CommonModule, FormsModule, NavbarComponent
@@ -102,6 +102,12 @@ export class CambioPassPage implements OnInit {
         this.passwords.currentPassword,
         this.passwords.newPassword
       )
+      response.subscribe( r => {
+        console.log();
+
+      })
+      console.log(response);
+
 
       // Eliminar el token después de cambiar la contraseña
       localStorage.removeItem('authToken');
