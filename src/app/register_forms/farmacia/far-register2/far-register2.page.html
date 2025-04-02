@@ -18,7 +18,13 @@
             <ion-select formControlName="tipo_farmacia" required>
               <ion-select-option value="privada">Privada</ion-select-option>
               <ion-select-option value="publica">Pública</ion-select-option>
-            </ion-select> <br>
+              <ion-select-option value="comunitaria">Comunitaria</ion-select-option>
+              <ion-select-option value="especialidad">Especialidad</ion-select-option>
+              <ion-select-option value="hospitalaria">Hospitalaria</ion-select-option>
+              <ion-select-option value="homeopatica">Homeopática</ion-select-option>
+              <ion-select-option value="generica">Genérica</ion-select-option>
+              <ion-select-option value="institucional">Institucional</ion-select-option>
+            </ion-select><br>
 
             <!-- Número de licencia sanitaria -->
             <ion-label>Número de licencia sanitaria</ion-label>
@@ -36,7 +42,6 @@
             <ion-button class="login-button" expand="block" type="submit" [disabled]="far_register2.invalid">Siguiente</ion-button>
           </form>
 
-          <app-si-tienes-cuenta></app-si-tienes-cuenta>
         </div>
       </ion-col>
     </ion-row>

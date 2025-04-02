@@ -10,19 +10,19 @@
           <form [formGroup]="hos_register3" (ngSubmit)="finalizeRegistration()">
             <!-- Correo electrónico -->
             <ion-label>Correo electrónico</ion-label>
-            <ion-input formControlName="email_hospital" type="email" required></ion-input> <br>
+            <ion-input formControlName="email_hospital" placeholder="Ingrese el correo" type="email" required></ion-input> <br>
 
             <!-- Misión -->
             <ion-label>Misión</ion-label>
-            <ion-input formControlName="mision" type="text" required></ion-input> <br>
+            <ion-input formControlName="mision" placeholder="Ingrese la misión del hospital" type="text" required></ion-input> <br>
 
             <!-- Visión -->
             <ion-label>Visión</ion-label>
-            <ion-input formControlName="vision" type="text" required></ion-input> <br>
+            <ion-input formControlName="vision" type="text" placeholder="Ingrese la visióon del hospital" required></ion-input> <br>
 
             <!-- Descripción -->
             <ion-label>Descripción del hospital</ion-label>
-            <ion-input formControlName="descripcion" type="text"></ion-input> <br>
+            <ion-input formControlName="descripcion" placeholder="Ingrese una breve descrición del hospital" type="text"></ion-input> <br>
 
             <!-- Imagen del hospital -->
             <ion-label>Imagen del hospital</ion-label>
@@ -32,7 +32,6 @@
             <ion-button expand="block" type="submit" [disabled]="hos_register3.invalid">Finalizar Registro</ion-button>
           </form>
 
-          <app-si-tienes-cuenta></app-si-tienes-cuenta>
 
         </div>
       </ion-col>

@@ -51,20 +51,20 @@ export class HosPublicacionPage implements OnInit {
   constructor(private publicacionesService: PublicacionesService, private router: Router) {}
 
   ngOnInit() {
-    // Al iniciar el componente, obtenemos las publicaciones del backend
     this.publicacionesService.obtenerPublicaciones().subscribe({
       next: (data) => {
-        this.publicaciones = data;
+        const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+        this.publicaciones = data.filter(pub => pub.usuarioId === usuario._id); // Filtrar publicaciones del usuario actual
       },
       error: (err) => {
         console.error('Error al obtener publicaciones:', err);
       },
     });
 
-    // Verificamos si el usuario tiene el rol de hospital
     const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
     this.esHospital = usuario.rol === 'hospital';
   }
+
 
   // Método para navegar a la página de detalles
   verDetalle(publicacionId: string) {

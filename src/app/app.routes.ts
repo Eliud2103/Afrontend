@@ -175,6 +175,10 @@ export const routes: Routes = [
     path: 'mis-datos',
     loadComponent: () => import('./auth/mis-datos/mis-datos.page').then( m => m.MisDatosPage)
   },
+  {
+    path: 'mapa-far',
+    loadComponent: () => import('./pages/mapa-far/mapa-far.page').then( m => m.MapaFarPage)
+  },
 
 
 

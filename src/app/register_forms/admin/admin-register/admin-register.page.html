@@ -9,26 +9,25 @@
 
           <form (ngSubmit)="register()">
             <ion-label>Nombre completo</ion-label>
-            <ion-input type="text" [(ngModel)]="user.fullName" name="fullName" required></ion-input> <br>
+            <ion-input type="text" placeholder="Ingrese el nombre completo" [(ngModel)]="user.fullName" name="fullName" required></ion-input> <br>
 
             <ion-label>Apellido Paterno</ion-label>
-            <ion-input type="text" [(ngModel)]="user.lastNameFather" name="lastNameFather" required></ion-input> <br>
+            <ion-input type="text" placeholder="Ingrese el apellido paterno" [(ngModel)]="user.lastNameFather" name="lastNameFather" required></ion-input> <br>
 
             <ion-label>Apellido Materno</ion-label>
-            <ion-input type="text" [(ngModel)]="user.lastNameMother" name="lastNameMother" required></ion-input> <br>
+            <ion-input type="text" placeholder="Ingrese el apellido materno" [(ngModel)]="user.lastNameMother" name="lastNameMother" required></ion-input> <br>
 
             <ion-label>Correo electrónico</ion-label>
-            <ion-input type="email" [(ngModel)]="user.email" name="email" required></ion-input> <br>
+            <ion-input type="email" placeholder="Ingrese el correo electronico" [(ngModel)]="user.email" name="email" required></ion-input> <br>
 
             <ion-label>Contraseña</ion-label>
-            <ion-input type="password" [(ngModel)]="user.password" name="password" required>
+            <ion-input type="password" placeholder="Ingrese la contraseña" [(ngModel)]="user.password" name="password" required>
               <ion-icon [name]="showPassword ? 'eye-off' : 'eye'" slot="end" (click)="togglePasswordVisibility()"></ion-icon>
             </ion-input> <br>
 
             <ion-button class="login-button" expand="block" type="submit">Registrar Administrador</ion-button>
           </form>
 
-          <app-si-tienes-cuenta></app-si-tienes-cuenta>
         </div>
       </ion-col>
     </ion-row>
