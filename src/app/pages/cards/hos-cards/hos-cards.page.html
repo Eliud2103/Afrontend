@@ -7,9 +7,9 @@
    <!-- Ion Searchbar con debounce -->
   <ion-searchbar class="search-white" debounce="350" (ionInput)="buscarHospital($event)" placeholder="Buscar hospital por especialidad"></ion-searchbar>
   <div *ngIf="isAdmin()">
-  <ion-button color="primary" (click)="agregarHospital()">Agregar Hospital</ion-button>
-
+    <ion-button color="success" (click)="agregarHospital()">Agregar Hospital</ion-button>
   </div>
+
 
 
   <ion-grid>

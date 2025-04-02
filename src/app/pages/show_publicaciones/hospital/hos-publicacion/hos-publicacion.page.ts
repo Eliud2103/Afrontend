@@ -24,7 +24,8 @@ import { PublicacionesService } from 'src/app/services/publicaciones.service';
   templateUrl: './hos-publicacion.page.html',
   styleUrls: ['./hos-publicacion.page.scss'],
   standalone: true,
-  imports: [IonCol, IonGrid, IonRow,
+  imports: [
+    IonCol, IonGrid, IonRow,
     IonContent,
     NavbarComponent,
     IonHeader,
@@ -64,7 +65,6 @@ export class HosPublicacionPage implements OnInit {
     const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
     this.esHospital = usuario.rol === 'hospital';
   }
-
 
   // Método para navegar a la página de detalles
   verDetalle(publicacionId: string) {

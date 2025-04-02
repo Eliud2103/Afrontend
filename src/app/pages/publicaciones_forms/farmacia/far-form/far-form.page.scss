@@ -58,3 +58,39 @@ ion-input {
 }
 
 
+/* far-form.page.scss */
+
+/* far-form.page.scss */
+
+.custom-alert {
+  text-align: center;
+}
+
+.custom-alert .alert-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.custom-alert .alert-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.custom-alert .alert-head::before {
+  content: "";
+  width: 100px;
+  height: 100px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-bottom: 10px;
+}
+
+.custom-alert.success .alert-head::before {
+  background-image: url('https://cdn-icons-png.flaticon.com/512/845/845646.png'); /* ✅ Icono verde */
+}
+
+.custom-alert.danger .alert-head::before {
+  background-image: url('https://cdn-icons-png.flaticon.com/512/845/845646.png'); /* ❌ Icono rojo */
+}

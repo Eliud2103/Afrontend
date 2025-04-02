@@ -58,3 +58,16 @@ ion-input {
 }
 
 
+/* hos-form.page.scss */
+
+.alert-error {
+  --background: #f8d7da; /* Color de fondo rojo claro */
+  --color: #721c24; /* Texto color rojo oscuro */
+  --border-color: #f5c6cb; /* Borde rojo claro */
+}
+
+.alert-success {
+  --background: #d4edda; /* Fondo verde claro */
+  --color: #155724; /* Texto verde oscuro */
+  --border-color: #c3e6cb; /* Borde verde claro */
+}

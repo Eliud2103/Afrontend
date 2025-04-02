@@ -4,7 +4,7 @@
   <h3>Farmacias</h3>
   <ion-searchbar class="search-white" debounce="350" (ionInput)="buscarFarmacia($event)" placeholder="Buscar hospital por especialidad"></ion-searchbar>
   <div *ngIf="isAdmin()">
-    <ion-button color="primary" (click)="agregarFarmacia()">Agregar Farmacia</ion-button>
+    <ion-button color="success" (click)="agregarFarmacia()">Agregar Farmacia</ion-button>
 
     </div>
   <ion-grid>

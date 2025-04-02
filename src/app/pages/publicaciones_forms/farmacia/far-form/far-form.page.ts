@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { PublicacionesFarmaciaService } from 'src/app/services/publicaciones-farmacia.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
-// Importaciones de Ionic Standalone
 import {
   IonGrid,
   IonRow,
@@ -17,7 +15,8 @@ import {
   IonTextarea,
   IonButton,
   IonCheckbox,
-  IonItem// ✅ Importamos IonCheckbox
+  IonItem,
+  AlertController
 } from "@ionic/angular/standalone";
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 
@@ -28,16 +27,18 @@ import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
   standalone: true,
   imports: [
     IonGrid, IonRow, IonCol, IonToolbar, IonHeader, IonContent,
-    IonTitle, IonLabel, IonInput, IonTextarea, IonButton, IonCheckbox, // ✅ Agregamos IonCheckbox
-    NavbarComponent, FormsModule,IonItem
+    IonTitle, IonLabel, IonInput, IonTextarea, IonButton, IonCheckbox,
+    NavbarComponent, FormsModule, IonItem
   ]
 })
 export class FarFormPage implements OnInit {
+  alertCtrl = inject(AlertController);
+
   titulo = '';
   descripcion = '';
   contenido = '';
   img: File | null = null;
-  aceptarCondiciones: boolean = false; // ✅ Corregida la variable
+  aceptarCondiciones: boolean = false;
 
   constructor(
     private publicacionesFarmaciaService: PublicacionesFarmaciaService,
@@ -46,19 +47,34 @@ export class FarFormPage implements OnInit {
 
   ngOnInit() {}
 
+  async mostrarAlerta(titulo: string, mensaje: string, tipo: 'error' | 'success' = 'success') {
+    const icono = tipo === 'success' ? 'checkmark-circle-outline' : 'close-circle-outline';
+    const color = tipo === 'success' ? 'success' : 'danger';
+
+    const alert = await this.alertCtrl.create({
+      header: titulo,
+      message: mensaje,
+      buttons: ['OK'],
+      cssClass: `custom-alert ${color}`,
+      mode: 'ios',
+    });
+
+    await alert.present();
+  }
+
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file && file.type.startsWith('image/')) {
       this.img = file;
     } else {
-      alert('Selecciona una imagen válida.');
+      this.mostrarAlerta('Error', 'Selecciona una imagen válida.', 'error');
       this.img = null;
     }
   }
 
   publicar() {
     if (!this.titulo.trim() || !this.descripcion.trim() || !this.contenido.trim() || !this.img || !this.aceptarCondiciones) {
-      alert('Todos los campos y la aceptación de términos son obligatorios.');
+      this.mostrarAlerta('Error', 'Todos los campos y la aceptación de términos son obligatorios.', 'error');
       return;
     }
 
@@ -70,12 +86,12 @@ export class FarFormPage implements OnInit {
     )
     .subscribe({
       next: () => {
-        alert('Publicación agregada correctamente');
+        this.mostrarAlerta('Éxito', 'Publicación agregada correctamente', 'success');
         this.router.navigate(['/home']);
       },
       error: (err) => {
         console.error('Error al agregar publicación:', err);
-        alert('Error al agregar la publicación.');
+        this.mostrarAlerta('Error', 'Error al agregar la publicación.', 'error');
       }
     });
   }
