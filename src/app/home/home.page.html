@@ -1,30 +1,34 @@
 <app-navbar></app-navbar>
 
 <ion-content [fullscreen]="true">
-
   <ion-grid>
     <ion-row>
       <ion-col size="12" size-sm="6" size-md="4" size-lg="3" size-xl="2" *ngFor="let publicacion of publicaciones">
+        <ion-card (click)="verDetalle(publicacion._id)" class="card-publicacion">
 
-          <ion-card  (click)="verDetalle(publicacion._id)" class="card-publicacion">
-            <ion-card-header>
-              <h6>{{ publicacion.titulo }}</h6>
-            </ion-card-header>
+          <!-- 🔹 Encabezado de la publicación -->
+          <ion-card-header>
+            <h6 class="titulo-publicacion">{{ publicacion.titulo }}</h6>
+          </ion-card-header>
 
-            <ion-card-content>
-              <ion-img [src]="publicacion.img" alt="Imagen de la publicación" class="imagen-publicacion"></ion-img>
-              <ion-label class="descripcion-publicacion">{{ publicacion.descripcion }}</ion-label>
-            </ion-card-content>
+          <!-- 🔹 Contenido de la publicación -->
+          <ion-card-content>
+            <ion-img [src]="publicacion.img" alt="Imagen de la publicación" class="imagen-publicacion"></ion-img>
+            <ion-label class="descripcion-publicacion">{{ publicacion.descripcion }}</ion-label>
+          </ion-card-content>
 
+          <!-- 🔹 Botón de Like -->
+          <div class="footer-card">
+            <ion-button fill="clear" (click)="toggleLike(publicacion, $event)">
+              <ion-icon
+                [name]="publicacion.liked ? 'heart' : 'heart-outline'"
+                [color]="publicacion.liked ? 'danger' : 'medium'">
+              </ion-icon>
+              <span>{{ publicacion.likesCount }}</span>
+            </ion-button>
+          </div>
 
-       <ion-button fill="clear" (click)="toggleLike(publicacion, $event)">
-  <ion-icon
-    [name]="publicacion.liked ? 'heart' : 'heart-outline'"
-    [color]="publicacion.liked ? 'danger' : 'medium'">
-  </ion-icon>
-  <span>{{ publicacion.likesCount }}</span>
-</ion-button>
-          </ion-card>
+        </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -55,6 +55,7 @@ ion-content,.card{
 }
 
 .descripcion-publicacion {
+  text-align: center;
   flex-grow: 1;
   max-height: 50px; /* Limita el tamaño de la descripción */
   overflow: hidden;
@@ -85,4 +86,7 @@ ion-card:hover {
 }
 h6{
   color: white;
+}
+ion-label{
+  text-align: center;
 }

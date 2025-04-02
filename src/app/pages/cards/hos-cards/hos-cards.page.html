@@ -1,43 +1,43 @@
 <app-navbar></app-navbar>
-
 <ion-content [fullscreen]="true">
   <h3>Hospitales</h3>
 
-    <!-- Agregar ion-searchbar para búsqueda -->
-   <!-- Ion Searchbar con debounce -->
   <ion-searchbar class="search-white" debounce="350" (ionInput)="buscarHospital($event)" placeholder="Buscar hospital por especialidad"></ion-searchbar>
+
   <div *ngIf="isAdmin()">
     <ion-button color="success" (click)="agregarHospital()">Agregar Hospital</ion-button>
   </div>
 
-
-
   <ion-grid>
     <ion-row>
-      <ion-col  size="12" size-sm="6" size-md="4" size-lg="3" size-xl="2" *ngFor="let hospital of hospitales">
-        <ion-card (click)="verDetalle(hospital._id)">
-          <ion-img [src]="'http://localhost:3000/hospital/imagen/' + hospital.img" alt="Imagen del hospital"></ion-img>
-
+      <ion-col size="12" size-sm="6" size-md="4" size-lg="3" size-xl="2" *ngFor="let hospital of hospitales">
+        <ion-card (click)="verDetalle(hospital._id)" class="hospital-card">
+          <ion-img [src]="'http://localhost:3000/hospital/imagen/' + hospital.img" alt="Imagen del hospital" class="hospital-img"></ion-img>
 
           <ion-card-header>
             <ion-card-title>{{ hospital.nombre_hospital }}</ion-card-title>
           </ion-card-header>
+
           <ion-card-content>
-            <h5>{{ hospital.descripcion }}</h5>
+            <h5 class="hospital-desc">{{ hospital.descripcion }}</h5>
             <p class="tipo">{{ hospital.tipo_hospital }}</p>
 
-            <!-- Sección de Estrellas -->
-            <div class="star-rating">
-              <ion-icon
-                *ngFor="let star of [1,2,3,4,5]; let i = index"
-                [icon]="i < (hospital.rating || 0) ? starIcon : starOutlineIcon"
-                color="warning"
-                class="star-icon">
-              </ion-icon>
-            </div>
-            <!-- Botones de administración solo visibles si el usuario es admin -->
-            <div *ngIf="isAdmin()">
-              <ion-button color="danger" (click)="eliminarHospital(hospital._id); $event.stopPropagation()">Eliminar</ion-button>
+            <!-- 🔹 Contenedor fijo para estrellas y botón -->
+            <div class="footer-card">
+              <!-- Estrellas -->
+              <div class="star-rating">
+                <ion-icon
+                  *ngFor="let star of [1,2,3,4,5]; let i = index"
+                  [icon]="i < (hospital.rating || 0) ? starIcon : starOutlineIcon"
+                  color="warning"
+                  class="star-icon">
+                </ion-icon>
+              </div>
+
+              <!-- Botón de eliminar solo si el usuario es admin -->
+              <ion-button *ngIf="isAdmin()" color="danger" (click)="eliminarHospital(hospital._id); $event.stopPropagation()" class="eliminar-btn">
+                Eliminar
+              </ion-button>
             </div>
 
           </ion-card-content>

@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { eye } from 'ionicons/icons';
 import { SiTienesCuentaComponent } from 'src/app/components/si-tienes-cuenta/si-tienes-cuenta.component';
+import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-admin-register',
@@ -15,7 +16,7 @@ import { SiTienesCuentaComponent } from 'src/app/components/si-tienes-cuenta/si-
   styleUrls: ['./admin-register.page.scss'],
   standalone: true,
   imports: [
-    SiTienesCuentaComponent, IonIcon, IonInput, IonRow, IonGrid, IonCol, IonLabel,
+    SiTienesCuentaComponent,NavbarComponent, IonIcon, IonInput, IonRow, IonGrid, IonCol, IonLabel,
     IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule,
     NavbarFormsComponent
   ]

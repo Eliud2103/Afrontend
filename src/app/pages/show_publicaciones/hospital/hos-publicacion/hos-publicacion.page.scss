@@ -1,70 +1,77 @@
 :host {
   --background: linear-gradient(to bottom, #101E2A, #163045, #163045);
 }
-h3{
-  text-align: center;
-  margin-top: 15px;
-}
-ion-content{
+
+ion-content {
   --background: linear-gradient(to bottom, #101E2A, #163045, #163045);
 }
-h3{
+
+h3 {
   text-align: center;
   margin-top: 15px;
 }
-p{
+
+p {
   text-align: center;
 }
-.card-publicacion {
-  display: flex;
-  flex-direction: column;
-  height: 100%; /* Todas las cards tendrán la misma altura */
-}
 
-ion-card-content {
-  flex-grow: 1;
+/* 🔹 Asegura que todas las tarjetas tengan la misma altura */
+ion-card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-}
-
-ion-img {
-  width: 100%;
-  height: 150px; /* Tamaño fijo para las imágenes */
-  object-fit: cover; /* Ajusta la imagen sin deformarla */
-  border-radius: 8px;
-}
-
-ion-label {
-  flex-grow: 1;
-  max-height: 50px; /* Limita la altura de la descripción */
-  overflow: hidden;
-  text-overflow: ellipsis; /* Agrega "..." si el texto es muy largo */
-  white-space: nowrap;
-}
-
-.eliminar-btn {
-  margin-top: auto; /* Empuja el botón hacia abajo */
-  width: 100%;
-}
-
-ion-card {
-  margin-bottom: 15px; // Espaciado entre tarjetas
+  align-items: center;
+  height: 320px; /* Ajustar esta altura según necesidad */
+  text-align: center;
+  margin-bottom: 15px;
   padding: 10px;
   border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-}
-ion-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  text-align: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); // Sombra suave por defecto
 }
 
 ion-card:hover {
-  transform: scale(1.05); // Agranda la tarjeta un 5%
-  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2); // Aumenta la sombra para resaltar
+  transform: scale(1.05);
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* 📌 Establece una altura uniforme para las imágenes */
+ion-img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* 📌 Asegura que el título no haga crecer la tarjeta */
+ion-card-title {
+  height: 40px; /* Altura fija para que no se desplace */
+  font-size: 16px;
+  font-weight: bold;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* 📌 Controla la altura de la descripción */
+ion-label {
+  flex-grow: 1;
+  height: 40px; /* Altura fija */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* 🟥 Botón de eliminación alineado abajo */
+ion-button {
+  width: 100%;
+  height: 40px; /* Asegura que todos los botones sean iguales */
+  margin-top: auto;
+}
+
+.eliminar-btn {
+  background-color: red;
+  color: white;
 }

@@ -47,3 +47,9 @@ ion-card {
   line-height: 1.6;
 }
 
+.imagen {
+  width: 100%; /* Que ocupe todo el ancho del contenedor */
+  height: 350px; /* Altura fija para todas las imágenes */
+  object-fit: cover; /* Ajusta la imagen sin deformarla */
+  border-radius: 10px; /* Bordes redondeados opcionales */
+}
