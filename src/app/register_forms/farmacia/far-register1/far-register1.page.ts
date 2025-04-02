@@ -2,24 +2,36 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {  ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonContent, IonButton, IonLabel, IonInput, IonRow, IonCol, IonGrid } from '@ionic/angular/standalone';
+import { IonContent, IonButton, IonLabel, IonInput, IonRow, IonCol, IonGrid, IonIcon } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { SiTienesCuentaComponent } from 'src/app/components/si-tienes-cuenta/si-tienes-cuenta.component';
 import { NavbarFormsComponent } from 'src/app/components/navbar-forms/navbar-forms.component';
+import { addIcons } from 'ionicons';
+import { eye } from 'ionicons/icons';
 
 @Component({
   selector: 'app-far-register1',
   templateUrl: './far-register1.page.html',
   styleUrls: ['./far-register1.page.scss'],
   standalone: true,
-  imports: [SiTienesCuentaComponent,ReactiveFormsModule, IonGrid, IonCol, IonRow, IonLabel, IonInput, IonButton, IonContent, CommonModule, NavbarFormsComponent]
+  imports: [IonIcon, SiTienesCuentaComponent,ReactiveFormsModule, IonGrid, IonCol, IonRow, IonLabel, IonInput, IonButton, IonContent, CommonModule, NavbarFormsComponent]
 })
 export class FarRegister1Page implements OnInit {
+  password: string = '';
+  showPassword: boolean = false;
+
+
   far_register1: FormGroup = new FormGroup({});
+
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
 
   constructor(private router: Router) {}
 
   ngOnInit() {
+    addIcons({ eye });
     // Inicializamos el formulario con validaciones
     this.far_register1 = new FormGroup({
       nombre_responsable: new FormControl('', Validators.required),

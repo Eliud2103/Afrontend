@@ -27,7 +27,9 @@
             <ion-input type="text" placeholder="Dirección de la farmacia" formControlName="address" required></ion-input> <br>
 
             <ion-label>Contraseña</ion-label>
-            <ion-input type="password" placeholder="Ingrese su contraseña" formControlName="password" required></ion-input> <br>
+            <ion-input type="password" [type]="showPassword ? 'text' : 'password'" placeholder="Ingrese su contraseña" formControlName="password" required>
+              <ion-icon [name]="showPassword ? 'eye-off' : 'eye'" slot="end" (click)="togglePasswordVisibility()"></ion-icon>
+            </ion-input> <br>
 
             <ion-button expand="block" type="submit" [disabled]="far_register1.invalid">Siguiente</ion-button>
           </form>

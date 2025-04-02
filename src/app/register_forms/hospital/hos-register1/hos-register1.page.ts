@@ -1,26 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonInput, IonLabel, IonRow, IonCol, IonGrid } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonInput, IonLabel, IonRow, IonCol, IonGrid, IonIcon } from '@ionic/angular/standalone';
 import { NavbarFormsComponent } from 'src/app/components/navbar-forms/navbar-forms.component';
 import { SiTienesCuentaComponent } from 'src/app/components/si-tienes-cuenta/si-tienes-cuenta.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { addIcons } from 'ionicons';
+import { eye } from 'ionicons/icons';
 
 @Component({
   selector: 'app-hos-register1',
   templateUrl: './hos-register1.page.html',
   styleUrls: ['./hos-register1.page.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, IonGrid, IonCol, IonRow, IonLabel, IonInput, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, NavbarFormsComponent, SiTienesCuentaComponent]
+  imports: [IonIcon, ReactiveFormsModule, IonGrid, IonCol, IonRow, IonLabel, IonInput, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, NavbarFormsComponent, SiTienesCuentaComponent]
 })
 export class HosRegister1Page implements OnInit {
+  password: string = '';
+  showPassword: boolean = false;
+  // Datos del formulario
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
   hos_register1: FormGroup = new FormGroup({});
 
 
   constructor(private router: Router) {}
 
   ngOnInit() {
+    addIcons({ eye });
     // Inicializamos el formulario con validaciones
     this.hos_register1 = new FormGroup({
       nombre_responsable: new FormControl('', Validators.required),

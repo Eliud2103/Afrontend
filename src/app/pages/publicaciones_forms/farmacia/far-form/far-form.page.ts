@@ -48,19 +48,19 @@ export class FarFormPage implements OnInit {
   ngOnInit() {}
 
   async mostrarAlerta(titulo: string, mensaje: string, tipo: 'error' | 'success' = 'success') {
-    const icono = tipo === 'success' ? 'checkmark-circle-outline' : 'close-circle-outline';
-    const color = tipo === 'success' ? 'success' : 'danger';
+    const color = tipo === 'success' ? 'success' : 'danger'; // Se utiliza 'success' o 'danger' para el color de fondo
 
     const alert = await this.alertCtrl.create({
       header: titulo,
       message: mensaje,
       buttons: ['OK'],
-      cssClass: `custom-alert ${color}`,
+      cssClass: `custom-alert ${color}`, // Aplicamos la clase según el tipo de alerta
       mode: 'ios',
     });
 
     await alert.present();
   }
+
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
