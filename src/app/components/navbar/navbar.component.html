@@ -78,6 +78,11 @@
 
   <br>
   <div>
-    <ion-searchbar class="search-white" debounce="350" placeholder="¿Qué desea buscar?"></ion-searchbar>
+    <ion-searchbar 
+      class="search-white" 
+      debounce="350" 
+      placeholder="¿Qué desea buscar?"
+      (ionInput)="handleSearch($event)"
+    ></ion-searchbar>
   </div>
 </ion-header>

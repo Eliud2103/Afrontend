@@ -1,32 +1,9 @@
-button{
-  border-radius: 5px;
-  width: 100px;
-}
-.form-control{
-  width: 300px;
-}
-ion-searchbar{
-color: black;
-height: auto;
 
-}
 img{
   width: auto;
   height: 80px;
 }
-.search-white {
-  --background: white;
-  --color: black;
-  --placeholder-color: gray;
-}
-// Para los enlaces en el navbar normal y menú de hamburguesa
-.navbar-nav .nav-link {
-  color: white;
-  background-color: transparent;
-  transition: all 0.3s ease-in-out;
-}
 
-// Cuando pasas el cursor en pantallas grandes
 @media (min-width: 992px) {
   .navbar-nav .nav-link:hover {
     color: black !important;
@@ -35,13 +12,17 @@ img{
   }
 }
 
-// Para el menú móvil cuando se abre
 .navbar-collapse.show .nav-link {
   color: white;
   background-color: transparent;
 }
 
-// Cuando tocas un elemento en el menú móvil
+.navbar-nav .nav-link {
+  color: white;
+  background-color: transparent;
+  transition: all 0.3s ease-in-out;
+}
+
 .navbar-collapse.show .nav-link:active,
 .navbar-collapse.show .nav-link:hover {
   color: black !important;

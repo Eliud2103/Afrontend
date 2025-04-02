@@ -8,6 +8,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from 'src/app/services/auth.service';
 import { addIcons } from 'ionicons';
 import { eye } from 'ionicons/icons';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cambio-pass',
@@ -106,8 +107,20 @@ export class CambioPassPage implements OnInit {
       // Eliminar el token después de cambiar la contraseña
       localStorage.removeItem('authToken');
 
-      // Mensaje de éxito
-      alert('Contraseña cambiada exitosamente');
+      Swal.fire({
+        title: '¡Éxito!',
+        text: 'Contraseña cambiada exitosamente',
+        icon: 'success',
+        backdrop: `
+          rgba(0,0,0,0.7)
+          url("/assets/images/nyan-cat.gif")
+          center top
+          no-repeat
+        `,
+        customClass: {
+          popup: 'custom-swal-popup' // Clase personalizada
+        }
+      });
 
       // Limpiar los campos después del cambio exitoso
       this.passwords = { currentPassword: '', newPassword: '', confirmPassword: '' };

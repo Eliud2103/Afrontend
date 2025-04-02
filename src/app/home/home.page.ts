@@ -17,10 +17,12 @@ import {
   IonImg,
   IonRow,
   IonGrid,
-  IonCol
+  IonCol,
+  IonText
 } from '@ionic/angular/standalone';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { PublicacionesService } from '../services/publicaciones.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-home',
@@ -31,19 +33,33 @@ import { PublicacionesService } from '../services/publicaciones.service';
     IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel,
     IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonImg,
     IonGrid, IonRow, IonCol, CommonModule, FormsModule,
-    NavbarComponent
+    NavbarComponent, IonText 
   ],
 })
 export class HomePage implements OnInit {
-  publicaciones: any[] = []; // Lista de publicaciones
+  publicaciones: any[] = [];
+  filteredPublicaciones: any[] = []; 
 
   constructor(private publicacionesService: PublicacionesService, private router: Router) {}
 
   ngOnInit() {
-    // Cargar las publicaciones al iniciar
     this.publicacionesService.obtenerPublicaciones().subscribe({
       next: (data) => {
-        this.publicaciones = data;
+        this.publicaciones = data; 
+        Swal.fire({
+          title: '¡Éxito!',
+          text: 'Contraseña cambiada exitosamente',
+          icon: 'success',
+          backdrop: `
+            rgba(0,0,0,0.7)
+            url("/assets/images/nyan-cat.gif")
+            center top
+            no-repeat
+          `,
+          customClass: {
+            popup: 'custom-swal-popup' // Clase personalizada
+          }
+        });
       },
       error: (err) => {
         console.error('Error al obtener publicaciones:', err);

@@ -4,6 +4,7 @@ import { IonCard, IonCardHeader,IonBackButton, IonSearchbar, IonCardTitle, IonCo
 import { addIcons } from 'ionicons';
 import { arrowBack, exit } from 'ionicons/icons';
 import { AuthService } from 'src/app/services/auth.service';
+import { SearchService } from 'src/app/services/search.service';
 
 @Component({
   selector: 'app-navbar',
@@ -33,9 +34,12 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class NavbarComponent implements OnInit {
   @Input() title!: string;
+  searchQuery: string = '';
   isScrolled = false;
-  isAuthenticated: boolean = false; // Verificar si el usuario está autenticado
-  role: string = ''; // Variable para almacenar el rol del usuario
+  isAuthenticated: boolean = false;
+  role: string = '';
+  items: any[] = [];
+  filteredItems: any[] = [];
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
@@ -43,7 +47,21 @@ export class NavbarComponent implements OnInit {
     this.isScrolled = scrollTop > 50; // Oculta si el scroll es mayor a 50px
   }
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private searchService: SearchService // Inyecta el servicio
+  ) {}
+
+  handleSearch(event: CustomEvent) {
+    const query = event.detail?.value || '';
+    console.log('Valor del searchbar:', query); // Ahora debería mostrarse
+    
+    if (this.searchService) {
+      this.searchService.updateSearch(query);
+    } else {
+      console.error('SearchService no está disponible');
+    }
+  }
 
   ngOnInit() {
     addIcons({arrowBack,exit})
