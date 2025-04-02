@@ -18,14 +18,14 @@ import {
 } from '@ionic/angular/standalone';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { PublicacionesService } from 'src/app/services/publicaciones.service';
+import { AlertController } from '@ionic/angular'; // Importamos AlertController
 
 @Component({
   selector: 'app-hos-publicacion',
   templateUrl: './hos-publicacion.page.html',
   styleUrls: ['./hos-publicacion.page.scss'],
   standalone: true,
-  imports: [
-    IonCol, IonGrid, IonRow,
+  imports: [IonCol, IonGrid, IonRow,
     IonContent,
     NavbarComponent,
     IonHeader,
@@ -49,19 +49,24 @@ export class HosPublicacionPage implements OnInit {
   esHospital: boolean = false; // Variable que indica si el usuario es un hospital
   mostrarEliminar: boolean = true;
 
-  constructor(private publicacionesService: PublicacionesService, private router: Router) {}
+  constructor(
+    private publicacionesService: PublicacionesService,
+    private router: Router,
+    private alertCtrl: AlertController // Inyectamos AlertController
+  ) {}
 
   ngOnInit() {
+    // Al iniciar el componente, obtenemos las publicaciones del backend
     this.publicacionesService.obtenerPublicaciones().subscribe({
       next: (data) => {
-        const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
-        this.publicaciones = data.filter(pub => pub.usuarioId === usuario._id); // Filtrar publicaciones del usuario actual
+        this.publicaciones = data;
       },
       error: (err) => {
         console.error('Error al obtener publicaciones:', err);
       },
     });
 
+    // Verificamos si el usuario tiene el rol de hospital
     const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
     this.esHospital = usuario.rol === 'hospital';
   }
@@ -73,18 +78,66 @@ export class HosPublicacionPage implements OnInit {
 
   // Método para eliminar una publicación
   eliminarPublicacion(publicacionId: string, event: Event) {
-    event.stopPropagation(); // Evita que se navegue al detalle al hacer click en el botón eliminar
-    if (confirm('¿Estás seguro de que deseas eliminar esta publicación?')) {
-      this.publicacionesService.eliminarPublicacion(publicacionId).subscribe({
-        next: () => {
-          alert('Publicación eliminada correctamente');
-          this.publicaciones = this.publicaciones.filter(p => p._id !== publicacionId); // Eliminar de la lista local
+    event.stopPropagation(); // Evita que se navegue al detalle al hacer clic en el botón eliminar
+
+    // Usamos la alerta de confirmación personalizada
+    this.mostrarConfirmacion('¿Estás seguro de que deseas eliminar esta publicación?').then((confirmado) => {
+      if (confirmado) {
+        this.publicacionesService.eliminarPublicacion(publicacionId).subscribe({
+          next: () => {
+            this.mostrarAlerta('Éxito', 'Publicación eliminada correctamente', 'success');
+            this.publicaciones = this.publicaciones.filter(p => p._id !== publicacionId); // Eliminar de la lista local
+          },
+          error: (err) => {
+            console.error('Error al eliminar publicación:', err);
+            this.mostrarAlerta('Error', 'Error al eliminar la publicación', 'error');
+          }
+        });
+      }
+    });
+  }
+
+  // Método para mostrar una alerta de confirmación
+  async mostrarConfirmacion(mensaje: string): Promise<boolean> {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirmación',
+      message: mensaje,
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            return false; // Si el usuario hace clic en No, retornamos false
+          }
         },
-        error: (err) => {
-          console.error('Error al eliminar publicación:', err);
-          alert('Error al eliminar la publicación');
+        {
+          text: 'Sí',
+          handler: () => {
+            return true; // Si el usuario hace clic en Sí, retornamos true
+          }
         }
+      ]
+    });
+
+    await alert.present();
+
+    // Esperamos que el alert se cierre y obtenemos la respuesta
+    return new Promise((resolve) => {
+      alert.onDidDismiss().then(() => {
+        resolve(alert.role === 'cancel' ? false : true);
       });
-    }
+    });
+  }
+
+  // Método para mostrar alertas de éxito o error
+  async mostrarAlerta(titulo: string, mensaje: string, tipo: 'error' | 'success' = 'success') {
+    const alert = await this.alertCtrl.create({
+      header: titulo,
+      message: mensaje,
+      buttons: ['OK'],
+      cssClass: tipo === 'error' ? 'alert-error' : 'alert-success', // Aplicamos la clase según el tipo de alerta
+    });
+
+    await alert.present();
   }
 }
