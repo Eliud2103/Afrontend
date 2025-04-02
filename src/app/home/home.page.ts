@@ -46,20 +46,7 @@ export class HomePage implements OnInit {
     this.publicacionesService.obtenerPublicaciones().subscribe({
       next: (data) => {
         this.publicaciones = data; 
-        Swal.fire({
-          title: '¡Éxito!',
-          text: 'Contraseña cambiada exitosamente',
-          icon: 'success',
-          backdrop: `
-            rgba(0,0,0,0.7)
-            url("/assets/images/nyan-cat.gif")
-            center top
-            no-repeat
-          `,
-          customClass: {
-            popup: 'custom-swal-popup' // Clase personalizada
-          }
-        });
+        alert("");
       },
       error: (err) => {
         console.error('Error al obtener publicaciones:', err);
