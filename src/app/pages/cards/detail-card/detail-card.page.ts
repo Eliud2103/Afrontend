@@ -60,10 +60,7 @@ export class DetailCardPage implements OnInit {
           (data) => {
             this.item = data;
             this.comentarios = this.item.comentarios || [];
-
-            // Recuperar calificación desde localStorage
-            const storedRating = localStorage.getItem(`${this.itemType}Rating-${this.item._id}`);
-            this.rating = storedRating ? parseInt(storedRating, 10) : 0;
+            this.loadStoredRating();
           },
           (error) => console.error('Error al obtener detalles del hospital', error)
         );
@@ -72,10 +69,7 @@ export class DetailCardPage implements OnInit {
           (data) => {
             this.item = data;
             this.comentarios = this.item.comentarios || [];
-
-            // Recuperar calificación desde localStorage
-            const storedRating = localStorage.getItem(`${this.itemType}Rating-${this.item._id}`);
-            this.rating = storedRating ? parseInt(storedRating, 10) : 0;
+            this.loadStoredRating();
           },
           (error) => console.error('Error al obtener detalles de la farmacia', error)
         );
@@ -85,16 +79,24 @@ export class DetailCardPage implements OnInit {
 
   getWhatsAppLink(): string {
     const phone = this.item.telefono || this.item.telefono_farmacia;
-    if (!phone) return '#'; // Si no hay número, evita el enlace roto
-
-    const formattedPhone = phone.replace(/\D/g, ''); // Limpia el número (sin espacios ni símbolos)
-    return `https://wa.me/${formattedPhone}`; // Enlace de WhatsApp con el número
+    if (!phone) return '#';
+    const formattedPhone = phone.replace(/\D/g, '');
+    return `https://wa.me/${formattedPhone}`;
   }
+
   setRating(index: number) {
+    if (!this.isAuthenticated) {
+      console.warn('Debe iniciar sesión para calificar.');
+      return;
+    }
     this.rating = index + 1;
     localStorage.setItem(`${this.itemType}Rating-${this.item._id}`, this.rating.toString());
   }
 
+  loadStoredRating() {
+    const storedRating = localStorage.getItem(`${this.itemType}Rating-${this.item._id}`);
+    this.rating = storedRating ? parseInt(storedRating, 10) : 0;
+  }
 
   publicarComentario() {
     if (!this.isAuthenticated) {

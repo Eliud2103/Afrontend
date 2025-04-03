@@ -10,7 +10,7 @@
             <div class="image-container">
               <ion-img
                 class="hospital-img"
-                [src]="'http://localhost:3000/' + (itemType === 'hospital' ? 'hospital' : 'farmacia') + '/imagen/' + item.img"
+                [src]="'http://localhost:3000/' + (itemType === 'hospital' ? 'hospital' : 'farmacia') + '/imagen/' + (item.img || 'default.jpg')"
                 alt="Imagen de {{ item.nombre_hospital || item.nombre_farmacia }}">
               </ion-img>
             </div>
@@ -19,39 +19,39 @@
               <h1 class="hospital-title">
                 {{ item.nombre_hospital || item.nombre_farmacia || 'Cargando...' }}
               </h1>
-              <a class="btn-emergency" [attr.href]="'tel:' + (item.telefono || item.telefono_farmacia)">
-                <ion-img class="whatsapp-icon" src="../../../../assets/whatss.png"></ion-img>
+              <a class="btn-emergency" *ngIf="item.telefono || item.telefono_farmacia" [attr.href]="'tel:' + (item.telefono || item.telefono_farmacia)">
+                <ion-img class="whatsapp-icon" src="../../../../assets/whatss.png" alt="Llamar"></ion-img>
               </a>
             </div>
           </ion-card-header>
 
           <ion-card-content>
             <ion-list lines="none">
-              <ion-item>
+              <ion-item *ngIf="item.tipo_hospital || item.tipo_farmacia">
                 <ion-label><strong>Tipo:</strong> {{ item.tipo_hospital || item.tipo_farmacia }}</ion-label>
               </ion-item>
-              <ion-item>
+              <ion-item *ngIf="item.descripcion || item.descripcion_farmacia">
                 <ion-label><strong>Descripción:</strong> {{ item.descripcion || item.descripcion_farmacia }}</ion-label>
               </ion-item>
-              <ion-item>
+              <ion-item *ngIf="item.direccion || item.direccion_farmacia">
                 <ion-label><strong>Dirección:</strong> {{ item.direccion || item.direccion_farmacia }}</ion-label>
               </ion-item>
-              <ion-item>
+              <ion-item *ngIf="item.telefono || item.telefono_farmacia">
                 <ion-label><strong>Teléfono:</strong> {{ item.telefono || item.telefono_farmacia }}</ion-label>
               </ion-item>
-              <ion-item>
-                <ion-label><strong>Misión:</strong> {{ item.mision || 'No disponible' }}</ion-label>
+              <ion-item *ngIf="item.mision">
+                <ion-label><strong>Misión:</strong> {{ item.mision }}</ion-label>
               </ion-item>
-              <ion-item>
-                <ion-label><strong>Visión:</strong> {{ item.vision || 'No disponible' }}</ion-label>
+              <ion-item *ngIf="item.vision">
+                <ion-label><strong>Visión:</strong> {{ item.vision }}</ion-label>
               </ion-item>
-              <ion-item>
+              <ion-item *ngIf="item.email_hospital || item.email_farmacia">
                 <ion-label><strong>Email:</strong> {{ item.email_hospital || item.email_farmacia }}</ion-label>
               </ion-item>
             </ion-list>
 
             <!-- Sección de Estrellas -->
-            <div class="star-rating">
+            <div *ngIf="isAuthenticated; else notLoggedInStars" class="star-rating">
               <ion-icon
                 *ngFor="let star of [0,1,2,3,4]; let i = index"
                 (click)="setRating(i)"
@@ -61,7 +61,11 @@
               </ion-icon>
             </div>
 
-            <!-- Sección de comentarios -->
+            <ng-template #notLoggedInStars>
+              <p>Debes iniciar sesión para calificar con las estrellas.</p>
+            </ng-template>
+
+            <!-- Sección de Comentarios -->
             <div class="comments-section">
               <h3>Comentarios</h3>
               <ion-list>

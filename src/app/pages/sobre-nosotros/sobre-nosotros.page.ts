@@ -12,10 +12,22 @@ import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
   imports: [IonGrid, IonCol, IonRow, IonImg, IonIcon, IonCardHeader, IonCard, IonCardTitle, IonCardContent, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule,NavbarComponent]
 })
 export class SobreNosotrosPage implements OnInit {
+  animationCtrl: any;
 
   constructor() { }
 
   ngOnInit() {
   }
-
+  ngAfterViewInit() {
+    const cards = document.querySelectorAll('.card');
+    cards.forEach((card, index) => {
+      this.animationCtrl.create()
+        .addElement(card)
+        .duration(600)
+        .fromTo('opacity', '0', '1')
+        .fromTo('transform', 'translateY(20px)', 'translateY(0)')
+        .delay(index * 100) // Retrasa cada tarjeta un poco
+        .play();
+    });
+  }
 }

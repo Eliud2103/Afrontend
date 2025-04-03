@@ -1,41 +1,72 @@
 <app-navbar></app-navbar>
 
-<ion-content [fullscreen]="true" class="content">
-  <div class="container">
-    <h2 class="title">Sobre Nosotros</h2>
+<ion-content [fullscreen]="true">
+  <h3>Sobre Nosotros</h3>
 
-    <div class="divider"></div>
+  <ion-grid>
+    <ion-row>
+      <!-- Columna 1: Tarjetas -->
+      <ion-col size="12" size-md="6">
+        <ion-card class="card">
+          <ion-card-header class="card-header">
+            <ion-icon name="flag-outline" class="icon"></ion-icon>
+            <ion-card-title>Misión</ion-card-title>
+          </ion-card-header>
+          <ion-card-content class="card-content">
+            Brindar servicios de salud accesibles y de alta calidad, comprometidos con el bienestar de cada persona, a través de innovación y excelencia médica.
+          </ion-card-content>
+        </ion-card>
 
-    <div class="card-container">
-      <ion-card class="card">
-        <ion-card-header class="card-header">
-          <ion-icon name="ribbon-outline" class="icon"></ion-icon>
-          <ion-card-title>Misión</ion-card-title>
-        </ion-card-header>
-        <ion-card-content class="card-content">
-          Nuestra misión es proporcionar servicios de salud de calidad, con atención humanizada y tecnología avanzada, asegurando el bienestar de nuestra comunidad.
-        </ion-card-content>
-      </ion-card>
+        <ion-card class="card">
+          <ion-card-header class="card-header">
+            <ion-icon name="eye-outline" class="icon"></ion-icon>
+            <ion-card-title>Visión</ion-card-title>
+          </ion-card-header>
+          <ion-card-content class="card-content">
+            Ser un referente en atención médica, expandiendo nuestra cobertura y mejorando continuamente nuestros servicios para garantizar salud a más comunidades.
+          </ion-card-content>
+        </ion-card>
 
-      <ion-card class="card">
-        <ion-card-header class="card-header">
-          <ion-icon name="eye-outline" class="icon"></ion-icon>
-          <ion-card-title>Visión</ion-card-title>
-        </ion-card-header>
-        <ion-card-content class="card-content">
-          Ser un referente en el sector salud, reconocido por nuestra excelencia en el servicio, innovación y compromiso con el bienestar de nuestros pacientes.
-        </ion-card-content>
-      </ion-card>
+        <ion-card class="card">
+          <ion-card-header class="card-header">
+            <ion-icon name="flask-outline" class="icon"></ion-icon>
+            <ion-card-title>Investigación</ion-card-title>
+          </ion-card-header>
+          <ion-card-content class="card-content">
+            Desarrollamos estudios y análisis clínicos avanzados para mejorar los tratamientos y la calidad de vida de nuestros pacientes.
+          </ion-card-content>
+        </ion-card>
 
-      <ion-card class="card">
-        <ion-card-header class="card-header">
-          <ion-icon name="people-outline" class="icon"></ion-icon>
-          <ion-card-title>¿Quiénes Somos?</ion-card-title>
-        </ion-card-header>
-        <ion-card-content class="card-content">
-          Somos un equipo de profesionales apasionados por la salud, comprometidos con la atención integral de nuestros pacientes y la mejora continua de nuestros servicios.
-        </ion-card-content>
-      </ion-card>
-    </div>
-  </div>
+        <ion-card class="card">
+          <ion-card-header class="card-header">
+            <ion-icon name="globe-outline" class="icon"></ion-icon>
+            <ion-card-title>Expansión</ion-card-title>
+          </ion-card-header>
+          <ion-card-content class="card-content">
+            Estamos en constante crecimiento para llevar nuestros servicios a más regiones y garantizar acceso a la salud para todos.
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="card">
+          <ion-card-header class="card-header">
+            <ion-icon name="people-outline" class="icon"></ion-icon>
+            <ion-card-title>Equipo Profesional</ion-card-title>
+          </ion-card-header>
+          <ion-card-content class="card-content">
+            Contamos con un equipo de especialistas en diversas áreas, comprometidos con brindar la mejor atención posible.
+          </ion-card-content>
+        </ion-card> <br> <br> <br>
+
+
+      </ion-col> <br> <br>
+
+      <!-- Columna 2: Video -->
+      <ion-col size="12 " size-md="6">
+        <video width="100%" autoplay muted loop>
+          <source src="../../../assets/videoAtenea.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
