@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonLabel, IonCol, IonGrid, IonRow, IonInput, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonLabel, IonCol, IonGrid, IonRow, IonInput, IonIcon, IonItem } from '@ionic/angular/standalone';
 import { NavbarFormsComponent } from 'src/app/components/navbar-forms/navbar-forms.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
@@ -15,7 +15,7 @@ import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
   templateUrl: './admin-register.page.html',
   styleUrls: ['./admin-register.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonItem,
     SiTienesCuentaComponent,NavbarComponent, IonIcon, IonInput, IonRow, IonGrid, IonCol, IonLabel,
     IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule,
     NavbarFormsComponent
