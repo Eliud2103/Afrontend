@@ -74,13 +74,13 @@ export class FarPublicacionPage implements OnInit {
 
   // Método para mostrar alertas
   async mostrarAlerta(titulo: string, mensaje: string, tipo: 'error' | 'success' = 'success') {
-    const icono = tipo === 'success' ? 'checkmark-circle-outline' : 'close-circle-outline';
     const color = tipo === 'success' ? 'success' : 'danger';
 
     const alert = await this.alertCtrl.create({
       header: titulo,
       message: mensaje,
       buttons: ['OK'],
+
       cssClass: `custom-alert ${color}`,
       mode: 'ios',
     });

@@ -131,11 +131,12 @@ export class HosPublicacionPage implements OnInit {
 
   // Método para mostrar alertas de éxito o error
   async mostrarAlerta(titulo: string, mensaje: string, tipo: 'error' | 'success' = 'success') {
+    const color = tipo === 'success' ? 'success' : 'danger';
     const alert = await this.alertCtrl.create({
       header: titulo,
       message: mensaje,
       buttons: ['OK'],
-      cssClass: tipo === 'error' ? 'alert-error' : 'alert-success', // Aplicamos la clase según el tipo de alerta
+      cssClass: `custom-alert ${color}`, // Aplicamos la clase según el tipo de alerta
     });
 
     await alert.present();
