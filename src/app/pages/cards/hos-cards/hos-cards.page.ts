@@ -89,6 +89,13 @@ export class HosCardsPage implements OnInit {
       }
     );
   }
+  cargarImagenes() {
+    // Aquí puedes asegurarte de que las imágenes se recargan correctamente
+    this.hospitales = this.hospitales.map(hospital => ({
+      ...hospital,
+      img: hospital.img ? `http://localhost:3000/hospital/imagen/${hospital.img}` : ''
+    }));
+  }
 
   isAdmin(): boolean {
     return this.currentUser?.role === 'admin';

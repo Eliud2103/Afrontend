@@ -179,6 +179,10 @@ export const routes: Routes = [
     path: 'mapa-far',
     loadComponent: () => import('./pages/mapa-far/mapa-far.page').then( m => m.MapaFarPage)
   },
+  {
+    path: 'terminos',
+    loadComponent: () => import('./pages/terminos/terminos.page').then( m => m.TerminosPage)
+  },
 
 
 
