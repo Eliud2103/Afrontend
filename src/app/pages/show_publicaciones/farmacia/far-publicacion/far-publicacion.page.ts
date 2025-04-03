@@ -15,8 +15,7 @@ import {
   IonCardTitle,
   IonCardContent,
   IonImg, IonRow, IonGrid, IonCol, IonButton,
-  AlertController
-} from '@ionic/angular/standalone';
+  AlertController, IonIcon } from '@ionic/angular/standalone';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { PublicacionesFarmaciaService } from 'src/app/services/publicaciones-farmacia.service';
 
@@ -25,7 +24,7 @@ import { PublicacionesFarmaciaService } from 'src/app/services/publicaciones-far
   templateUrl: './far-publicacion.page.html',
   styleUrls: ['./far-publicacion.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonIcon,
     IonCol, IonGrid, IonRow,
     IonContent,
     IonHeader,
