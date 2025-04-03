@@ -57,6 +57,15 @@ ion-card-title {
 body {
   font-family: 'Poppins', sans-serif;
 }
+.custom-alert.success .alert-wrapper {
+  --background: #155724;
+  --color: black;
+}
+
+.custom-alert.error .alert-wrapper {
+  --background: #b60f20;
+  --color: black ;
+}
 
 
 

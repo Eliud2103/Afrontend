@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonContent, IonGrid, IonCol, IonRow, IonLabel, IonInput, IonButton } from '@ionic/angular/standalone';
+import { IonContent, IonGrid, IonCol, IonRow, IonLabel, IonInput, IonButton, AlertController } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavbarFormsComponent } from 'src/app/components/navbar-forms/navbar-forms.component';
 import { SiTienesCuentaComponent } from 'src/app/components/si-tienes-cuenta/si-tienes-cuenta.component';
-import { AuthService } from 'src/app/services/auth.service';  // Cambiar a AuthService
-import { StorageService } from 'src/app/services/storage.service';  // Asegúrate de que este servicio también esté bien configurado si es necesario
+import { AuthService } from 'src/app/services/auth.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-far-register3',
@@ -18,20 +18,19 @@ import { StorageService } from 'src/app/services/storage.service';  // Asegúrat
 export class FarRegister3Page implements OnInit {
 
   far_register3: FormGroup = new FormGroup({});
-  selectedImage: File | null = null;  // Variable para almacenar la imagen seleccionada
+  selectedImage: File | null = null;
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private authService: AuthService,  // Usar AuthService para la subida de la imagen
-    private storageService: StorageService  // Este servicio puede seguir siendo usado para otras operaciones si es necesario
+    private authService: AuthService,
+    private storageService: StorageService,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
-    // Cargar los datos del paso 2 desde localStorage si existen
     const farmaciaDataStep2 = JSON.parse(localStorage.getItem('farmaciaStep2') || '{}');
 
-    // Inicializar el formulario con valores predeterminados
     this.far_register3 = this.fb.group({
       email_farmacia: ['', [Validators.required, Validators.email]],
       mision: ['', Validators.required],
@@ -39,7 +38,6 @@ export class FarRegister3Page implements OnInit {
       descripcion: ['']
     });
 
-    // Cargar los datos del paso 2 si están disponibles
     const savedFarmacia = localStorage.getItem('farmaciaData');
     if (savedFarmacia) {
       const savedData = JSON.parse(savedFarmacia);
@@ -49,11 +47,18 @@ export class FarRegister3Page implements OnInit {
         vision: savedData.vision || '',
         descripcion: savedData.descripcion || ''
       });
-      console.log('Datos cargados en far-register3:', this.far_register3.value);
     }
   }
 
-  // Función para manejar la selección de la imagen
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
   onImageSelected(event: any) {
     const file = event.target.files[0];
     if (!file) {
@@ -61,110 +66,92 @@ export class FarRegister3Page implements OnInit {
       return;
     }
     this.selectedImage = file;
-    if (this.selectedImage) {
-      console.log('📷 Imagen seleccionada:', this.selectedImage.name);
-    }
   }
 
-  // Función para registrar una farmacia
   async register() {
     if (this.far_register3.invalid) {
-      alert('Por favor, complete todos los campos correctamente.');
-      return; // Detener el registro si hay campos vacíos o incorrectos
+      this.presentAlert('Error', 'Por favor, complete todos los campos correctamente.');
+      return;
     }
 
-    let imageUrl: string = '';  // Variable para almacenar la URL de la imagen
+    let imageUrl: string = '';
     if (this.selectedImage) {
       try {
-        console.log('📸 Imagen seleccionada:', this.selectedImage.name);
-        // Usar el servicio AuthService para subir la imagen
         const response = await this.authService.uploadImage(this.selectedImage).toPromise();
-        imageUrl = response || '';  // Suponemos que response es la URL de la imagen
-        console.log('✅ URL de la imagen generada:', imageUrl);
+        imageUrl = response || '';
       } catch (error) {
-        console.error('❌ Error al subir la imagen:', error);
-        alert('Error al subir la imagen');
-        return;  // Si ocurre un error, detener el proceso
+        this.presentAlert('Error', 'Error al subir la imagen');
+        return;
       }
     }
 
-    // Guardar los datos del paso 3
     const farmaciaData = {
-      ...this.far_register3.value,  // Recoge los valores del formulario
-      img: imageUrl,  // Solo enviamos la URL de la imagen o un string vacío si no hay imagen
+      ...this.far_register3.value,
+      img: imageUrl,
     };
 
-    console.log('📦 Datos enviados al backend:', farmaciaData);
-
-    // Llamada al servicio para registrar la farmacia
     this.authService.far_register(farmaciaData).subscribe({
-      next: (res) => {
-        console.log('Farmacia registrada con éxito:', res);
-        alert('Registro exitoso');
+      next: () => {
+        this.presentAlert('Éxito', 'Registro exitoso');
         this.far_register3.reset();
-        localStorage.clear(); // Limpiar localStorage después del registro
-        this.router.navigate(['/login']); // Redirigir al login
+        localStorage.clear();
+        this.router.navigate(['/login']);
       },
-      error: (err) => {
-        console.error('❌ Error al registrar farmacia:', err);
-        alert('Error al registrar farmacia');
+      error: () => {
+        this.presentAlert('Error', 'Error al registrar farmacia');
       }
     });
   }
 
-  // Función para finalizar el registro con validación
   async finalizeRegistration() {
     if (this.far_register3.invalid) {
-      alert('Por favor, complete todos los campos correctamente.');
-      return;  // Detener el registro si hay campos vacíos o incorrectos
-    }
-
-    // Recuperamos los datos de los formularios anteriores
-    const savedStep1 = JSON.parse(localStorage.getItem('farmaciaStep1') || '{}');
-    const savedStep2 = JSON.parse(localStorage.getItem('farmaciaStep2') || '{}');
-
-    // Verificamos si los datos están completos
-    if (!savedStep1 || !savedStep2) {
-      alert('Datos incompletos. Asegúrate de que todos los pasos estén completados.');
+      this.presentAlert('Error', 'Por favor, complete todos los campos correctamente.');
       return;
     }
 
-    let imageUrl: string = ''; // Aseguramos que sea de tipo string
+    const savedStep1 = JSON.parse(localStorage.getItem('farmaciaStep1') || '{}');
+    const savedStep2 = JSON.parse(localStorage.getItem('farmaciaStep2') || '{}');
+
+    if (!savedStep1 || !savedStep2) {
+      this.presentAlert('Error', 'Datos incompletos. Asegúrate de que todos los pasos estén completados.');
+      return;
+    }
+
+    let imageUrl: string = '';
     if (this.selectedImage) {
       try {
-        // Usar el operador de coalescencia nula (??) para asignar un valor predeterminado
         imageUrl = (await this.authService.uploadImage(this.selectedImage).toPromise()) ?? '';
-        console.log('✅ Imagen subida con éxito:', imageUrl);
       } catch (error) {
-        console.error('❌ Error al subir la imagen:', error);
-        alert('Error al subir la imagen');
-        return; // Si hay error, detenemos el proceso
+        this.presentAlert('Error', 'Error al subir la imagen');
+        return;
       }
     }
 
-    // Combinamos todos los datos
     const allData = {
       ...savedStep1,
       ...savedStep2,
       ...this.far_register3.value,
-      img: imageUrl, // Aseguramos que siempre haya un string
+      img: imageUrl,
     };
 
-    console.log('🚀 Enviando datos completos:', allData);
-
-    // Llamada a la API para registrar la farmacia
     this.authService.far_register(allData).subscribe({
-      next: (res) => {
-        console.log('Farmacia registrada con éxito:', res);
-        alert('Registro exitoso');
-        // Limpiar localStorage después del registro
+      next: () => {
+        this.presentAlert('Éxito', 'Registro exitoso');
         localStorage.clear();
         this.router.navigate(['/login']);
       },
-      error: (err) => {
-        console.error('❌ Error al registrar farmacia:', err);
-        alert('Error al registrar farmacia');
+      error: () => {
+        this.presentAlert('Error', 'Error al registrar farmacia');
       }
     });
+  }
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 }

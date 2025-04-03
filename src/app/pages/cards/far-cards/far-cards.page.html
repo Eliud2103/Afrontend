@@ -2,34 +2,46 @@
 
 <ion-content [fullscreen]="true">
   <h3>Farmacias</h3>
-  <ion-searchbar class="search-white" debounce="350" (ionInput)="buscarFarmacia($event)" placeholder="Buscar hospital por especialidad"></ion-searchbar>
+
+  <ion-searchbar class="search-white" debounce="350" (ionInput)="buscarFarmacia($event)" placeholder="Buscar farmacia por especialidad"></ion-searchbar>
+
   <div *ngIf="isAdmin()">
     <ion-button color="success" (click)="agregarFarmacia()">Agregar Farmacia</ion-button>
+  </div>
 
-    </div>
   <ion-grid>
     <ion-row>
       <ion-col size="12" size-sm="6" size-md="4" size-lg="3" size-xl="2" *ngFor="let farmacia of farmacias">
         <ion-card (click)="verDetalle(farmacia._id)">
-          <ion-img [src]="'http://localhost:3000/farmacia/imagen/' + farmacia.img" alt="Imagen del hospital"></ion-img>
+          <ion-img [src]="'http://localhost:3000/farmacia/imagen/' + farmacia.img" alt="Imagen de la farmacia" class="farmacia-img"></ion-img>
+
           <ion-card-header>
             <ion-card-title>{{ farmacia.nombre_farmacia }}</ion-card-title>
           </ion-card-header>
+
           <ion-card-content>
-            <h5>{{ farmacia.descripcion }}</h5>
+            <h5 class="farmacia-desc">{{ farmacia.descripcion }}</h5>
             <p class="tipo">{{ farmacia.tipo_farmacia }}</p>
 
-            <div class="star-rating">
-              <ion-icon
-                *ngFor="let star of [1,2,3,4,5]; let i = index"
-                [icon]="i < (farmacia.rating || 0) ? starIcon : starOutlineIcon"
-                color="warning"
-                class="star-icon">
-              </ion-icon>
+            <div class="footer-card">
+              <!-- Estrellas -->
+              <div class="star-rating">
+                <ion-icon
+                  *ngFor="let star of [1,2,3,4,5]; let i = index"
+                  [icon]="i < (farmacia.rating || 0) ? starIcon : starOutlineIcon"
+                  color="warning"
+                  class="star-icon">
+                </ion-icon>
+              </div>
+
+              <!-- Botón de eliminar solo si el usuario es admin -->
+              <div *ngIf="isAdmin()">
+                <ion-button color="danger" (click)="eliminarFarmacia(farmacia._id); $event.stopPropagation()" class="eliminar-btn">
+                  Eliminar
+                </ion-button>
+              </div>
             </div>
-            <div *ngIf="isAdmin()">
-              <ion-button color="danger" (click)="eliminarFarmacia(farmacia._id); $event.stopPropagation()">Eliminar</ion-button>
-            </div>
+
           </ion-card-content>
         </ion-card>
       </ion-col>

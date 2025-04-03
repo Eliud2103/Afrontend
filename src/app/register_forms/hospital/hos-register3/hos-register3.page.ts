@@ -7,6 +7,7 @@ import { NavbarFormsComponent } from 'src/app/components/navbar-forms/navbar-for
 import { SiTienesCuentaComponent } from 'src/app/components/si-tienes-cuenta/si-tienes-cuenta.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { AlertController } from '@ionic/angular'; // Asegúrate de importar AlertController
 
 @Component({
   selector: 'app-hos-register3',
@@ -21,13 +22,12 @@ export class HosRegister3Page implements OnInit {
   selectedImage: File | null = null; // Variable para almacenar la imagen seleccionada
   @ViewChild('direccionInput', { static: false }) direccionInput!: ElementRef;
 
-
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private authService: AuthService,
-    private storageService: StorageService , // Inyectamos el servicio de almacenamiento
-
+    private storageService: StorageService, // Inyectamos el servicio de almacenamiento
+    private alertController: AlertController // Inyectamos AlertController
   ) {}
 
   ngOnInit() {
@@ -55,9 +55,6 @@ export class HosRegister3Page implements OnInit {
     }
   }
 
-
-
-
   // Función para manejar la selección de la imagen
   onImageSelected(event: any) {
     const file = event.target.files[0];
@@ -74,7 +71,7 @@ export class HosRegister3Page implements OnInit {
   // Función para registrar un hospital
   async register() {
     if (this.hos_register3.invalid) {
-      alert('Por favor, complete todos los campos correctamente.');
+      await this.showAlert('Error', 'Por favor, complete todos los campos correctamente.');
       return;
     }
 
@@ -88,7 +85,7 @@ export class HosRegister3Page implements OnInit {
         console.log('✅ URL de la imagen generada:', imageUrl);
       } catch (error) {
         console.error('❌ Error al subir la imagen:', error);
-        alert('Error al subir la imagen');
+        await this.showAlert('Error', 'Error al subir la imagen');
         return;  // Si ocurre un error, detener el proceso
       }
     }
@@ -102,15 +99,15 @@ export class HosRegister3Page implements OnInit {
 
     // Llamada al servicio para registrar el hospital
     this.authService.hos_register(hospitalData).subscribe({
-      next: (res) => {
+      next: async (res) => {
         console.log('🏥 Hospital registrado con éxito:', res);
-        alert('Registro exitoso');
+        await this.showAlert('Éxito', 'Registro exitoso');
         localStorage.clear();
         this.router.navigate(['/login']);
       },
-      error: (err) => {
+      error: async (err) => {
         console.error('❌ Error en la API:', err);
-        alert('Error al registrar hospital');
+        await this.showAlert('Error', 'Error al registrar hospital');
       }
     });
   }
@@ -118,7 +115,7 @@ export class HosRegister3Page implements OnInit {
   // Función para finalizar el registro con validación
   async finalizeRegistration() {
     if (this.hos_register3.invalid) {
-      alert('Por favor, complete todos los campos correctamente.');
+      await this.showAlert('Error', 'Por favor, complete todos los campos correctamente.');
       return;
     }
 
@@ -127,7 +124,7 @@ export class HosRegister3Page implements OnInit {
     const savedStep2 = JSON.parse(localStorage.getItem('hospitalStep2') || '{}');
 
     if (!savedStep1 || !savedStep2) {
-      alert('Datos incompletos. Asegúrate de que todos los pasos estén completados.');
+      await this.showAlert('Error', 'Datos incompletos. Asegúrate de que todos los pasos estén completados.');
       return;
     }
 
@@ -135,13 +132,11 @@ export class HosRegister3Page implements OnInit {
     let imageUrl: string = ''; // Aseguramos que sea de tipo string
     if (this.selectedImage) {
       try {
-        // Usar el operador de coalescencia nula (??) para asignar un valor predeterminado
-imageUrl = (await this.authService.uploadImage(this.selectedImage).toPromise()) ?? '';
-
+        imageUrl = (await this.authService.uploadImage(this.selectedImage).toPromise()) ?? '';
         console.log('✅ Imagen subida con éxito:', imageUrl);
       } catch (error) {
         console.error('❌ Error al subir la imagen:', error);
-        alert('Error al subir la imagen');
+        await this.showAlert('Error', 'Error al subir la imagen');
         return; // Si hay error, detenemos el proceso
       }
     }
@@ -158,22 +153,27 @@ imageUrl = (await this.authService.uploadImage(this.selectedImage).toPromise()) 
 
     // Llamada a la API para registrar el hospital
     this.authService.hos_register(allData).subscribe({
-      next: (res) => {
+      next: async (res) => {
         console.log('✅ Hospital registrado con éxito:', res);
-        alert('Registro exitoso');
+        await this.showAlert('Éxito', 'Registro exitoso');
         localStorage.clear(); // Limpiar localStorage
         this.router.navigate(['/login']); // Redirigir al login
       },
-      error: (err) => {
+      error: async (err) => {
         console.error('❌ Error al registrar hospital:', err);
-        alert('Error al registrar hospital');
+        await this.showAlert('Error', 'Error al registrar hospital');
       }
     });
   }
 
+  // Método para mostrar alertas
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
 
-
-
-
-
+    await alert.present();
+  }
 }

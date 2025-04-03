@@ -10,6 +10,7 @@ import { FarmaciaService } from 'src/app/services/farmacia.service';
 import { star, starOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { AuthService } from 'src/app/services/auth.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-far-cards',
@@ -19,13 +20,14 @@ import { AuthService } from 'src/app/services/auth.service';
   imports: [IonButton, IonIcon, IonImg, IonSearchbar, IonCard, IonCardContent, IonGrid, IonRow, IonCol, IonCardTitle, IonCardHeader, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, NavbarComponent]
 })
 export class FarCardsPage implements OnInit {
-   private _farmacias = inject(FarmaciaService );
+  private _farmacias = inject(FarmaciaService);
   farmacias: Farmacia[] = [];
   selectedFile: File | null = null;
   isSearching: boolean = false;
-    starIcon = star;
-    starOutlineIcon = starOutline;
-    currentUser: any; // Usuario actual
+  starIcon = star;
+  starOutlineIcon = starOutline;
+  currentUser: any; // Usuario actual
+  alertCtrl = inject(AlertController);
 
   constructor(
     private router: Router,
@@ -35,9 +37,8 @@ export class FarCardsPage implements OnInit {
   ) {}
 
   ngOnInit() {
-
     this.currentUser = this.authService.getCurrentUser();
-    addIcons({star,starOutline})
+    addIcons({ star, starOutline });
     this.farmaciaService.getFarmacias().subscribe(
       (data) => {
         this.farmacias = data.map(farmacia => ({
@@ -52,23 +53,46 @@ export class FarCardsPage implements OnInit {
       (error) => console.error('Error al obtener farmacias', error)
     );
   }
-  // Método para eliminar un hospital
-  eliminarFarmacia(farmaciaId: string) {
-    this.farmaciaService.eliminarFarmacia(farmaciaId).subscribe(() => {
-      // Eliminar el hospital de la lista después de la eliminación
-      this.farmacias = this.farmacias.filter(h => h._id !== farmaciaId);
+
+  // Método para eliminar una farmacia
+  async eliminarFarmacia(farmaciaId: string) {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirmar eliminación',
+      message: '¿Estás seguro de que deseas eliminar esta farmacia?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Eliminar',
+          handler: () => {
+            this.farmaciaService.eliminarFarmacia(farmaciaId).subscribe(() => {
+              // Eliminar la farmacia de la lista después de la eliminación
+              this.farmacias = this.farmacias.filter(f => f._id !== farmaciaId);
+              this.mostrarAlerta('Éxito', 'Farmacia eliminada correctamente', 'success');
+            }, (err) => {
+              this.mostrarAlerta('Error', 'Hubo un problema al eliminar la farmacia', 'error');
+            });
+          }
+        }
+      ]
     });
+
+    await alert.present();
   }
 
-  // Método para redirigir al formulario de registro de hospital
+  // Método para redirigir al formulario de registro de farmacia
   agregarFarmacia() {
     this.router.navigate(['/far-register1']); // Redirige al formulario de registro
   }
-    // Método para verificar si el usuario es admin
-    isAdmin(): boolean {
-      return this.currentUser?.role === 'admin';
-    }
 
+  // Método para verificar si el usuario es admin
+  isAdmin(): boolean {
+    return this.currentUser?.role === 'admin';
+  }
+
+  // Método de búsqueda de farmacias
   buscarFarmacia(event: any) {
     const query = event.detail.value.trim();
     this.isSearching = query.length > 0;
@@ -104,16 +128,25 @@ export class FarCardsPage implements OnInit {
       }
     );
   }
- // Método para verificar si el usuario es admin
-
-
-
-
-
 
 
   // Método para redirigir a la página de detalles de la farmacia
   verDetalle(id: string) {
     this.router.navigate(['/detail-card', id], { state: { type: 'farmacia' } });  // Usando 'state' como en HosCardsPage
+  }
+
+  // Método para mostrar alertas
+  async mostrarAlerta(titulo: string, mensaje: string, tipo: 'error' | 'success') {
+    const color = tipo === 'success' ? 'success' : 'danger';
+
+    const alert = await this.alertCtrl.create({
+      header: titulo,
+      message: mensaje,
+      buttons: ['OK'],
+      cssClass: `custom-alert ${color}`,
+      mode: 'ios',
+    });
+
+    await alert.present();
   }
 }

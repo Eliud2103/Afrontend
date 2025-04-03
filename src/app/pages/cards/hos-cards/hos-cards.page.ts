@@ -1,91 +1,81 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonCardHeader, IonCardTitle, IonCol, IonRow, IonGrid, IonCardContent, IonCard, IonIcon, IonSearchbar, IonImg, IonButton } from '@ionic/angular/standalone';
+import { AlertController } from '@ionic/angular';
+import {
+  IonContent, IonHeader, IonTitle, IonToolbar, IonCardHeader, IonCardTitle,
+  IonCol, IonRow, IonGrid, IonCardContent, IonCard, IonIcon, IonSearchbar,
+  IonImg, IonButton
+} from '@ionic/angular/standalone';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { HospitalService } from '../../../services/hospital.service';
 import { Router } from '@angular/router';
 import { Hospital } from 'src/app/interfaces/hospital.model';
-import { star, starOutline } from 'ionicons/icons'; // Importar iconos de estrellas
+import { star, starOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { ChangeDetectorRef } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service'; // Importar servicio de autenticación
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-hos-cards',
   templateUrl: './hos-cards.page.html',
   styleUrls: ['./hos-cards.page.scss'],
   standalone: true,
-  imports: [IonButton, IonImg, IonSearchbar,
-    IonIcon, IonCard, IonCardContent, IonGrid, IonRow, IonCol, IonCardTitle, IonCardHeader,
-    IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, NavbarComponent
+  imports: [
+    IonButton, IonImg, IonSearchbar, IonIcon, IonCard, IonCardContent, IonGrid,
+    IonRow, IonCol, IonCardTitle, IonCardHeader, IonContent, IonHeader, IonTitle,
+    IonToolbar, CommonModule, FormsModule, NavbarComponent
   ]
 })
 export class HosCardsPage implements OnInit {
   rating: number = 0;
   private _hospitales = inject(HospitalService);
-  hospitales: Hospital[] = [];  // Lista de hospitales
+  hospitales: Hospital[] = [];
   starIcon = star;
-  currentUser: any; // Usuario actual
   starOutlineIcon = starOutline;
   isSearching: boolean = false;
+  currentUser: any;
+  alertCtrl = inject(AlertController);
 
   constructor(
     private router: Router,
     private hospitalService: HospitalService,
     private cdr: ChangeDetectorRef,
-    private authService: AuthService // Servicio de autenticación
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
     addIcons({ star, starOutline });
-
-    // Obtener el usuario actual desde el servicio de autenticación
     this.currentUser = this.authService.getCurrentUser();
+    this.cargarHospitales();
+  }
 
+  cargarHospitales() {
     this.hospitalService.getHospitales().subscribe(
       (data) => {
         this.hospitales = data.map(hospital => ({
           ...hospital,
           rating: localStorage.getItem(`hospitalRating-${hospital._id}`)
             ? parseInt(localStorage.getItem(`hospitalRating-${hospital._id}`)!, 10)
-            : hospital.rating ?? 0, // Usar la calificación almacenada o la del backend
+            : hospital.rating ?? 0,
           img: hospital.img
         }));
         this.cdr.detectChanges();
       },
-      (error) => {
-        console.error('Error al obtener hospitales', error);
-      }
+      (error) => console.error('Error al obtener hospitales', error)
     );
   }
 
-  // Método para redirigir a la página de detalles del hospital
   verDetalle(id: string) {
     this.router.navigate(['/detail-card', id], { state: { type: 'hospital' } });
   }
 
-  // Método para buscar hospitales
   buscarHospital(event: any) {
     const query = event.detail.value.trim();
     this.isSearching = query.length > 0;
 
     if (!query) {
-      this.hospitalService.getHospitales().subscribe(
-        (data) => {
-          this.hospitales = data.map(hospital => ({
-            ...hospital,
-            rating: hospital.rating ?? 0,
-            img: hospital.img?.startsWith('http') ? hospital.img : `http://localhost:3000/file/${hospital.img}`
-          }));
-
-          // Forzar la actualización del componente
-          this.cdr.detectChanges();
-        },
-        (error) => {
-          console.error('Error al obtener hospitales', error);
-        }
-      );
+      this.cargarHospitales();
       return;
     }
 
@@ -100,21 +90,54 @@ export class HosCardsPage implements OnInit {
     );
   }
 
-  // Método para verificar si el usuario es admin
   isAdmin(): boolean {
     return this.currentUser?.role === 'admin';
   }
 
-  // Método para eliminar un hospital
-  eliminarHospital(hospitalId: string) {
-    this.hospitalService.eliminarHospital(hospitalId).subscribe(() => {
-      // Eliminar el hospital de la lista después de la eliminación
-      this.hospitales = this.hospitales.filter(h => h._id !== hospitalId);
+  async eliminarHospital(hospitalId: string) {
+    const alert = await this.alertCtrl.create({
+      header: 'Confirmar eliminación',
+      message: '¿Estás seguro de que deseas eliminar este hospital?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Eliminar',
+          handler: () => {
+            this.hospitalService.eliminarHospital(hospitalId).subscribe({
+              next: () => {
+                this.hospitales = this.hospitales.filter(h => h._id !== hospitalId);
+                this.mostrarAlerta('Éxito', 'Hospital eliminado correctamente', 'success');
+              },
+              error: () => {
+                this.mostrarAlerta('Error', 'Hubo un problema al eliminar el hospital', 'error');
+              }
+            });
+          }
+        }
+      ]
     });
+
+    await alert.present();
   }
 
-  // Método para redirigir al formulario de registro de hospital
+  async mostrarAlerta(titulo: string, mensaje: string, tipo: 'error' | 'success') {
+    const color = tipo === 'success' ? 'success' : 'danger';
+
+    const alert = await this.alertCtrl.create({
+      header: titulo,
+      message: mensaje,
+      buttons: ['OK'],
+      cssClass: `custom-alert ${color}`,
+      mode: 'ios',
+    });
+
+    await alert.present();
+  }
+
   agregarHospital() {
-    this.router.navigate(['/hos-register1']); // Redirige al formulario de registro
+    this.router.navigate(['/hos-register1']);
   }
 }
